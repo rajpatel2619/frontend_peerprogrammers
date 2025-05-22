@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload fast.
+          Edit <code>src/App.js</code> and save to reload fast by Arpit.
         </p>
         <a
           className="App-link"
