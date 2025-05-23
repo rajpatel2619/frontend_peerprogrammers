@@ -8,7 +8,7 @@ export default function Navbar() {
       <Link to="/login">Login</Link> |{" "}
       <Link to="/signup">Signup</Link> |{" "}
       <Link to="/student-dashboard">Student Dashboard</Link> |{" "}
-      <Link to="/admin-dashboard">Admin Dashboard</Link>
+      <Link to="/teacher-dashboard">Teacher Dashboard</Link>
     </nav>
   );
 }

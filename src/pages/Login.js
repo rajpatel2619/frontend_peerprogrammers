@@ -1,19 +1,25 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+const REACT_APP_API = process.env.REACT_APP_API;
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (token) {
+      navigate('/student-dashboard');
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch(`${REACT_APP_API}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -67,7 +73,7 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            autoComplete="username"
+            autoComplete="email"
           />
         </label><br /><br />
 
@@ -78,7 +84,7 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            autoComplete="current-password"
+            autoComplete="password"
           />
         </label><br /><br />
 

@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/SignUp';
 import StudentDashboard from './pages/StudentDashboard';
-import AdminDashboard from './pages/TeacherDashboard';
+import TeacherDashboard from './pages/TeacherDashboard';
 import Navbar from './components/Navbar';
 import ForgotPassword from './pages/ForgotPassword';
 
@@ -21,7 +21,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/student-dashboard" element={<StudentDashboard />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </Router>

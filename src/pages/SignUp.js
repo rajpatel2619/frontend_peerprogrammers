@@ -1,32 +1,56 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+const API = process.env.REACT_APP_API;
 
 export default function SignUp() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [first_name, setFirstName] = useState('');
+  const [last_name, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phone_number, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [repassword, setRepassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (token) {
+      navigate('/student-dashboard');
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
+    if (password !== repassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     try {
-      const response = await fetch('/api/signup', {
+      const response = await fetch(`${API}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, lastName, email, phone, password }),
+        body: JSON.stringify({
+          email,
+          first_name,
+          last_name,
+          phone_number,
+          password,
+          repassword
+        }),
       });
 
+      const data = await response.json();
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.detail || 'Signup failed');
+      }else{
+        localStorage.setItem('token', data.token);
+        sessionStorage.setItem('token', data.token);
       }
-
-      alert('Signup successful! Please login.');
+        
+      // alert('Signup successful! Please login.');
       navigate('/login');
     } catch (err) {
       setError(err.message);
@@ -37,7 +61,6 @@ export default function SignUp() {
     <div style={{ maxWidth: 400, margin: 'auto' }}>
       <h2>Sign Up</h2>
 
-      {/* Error block */}
       {error && (
         <div
           style={{
@@ -59,7 +82,7 @@ export default function SignUp() {
           First Name:
           <input
             type="text"
-            value={firstName}
+            value={first_name}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
@@ -69,7 +92,7 @@ export default function SignUp() {
           Last Name:
           <input
             type="text"
-            value={lastName}
+            value={last_name}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
@@ -86,11 +109,11 @@ export default function SignUp() {
         </label><br /><br />
 
         <label>
-          Phone (with country code):
+          Phone Number (with country code):
           <input
             type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            value={phone_number}
+            onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="+91XXXXXXXXXX"
             required
           />
@@ -102,6 +125,16 @@ export default function SignUp() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </label><br /><br />
+
+        <label>
+          Re-enter Password:
+          <input
+            type="password"
+            value={repassword}
+            onChange={(e) => setRepassword(e.target.value)}
             required
           />
         </label><br /><br />
