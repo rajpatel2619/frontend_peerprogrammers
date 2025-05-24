@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import TeachingCourses from './TeachingCourses';
 
 export default function TeacherDashboard() {
   const navigate = useNavigate();
@@ -18,10 +19,10 @@ export default function TeacherDashboard() {
   };
 
   return (
-    <div>
+    <div style={{ padding: '20px' }}>
       <h1>Teacher Dashboard</h1>
-      <button onClick={handleLogout}>Logout</button>
-      {/* Your teacher dashboard content here */}
+
+
     </div>
   );
 }

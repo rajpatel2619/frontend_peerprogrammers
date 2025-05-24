@@ -1,7 +1,8 @@
+// src/pages/MyProfile.js
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function StudentDashboard() {
+export default function MyProfile() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -11,17 +12,10 @@ export default function StudentDashboard() {
     }
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    sessionStorage.removeItem('token');
-    navigate('/login');
-  };
-
   return (
     <div>
-      <h1>Student Dashboard</h1>
-      <button onClick={handleLogout}>Logout</button>
-      {/* Your student dashboard content here */}
+      <h1>My Profile</h1>
+      <p>This is your profile page.</p>
     </div>
   );
 }
