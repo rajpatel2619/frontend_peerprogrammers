@@ -15,8 +15,7 @@ export default function TeacherNavbar({ onLogout, onSwitch }) {
       }}
     >
       <div style={{ display: 'flex', gap: '10px' }}>
-        <button onClick={() => navigate('/teacher-dashboard')}>Dashboard</button>
-        <button onClick={() => navigate('/teacher/teaching-courses')}>Courses</button> {/* Added Courses */}
+        <button onClick={() => navigate('/')}>Home</button>
       </div>
 
       <div style={{ display: 'flex', gap: '10px' }}>

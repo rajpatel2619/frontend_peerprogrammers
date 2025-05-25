@@ -15,7 +15,7 @@ export default function StudentNavbar({ onLogout, onSwitch }) {
       }}
     >
       <div>
-        <button onClick={() => navigate('/student-dashboard')}>Dashboard</button>
+        <button onClick={() => navigate('/')}>Home</button>
       </div>
 
       <div>
