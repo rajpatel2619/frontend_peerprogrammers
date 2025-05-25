@@ -34,9 +34,13 @@ export default function Login() {
 
       if (remember) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
       } else {
         sessionStorage.setItem('token', data.token);
+        sessionStorage.setItem('user', JSON.stringify(data.user));
       }
+
+      console.log(data)
 
       navigate('/student-dashboard');
     } catch (err) {
