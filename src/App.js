@@ -12,6 +12,11 @@ import ForgotPassword from './pages/ForgotPassword';
 import MyProfile from './pages/MyProfile';
 import TeachingCourses from './pages/teacher/TeachingCourses';
 import CourseDetails from './pages/CourseDetails';
+import StudentDetails from './pages/student/StudentDetails';
+import TeacherDetails from './pages/teacher/TeacherDetails';
+import LearningCourses from './pages/student/LearningCourses';
+import PageNotFound from './pages/PageNotFound';
+import Whistlist from './pages/student/Whistlist';
 
 
 
@@ -20,16 +25,25 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
+        {/* Course details route */}
         <Route path="/" element={<Home />} />
+        <Route path="/courses/:courseId" element={<CourseDetails />} />
+        {/* Authentication routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/student-dashboard" element={<StudentDashboard />} />
-        <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/profile" element={<MyProfile />}/>
-        <Route path="/courses/:courseId" element={<CourseDetails />} />
-        <Route path="/teacher/teaching-courses" element={<TeachingCourses />}/>
-        {/* <Route path="/student/learning-courses" element={< />}/> */}
+        {/* Student routes */}
+        <Route path="/student/dashboard" element={<StudentDashboard />} />
+        <Route path="/student/learnings" element={<LearningCourses />} />
+        <Route path="/student/cart" element={<Whistlist />} />
+        <Route path="/student/:studentId" element={<StudentDetails />} />
+        {/* Teacher routes */}
+        <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
+        <Route path="/teacher/courses" element={<TeachingCourses />}/>
+        <Route path="/teacher/:teacherId" element={<TeacherDetails />} />
+        {/* Catch-all 404 route */}
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Router>
   );
