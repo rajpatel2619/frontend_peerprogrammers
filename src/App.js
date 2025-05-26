@@ -17,35 +17,42 @@ import TeacherDetails from './pages/teacher/TeacherDetails';
 import LearningCourses from './pages/student/LearningCourses';
 import PageNotFound from './pages/PageNotFound';
 import Whistlist from './pages/student/Whistlist';
+import CreateCourse from './pages/CreateCourse';
+import FillCoureseDetail from './pages/FillCourseDetail';
+import Courses from './pages/Courses';
+
+
 
 function App() {
   return (
     <Router>
-      {/* Add this wrapper to apply dark mode styles across all pages */}
-      <div className="min-h-screen bg-background-light dark:bg-background-dark text-black dark:text-white font-sans transition-colors duration-300">
-        <Navbar />
-        <Routes>
-          {/* Course details route */}
-          <Route path="/" element={<Home />} />
-          <Route path="/courses/:courseId" element={<CourseDetails />} />
-          {/* Authentication routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/profile" element={<MyProfile />} />
-          {/* Student routes */}
-          <Route path="/student/dashboard" element={<StudentDashboard />} />
-          <Route path="/student/learnings" element={<LearningCourses />} />
-          <Route path="/student/cart" element={<Whistlist />} />
-          <Route path="/student/:studentId" element={<StudentDetails />} />
-          {/* Teacher routes */}
-          <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
-          <Route path="/teacher/courses" element={<TeachingCourses />} />
-          <Route path="/teacher/:teacherId" element={<TeacherDetails />} />
-          {/* Catch-all 404 route */}
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </div>
+      <Navbar />
+      <Routes>
+        {/* Course details route */}
+        <Route path="/" element={<Home />} />
+        <Route path="/courses/:courseId" element={<CourseDetails />} />
+        {/* Authentication routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/profile" element={<MyProfile />}/>
+        {/* Student routes */}
+        <Route path="/student/dashboard" element={<StudentDashboard />} />
+        <Route path="/student/learnings" element={<LearningCourses />} />
+        <Route path="/student/cart" element={<Whistlist />} />
+        <Route path="/student/:studentId" element={<StudentDetails />} />
+        {/* Teacher routes */}
+        <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
+        <Route path="/teacher/courses" element={<TeachingCourses />}/>
+        <Route path="/teacher/:teacherId" element={<TeacherDetails />} />
+        <Route path="/create-course" element={<CreateCourse />} />
+        {/* Fill course detail route */}
+        <Route path="/fill-course-detail" element={<FillCoureseDetail />} />
+        <Route path="/courses" element={<Courses />} />
+        {/* Home route */}
+        {/* Catch-all 404 route */}
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
     </Router>
   );
 }
