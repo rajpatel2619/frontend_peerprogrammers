@@ -45,12 +45,11 @@ export default function SignUp() {
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.detail || 'Signup failed');
-      }else{
+      } else {
         localStorage.setItem('token', data.token);
         sessionStorage.setItem('token', data.token);
       }
-        
-      // alert('Signup successful! Please login.');
+
       navigate('/login');
     } catch (err) {
       setError(err.message);
@@ -58,93 +57,62 @@ export default function SignUp() {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: 'auto' }}>
-      <h2>Sign Up</h2>
-
-      {error && (
-        <div
-          style={{
-            backgroundColor: '#f8d7da',
-            color: '#842029',
-            padding: '10px',
-            marginBottom: '15px',
-            borderRadius: '4px',
-            border: '1px solid #f5c2c7',
-          }}
-          role="alert"
-        >
-          {error}
+    <div className="h-screen overflow-hidden flex flex-col md:flex-row bg-white dark:bg-gray-900">
+      <div className="hidden md:flex md:w-1/2 items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200 dark:from-gray-800 dark:to-gray-700">
+        <div className="text-center px-6">
+          <h1 className="text-4xl font-bold text-blue-600 dark:text-blue-400">Join Our Community</h1>
+          <p className="mt-4 text-blue-800 dark:text-gray-300">Start your learning journey today!</p>
         </div>
-      )}
+      </div>
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          First Name:
-          <input
-            type="text"
-            value={first_name}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-        </label><br /><br />
+      <div className="w-full md:w-1/2 flex items-center justify-center p-6 overflow-y-auto">
+        <div className="w-full max-w-md">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Sign Up</h2>
 
-        <label>
-          Last Name:
-          <input
-            type="text"
-            value={last_name}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
-        </label><br /><br />
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+              {error}
+            </div>
+          )}
 
-        <label>
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label><br /><br />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">First Name</label>
+              <input type="text" value={first_name} onChange={(e) => setFirstName(e.target.value)} required className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600" />
+            </div>
 
-        <label>
-          Phone Number (with country code):
-          <input
-            type="tel"
-            value={phone_number}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            placeholder="+91XXXXXXXXXX"
-            required
-          />
-        </label><br /><br />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Last Name</label>
+              <input type="text" value={last_name} onChange={(e) => setLastName(e.target.value)} required className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600" />
+            </div>
 
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label><br /><br />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600" />
+            </div>
 
-        <label>
-          Re-enter Password:
-          <input
-            type="password"
-            value={repassword}
-            onChange={(e) => setRepassword(e.target.value)}
-            required
-          />
-        </label><br /><br />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Phone Number</label>
+              <input type="tel" value={phone_number} onChange={(e) => setPhoneNumber(e.target.value)} placeholder="+91XXXXXXXXXX" required className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600" />
+            </div>
 
-        <button type="submit">Sign Up</button>
-      </form>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
+              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600" />
+            </div>
 
-      <div style={{ marginTop: 15 }}>
-        <span>Already have an account? </span>
-        <Link to="/login">Login</Link>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Re-enter Password</label>
+              <input type="password" value={repassword} onChange={(e) => setRepassword(e.target.value)} required className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600" />
+            </div>
+
+            <button type="submit" className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium shadow">Sign Up</button>
+          </form>
+
+          <div className="mt-6 text-sm text-gray-600 dark:text-gray-300">
+            Already have an account? <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
+          </div>
+        </div>
       </div>
     </div>
   );

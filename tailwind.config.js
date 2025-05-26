@@ -1,11 +1,24 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
 module.exports = {
-    content: [
-      "./src/**/*.{js,jsx,ts,tsx}",  // Scan these files for Tailwind classes
-    ],
-    theme: {
-      extend: {},
+  darkMode: 'class', // Enables class-based dark mode
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          light: '#cde6ff',
+          DEFAULT: '#3b82f6', // custom base blue
+          dark: '#1e40af',
+        },
+        background: {
+          light: '#f9fbfc',
+          dark: '#0f172a', // slate-ish dark background
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+      },
     },
-    plugins: [],
-  };
-  
+  },
+  plugins: [require('@tailwindcss/typography')],
+};
