@@ -12,6 +12,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
   @apply bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300;
 }
+@keyframes scroll-news {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+.animate-scroll-news {
+  animation: scroll-news 12s linear infinite;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
