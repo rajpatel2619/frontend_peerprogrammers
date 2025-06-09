@@ -58,7 +58,7 @@ const HeroSection = () => {
             Master Programming <span className="font-bold">Together</span> 
           </h1>
           <p className="text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-12 font-thin">
-            Join our peer-learning community and accelerate your tech career
+            Join our peer-learning community and accelerate your career
           </p>
         </motion.div>
 

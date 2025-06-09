@@ -86,7 +86,7 @@ export default function Navbar() {
       >
         <img src={logo} alt="Logo" className="h-10 w-10" />
         <span className="font-extrabold text-xl dark:text-white text-gray-900 select-none">
-          {token ? (isStudent ? "Student" : "Teacher") : "Peer Programmers"}
+          {"Peer Programmers"}
         </span>
       </div>
 

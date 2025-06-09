@@ -60,7 +60,7 @@ export default function SignUp() {
     <div className="h-screen overflow-hidden flex flex-col md:flex-row bg-white dark:bg-gray-900">
       <div className="hidden md:flex md:w-1/2 items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200 dark:from-gray-800 dark:to-gray-700">
         <div className="text-center px-6">
-          <h1 className="text-4xl font-bold text-blue-600 dark:text-blue-400">Join Our Community</h1>
+          <h1 className="text-4xl font-bold text-blue-600 dark:text-blue-400">Our Community</h1>
           <p className="mt-4 text-blue-800 dark:text-gray-300">Start your learning journey today!</p>
         </div>
       </div>
