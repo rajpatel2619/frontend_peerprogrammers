@@ -47,7 +47,7 @@ function Courses() {
   return (
     <div style={{ display: "flex", justifyContent: "center", padding: "2rem" }}>
       {loading ? (
-        <p>Loading courses...</p>
+        <p>Loading courses....</p>
       ) : error ? (
         <p style={{ color: "red" }}>Error: {error}</p>
       ) : (
