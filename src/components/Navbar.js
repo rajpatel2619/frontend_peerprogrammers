@@ -78,7 +78,6 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-white dark:bg-black border-b border-blue-400/30 px-20 py-3 shadow-md flex flex-wrap items-center gap-4 justify-between md:justify-start">
-
       {/* Left: Logo and Title */}
       <div
         className="flex items-center gap-3 cursor-pointer"
@@ -90,12 +89,12 @@ export default function Navbar() {
         </span>
       </div>
 
-      {/* Search Bar - hidden on homepage */}
+      {/* Search Bar - hidden on homepage
       {location.pathname !== "/" && (
         <div className="flex-1 min-w-[200px] md:max-w-xs order-3 md:order-none">
           <SearchBar query={searchQuery} onSearch={setSearchQuery} />
         </div>
-      )}
+      )} */}
 
       {/* Right: Actions */}
       <div className="flex items-center gap-2 ml-auto flex-wrap justify-end">
@@ -110,14 +109,6 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <button
-              onClick={toggleRole}
-              className={iconTextBtn}
-              title={`Switch to ${isStudent ? "Teacher" : "Student"}`}
-            >
-              <HiOutlineSwitchHorizontal size={18} />
-              Switch to {isStudent ? "Teacher" : "Student"}
-            </button>
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
@@ -136,6 +127,27 @@ export default function Navbar() {
                   >
                     <HiOutlineUser /> Profile
                   </button>
+                  <button
+                    onClick={toggleRole}
+                    className={iconTextBtn}
+                    title={`Switch to ${isStudent ? "Teacher" : "Student"}`}
+                  >
+                    <HiOutlineSwitchHorizontal size={18} />
+                    Switch to {isStudent ? "Teacher" : "Student"}
+                  </button>
+                  <button
+                    onClick={() => setDarkMode(!darkMode)}
+                    className={iconTextBtn}
+                    title="Toggle Dark Mode"
+                  >
+                    {darkMode ? (
+                      <div className="flex justify-center items-center gap-2"> <HiOutlineSun size={20} /> Light Mode </div>
+                    ) : (
+                      <div className="flex justify-center items-center gap-2">
+                        <HiOutlineMoon size={20} /> Dark Mode
+                      </div>
+                    )}
+                  </button>
                   <button onClick={handleLogout} className={profileDropdownBtn}>
                     <HiOutlineLogout /> Logout
                   </button>
@@ -144,14 +156,6 @@ export default function Navbar() {
             </div>
           </>
         )}
-
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className={iconTextBtn}
-          title="Toggle Dark Mode"
-        >
-          {darkMode ? <HiOutlineSun size={20} /> : <HiOutlineMoon size={20} />}
-        </button>
       </div>
     </nav>
   );

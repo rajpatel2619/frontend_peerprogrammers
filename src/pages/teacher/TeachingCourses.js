@@ -1,6 +1,7 @@
 // src/pages/TeachingCourses.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from '../../components/sidebar';
 
 export default function TeachingCourses() {
   const [courses, setCourses] = useState([]);
@@ -44,6 +45,7 @@ export default function TeachingCourses() {
 
   return (
     <div>
+      <Sidebar />
       <h2>Teaching Courses</h2>
       <table border="1" cellPadding="10">
         <thead>

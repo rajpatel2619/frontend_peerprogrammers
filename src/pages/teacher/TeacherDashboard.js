@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import TeachingCourses from './TeachingCourses';
+import Sidebar from '../../components/sidebar';
 
 export default function TeacherDashboard() {
   const navigate = useNavigate();
@@ -19,7 +19,8 @@ export default function TeacherDashboard() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <Sidebar onNavigate={(path) => console.log("Navigate to:", path)} />
       <h1>Teacher Dashboard</h1>
 
 
