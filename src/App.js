@@ -46,9 +46,9 @@ function App() {
         <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
         <Route path="/teacher/courses" element={<TeachingCourses />} />
         <Route path="/teacher/:teacherId" element={<TeacherDetails />} />
-        <Route path="/create-course" element={<CreateCourse />} />
+        <Route path="/teacher/courses/new" element={<CreateCourse />} />
         {/* Fill course detail route */}
-        <Route path="/fill-course-detail" element={<FillCoureseDetail />} />
+        <Route path="/teacher/courses/update" element={<FillCoureseDetail />} />
         <Route path="/courses" element={<Courses />} />
         {/* Home route */}
         <Route path="/CourseTabs" element={<CourseTabs />} />

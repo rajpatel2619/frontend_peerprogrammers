@@ -1,61 +1,65 @@
 import React, { useState } from "react";
 import {
-  FaChalkboardTeacher,
-  FaUserGraduate,
   FaBook,
   FaHome,
-  FaUser,
-  FaSignOutAlt,
-  FaBars,
-  FaTimes,
+  FaAngleRight,
+  FaAngleLeft,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
-const Sidebar = ({ onNavigate }) => {
+const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const links = [
-    { name: "Dashboard", icon: <FaHome />, path: "dashboard" },
-    { name: "Courses", icon: <FaBook />, path: "courses" },
-    { name: "Students", icon: <FaUserGraduate />, path: "students" },
-    { name: "Teachers", icon: <FaChalkboardTeacher />, path: "teachers" },
-    { name: "Profile", icon: <FaUser />, path: "profile" },
-    { name: "Logout", icon: <FaSignOutAlt />, path: "logout" },
+    { name: "Dashboard", icon: <FaHome />, path: "/teacher/dashboard" },
+    { name: "Courses", icon: <FaBook />, path: "/teacher/courses" },
   ];
 
   return (
-    <>
-      {/* Toggle Sidebar Button (only visible on small screens) */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed top-20 left-4 z-30 md:hidden bg-blue-600 text-white p-2 rounded shadow"
-      >
-        <FaBars />
-      </button>
+    <div className="relative">
+      {/* Arrow Button peeking from left */}
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed top-20 left-0 z-50 bg-blue-600 text-white p-2 rounded-r-full shadow transform -translate-x-1/4"
+        >
+          <FaAngleRight className="text-xl" />
+        </button>
+      )}
 
-      {/* Sidebar */}
+      {/* Backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar Panel */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-black text-gray-800 dark:text-white shadow-lg z-40 transform transition-transform duration-300 ${
+        className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 bg-white dark:bg-black text-gray-800 dark:text-white shadow-lg z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0`}
+        }`}
       >
-        {/* Close Button (mobile only) */}
-        <div className="flex justify-start mt-16 md:mt-16 p-4 md:hidden">
+        {/* Close Button (Arrow Left) */}
+        <div className="flex justify-end p-4">
           <button
             onClick={() => setIsOpen(false)}
             className="text-gray-600 dark:text-gray-300 text-2xl"
           >
-            <FaTimes />
+            <FaAngleLeft />
           </button>
         </div>
 
         {/* Navigation Links */}
-        <nav className="p-4 space-y-2 mt-4 md:mt-16">
+        <nav className="p-4 space-y-2">
           {links.map((link) => (
             <button
               key={link.name}
               onClick={() => {
-                onNavigate(link.path);
-                setIsOpen(false); // auto close on small screens
+                navigate(link.path);
+                setIsOpen(false);
               }}
               className="flex items-center gap-3 w-full px-4 py-2 rounded-md hover:bg-blue-600 hover:text-white transition"
             >
@@ -65,7 +69,7 @@ const Sidebar = ({ onNavigate }) => {
           ))}
         </nav>
       </div>
-    </>
+    </div>
   );
 };
 

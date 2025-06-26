@@ -1,4 +1,3 @@
-// src/pages/TeachingCourses.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/sidebar';
@@ -6,6 +5,8 @@ import Sidebar from '../../components/sidebar';
 export default function TeachingCourses() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,48 +33,121 @@ export default function TeachingCourses() {
   }, [navigate]);
 
   const handleEdit = (courseId) => {
-    // navigate or open edit modal
-    alert(`Edit course ${courseId}`);
+    navigate(`/teacher/courses/update?id=${courseId}`);
+  };
+
+  const handleView = (courseId) => {
+    navigate(`/courses/${courseId}`);
   };
 
   const handlePublish = (courseId) => {
-    // send publish request to backend
-    alert(`Publish course ${courseId}`);
+    alert(`Toggle publish for course ${courseId}`);
+    // TODO: Make API call here
   };
 
-  if (loading) return <p>Loading courses...</p>;
+  const filteredCourses = courses.filter(course =>
+    course.name.toLowerCase().includes(search.toLowerCase()) &&
+    (filter === '' || course.status === filter)
+  );
 
   return (
-    <div>
-      <Sidebar />
-      <h2>Teaching Courses</h2>
-      <table border="1" cellPadding="10">
-        <thead>
-          <tr>
-            <th>Course ID</th>
-            <th>Course Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {courses.length > 0 ? (
-            courses.map((course) => (
-              <tr key={course.courseId}>
-                <td>{course.courseId}</td>
-                <td>{course.courseName}</td>
-                <td>
-                  <button onClick={() => handleEdit(course.courseId)}>Edit</button>{" "}
-                  <button onClick={() => handlePublish(course.courseId)}>Publish</button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3">No courses found.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
+      <Sidebar onNavigate={(path) => navigate(path)} />
+
+      <div className="flex-1 p-10 w-full">
+        {/* Create Course Banner */}
+        <div
+          onClick={() => navigate('/teacher/courses/new')}
+          className="cursor-pointer mb-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg shadow text-center transition"
+        >
+          + Create New Course
+        </div>
+        <p className="text-2xl font-bold text-gray-900 dark:text-white ">My Courses</p> <br></br>
+    
+        {/* Search + Filter Form */}
+        <div className="flex flex-wrap items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-6">
+          <input
+            type="text"
+            placeholder="Search by course name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="flex-grow px-4 py-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+          />
+
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="px-4 py-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+          >
+            <option value="">All Status</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+          </select>
+
+          <button
+            onClick={() => console.log('Submit clicked')}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+          >
+            Search
+          </button>
+        </div>
+
+        {/* Courses Table */}
+        {loading ? (
+          <p className="text-gray-700 dark:text-gray-200">Loading courses...</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full table-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+              <thead>
+                <tr className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white text-left">
+                  <th className="px-4 py-2">ID</th>
+                  <th className="px-4 py-2">Course Name</th>
+                  <th className="px-4 py-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredCourses.map((course) => (
+                  <tr key={course.id} className="border-t border-gray-300 dark:border-gray-600">
+                    <td className="px-4 py-2">{course.id}</td>
+                    <td className="px-4 py-2">{course.name}</td>
+                    <td className="px-4 py-2 flex flex-wrap gap-2">
+                      <button
+                        onClick={() => handleEdit(course.id)}
+                        className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleView(course.id)}
+                        className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                      >
+                        View
+                      </button>
+                      <button
+                        onClick={() => handlePublish(course.id)}
+                        className={`${
+                          course.status === 'published'
+                            ? 'bg-red-600 hover:bg-red-700'
+                            : 'bg-green-600 hover:bg-green-700'
+                        } text-white px-3 py-1 rounded text-sm`}
+                      >
+                        {course.status === 'published' ? 'Unpublish' : 'Publish'}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {filteredCourses.length === 0 && (
+                  <tr>
+                    <td colSpan="3" className="px-4 py-4 text-center text-gray-500 dark:text-gray-300">
+                      No courses found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

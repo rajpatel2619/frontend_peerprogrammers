@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Sidebar from "../components/sidebar";
 const API = process.env.REACT_APP_API;
 
 function CreateCourse() {
+  const [step, setStep] = useState(1);
+
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [mode, setMode] = useState("");
+  const [category, setCategory] = useState("");
+  const [courseType, setCourseType] = useState("");
+  const [syllabusFile, setSyllabusFile] = useState(null);
+
   const [creatorIds, setCreatorIds] = useState([""]);
-  const [createdBy, setCreatedBy] = useState("Unknown");
   const [token, setToken] = useState("");
 
   const navigate = useNavigate();
@@ -16,7 +20,6 @@ function CreateCourse() {
     const userStr = localStorage.getItem("user") || sessionStorage.getItem("user");
     if (userStr) {
       const userObj = JSON.parse(userStr);
-      setCreatedBy(userObj?.name || "Unknown");
       setToken(userObj?.token || "");
     }
   }, []);
@@ -32,58 +35,40 @@ function CreateCourse() {
   };
 
   const handleSubmit = async () => {
-    if (!title || !description || !mode || creatorIds.some(id => id.trim() === "")) {
-      alert("Please fill in all fields and ensure all Creator IDs are provided.");
+    if (!title || !category || !courseType || creatorIds.some(id => id.trim() === "")) {
+      alert("Please fill all fields and ensure Creator IDs are valid.");
       return;
     }
 
-    let parsedCreatorIds;
+    const parsedCreatorIds = creatorIds.map(id => parseInt(id));
+    if (parsedCreatorIds.some(isNaN)) {
+      alert("One or more creator IDs are not valid numbers.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("category", category);
+    formData.append("mode", courseType);
+    formData.append("creator_ids", JSON.stringify(parsedCreatorIds));
+    if (syllabusFile) formData.append("syllabus", syllabusFile);
+
     try {
-      parsedCreatorIds = creatorIds.map((id) => {
-        const parsed = parseInt(id);
-        if (isNaN(parsed)) throw new Error(`Invalid creator ID: "${id}"`);
-        return parsed;
+      const res = await fetch(`${API}/courses`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
       });
-    } catch (err) {
-      alert(err.message);
-      return;
-    }
 
-    const payload = {
-      title,
-      description,
-      mode,
-      creator_ids: parsedCreatorIds
-    };
-
-
-    try {
-      fetch(`${API}/courses`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`
-  },
-  body: JSON.stringify(payload)
-})
-  .then(response => {
-    if (!response.ok) {
-      return response.text().then(errorText => {
+      if (!res.ok) {
+        const errorText = await res.text();
         throw new Error(errorText || "Failed to create course");
-      });
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log(data);
-    // Navigate to fill-course-detail and pass data as state
-    navigate("/fill-course-detail", { state: { course: data.course } });
-  })
-  .catch(error => {
-    console.error("Error:", error.message);
-    // Optional: show error to user
-  });
+      }
 
+      const data = await res.json();
+      navigate("/fill-course-detail", { state: { course: data.course } });
     } catch (error) {
       console.error("Error creating course:", error);
       alert("Something went wrong: " + error.message);
@@ -91,73 +76,111 @@ function CreateCourse() {
   };
 
   return (
-    <div style={{
-      display: "flex",
-      justifyContent: "center"
-    }}>
-      <div>
-        <h1>Create Course</h1>
+    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
+      <Sidebar onNavigate={(path) => navigate(path)} />
+      <div className="flex-1 p-10 w-full space-y-6 text-gray-800 dark:text-white">
+        <h1 className="text-3xl font-bold">Create New Course</h1>
 
-        {/* Title */}
-        <div>
-          <label>Title</label>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter course title"
-          />
-        </div>
-
-        {/* Description */}
-        <div>
-          <label>Description</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter course description"
-            rows={4}
-          />
-        </div>
-
-        {/* Mode */}
-        <div>
-          <label>Mode</label>
-          <select
-            value={mode}
-            onChange={(e) => setMode(e.target.value)}
-          >
-            <option value="">Select course mode</option>
-            <option value="Live">Live</option>
-            <option value="Offline">Offline</option>
-            <option value="Hybrid">Hybrid</option>
-            <option value="Recorded">Recorded</option>
-          </select>
-        </div>
-
-        {/* Creator IDs */}
-        <div>
-          <label>Creator IDs</label>
-          <div>
-            {creatorIds.map((id, index) => (
+        {/* Step 1: General Info */}
+        {step === 1 && (
+          <div className="space-y-4 bg-white dark:bg-gray-800 p-6 rounded shadow">
+            <div>
+              <label className="block mb-1 font-medium">Course Title</label>
               <input
-                key={index}
-                value={id}
-                onChange={(e) => handleCreatorChange(index, e.target.value)}
-                placeholder={`Enter creator ID #${index + 1}`}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full px-4 py-2 rounded border dark:bg-gray-700"
+                placeholder="Enter course title"
               />
-            ))}
+            </div>
+
+            <div>
+              <label className="block mb-1 font-medium">Course Category</label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full px-4 py-2 rounded border dark:bg-gray-700"
+              >
+                <option value="">Select category</option>
+                <option value="Programming">Programming</option>
+                <option value="Math">Math</option>
+                <option value="Science">Science</option>
+                <option value="Design">Design</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block mb-1 font-medium">Course Type</label>
+              <select
+                value={courseType}
+                onChange={(e) => setCourseType(e.target.value)}
+                className="w-full px-4 py-2 rounded border dark:bg-gray-700"
+              >
+                <option value="">Select type</option>
+                <option value="Online">Online</option>
+                <option value="Offline">Offline</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+            </div>
+
+            <button
+              onClick={() => setStep(2)}
+              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+            >
+              Next
+            </button>
           </div>
-          <button onClick={addMoreCreator} type="button">
-            + Add More
-          </button>
-        </div>
+        )}
 
-        
+        {/* Step 2: More Info */}
+        {step === 2 && (
+          <div className="space-y-4 bg-white dark:bg-gray-800 p-6 rounded shadow">
+            <div>
+              <label className="block mb-1 font-medium">Upload Syllabus PDF</label>
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={(e) => setSyllabusFile(e.target.files[0])}
+                className="w-full dark:bg-gray-700"
+              />
+            </div>
 
-        {/* Submit Button */}
-        <button onClick={handleSubmit}>
-          Submit
-        </button>
+            <div>
+              <label className="block mb-1 font-medium">Add Co-Mentors (User IDs)</label>
+              {creatorIds.map((id, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  value={id}
+                  onChange={(e) => handleCreatorChange(index, e.target.value)}
+                  placeholder={`Co-Mentor ${index + 1}`}
+                  className="w-full mb-2 px-4 py-2 rounded border dark:bg-gray-700"
+                />
+              ))}
+              <button
+                onClick={addMoreCreator}
+                className="text-blue-600 hover:underline text-sm mt-1"
+              >
+                + Add another
+              </button>
+            </div>
+
+            <div className="flex justify-between mt-4">
+              <button
+                onClick={() => setStep(1)}
+                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+              >
+                Back
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

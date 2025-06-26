@@ -84,9 +84,10 @@ export default function Navbar() {
         onClick={() => navigate("/")}
       >
         <img src={logo} alt="Logo" className="h-10 w-10" />
-        <span className="font-extrabold text-xl dark:text-white text-gray-900 select-none">
-          {"Peer Programmers"}
-        </span>
+        <span className="hidden md:inline font-extrabold text-xl dark:text-white text-gray-900 select-none">
+  {"Peer Programmers"}
+</span>
+
       </div>
 
       {/* Search Bar - hidden on homepage
@@ -103,9 +104,9 @@ export default function Navbar() {
             <button onClick={() => navigate("/login")} className={primaryBtn}>
               <HiOutlineLogin size={18} /> Login
             </button>
-            <button onClick={() => navigate("/signup")} className={primaryBtn}>
+            {/* <button onClick={() => navigate("/signup")} className={primaryBtn}>
               <HiOutlineUserAdd size={18} /> Sign Up
-            </button>
+            </button> */}
           </>
         ) : (
           <>
