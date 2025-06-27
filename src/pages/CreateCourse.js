@@ -9,16 +9,32 @@ const API = process.env.REACT_APP_API;
 function CreateCourse() {
   const [step, setStep] = useState(1);
   const [title, setTitle] = useState("");
-  const [domains, setDomains] = useState([]);
-  const [category, setCategory] = useState("");
-  const [mode, setMode] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("Individual");
+  const [mode, setMode] = useState("online_live");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [domains, setDomains] = useState([]);
 
   const [syllabusFile, setSyllabusFile] = useState(null);
-  const [creatorIds, setCreatorIds] = useState([""]);
-  const [token, setToken] = useState("");
+  const [coverPhoto, setCoverPhoto] = useState(null);
+  const [description, setDescription] = useState("");
+  const [whatsappLink, setWhatsappLink] = useState("");
 
+  const [creatorIds, setCreatorIds] = useState([]);
+
+  // Organisation-specific fields
+  const [orgName, setOrgName] = useState("");
+  const [pocName, setPocName] = useState("");
+  const [pocEmail, setPocEmail] = useState("");
+  const [pocContact, setPocContact] = useState("");
+
+  // Mode-specific fields
+  const [dailyMeetingLink, setDailyMeetingLink] = useState("");
+  const [lectureLink, setLectureLink] = useState("");
+  const [venueAddress, setVenueAddress] = useState("");
+
+  const [token, setToken] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,10 +62,11 @@ function CreateCourse() {
       !mode ||
       !startDate ||
       !endDate ||
+      !price ||
       domains.length === 0 ||
-      creatorIds.some(id => id.trim() === "")
+      creatorIds.some((id) => id.trim() === "")
     ) {
-      alert("Please fill all fields and ensure creator IDs are valid.");
+      alert("Please fill all required fields and ensure creator IDs are valid.");
       return;
     }
 
@@ -65,11 +82,35 @@ function CreateCourse() {
     formData.append("mode", mode);
     formData.append("start_date", startDate);
     formData.append("end_date", endDate);
+    formData.append("price", price);
     formData.append("creator_ids", JSON.stringify(parsedCreatorIds));
     formData.append("domains", JSON.stringify(domains));
+    formData.append("description", description);
+    formData.append("whatsapp_link", whatsappLink);
 
     if (syllabusFile) {
       formData.append("syllabus", syllabusFile);
+    }
+
+    if (coverPhoto) {
+      formData.append("cover_photo", coverPhoto);
+    }
+
+    // Organisation-specific fields
+    if (category === "Organisation") {
+      formData.append("org_name", orgName);
+      formData.append("poc_name", pocName);
+      formData.append("poc_email", pocEmail);
+      formData.append("poc_contact", pocContact);
+    }
+
+    // Mode-specific fields
+    if (mode === "online_live") {
+      formData.append("daily_meeting_link", dailyMeetingLink);
+    } else if (mode === "online_recorded") {
+      formData.append("lecture_link", lectureLink);
+    } else if (mode === "offline") {
+      formData.append("venue_address", venueAddress);
     }
 
     try {
@@ -104,8 +145,6 @@ function CreateCourse() {
           <CreateCourseFirstTab
             title={title}
             setTitle={setTitle}
-            domains={domains}
-            setDomains={setDomains}
             category={category}
             setCategory={setCategory}
             mode={mode}
@@ -114,18 +153,46 @@ function CreateCourse() {
             setStartDate={setStartDate}
             endDate={endDate}
             setEndDate={setEndDate}
+            price={price}
+            setPrice={setPrice}
             onNext={() => setStep(2)}
           />
         ) : (
           <CreateCourseSecondTab
             syllabusFile={syllabusFile}
             setSyllabusFile={setSyllabusFile}
+            coverPhoto={coverPhoto}
+            setCoverPhoto={setCoverPhoto}
+            description={description}
+            setDescription={setDescription}
+            whatsappLink={whatsappLink}
+            setWhatsappLink={setWhatsappLink}
             creatorIds={creatorIds}
             handleCreatorChange={handleCreatorChange}
             addMoreCreator={addMoreCreator}
+            setCreatorIds={setCreatorIds}
             onBack={() => setStep(1)}
             onSubmit={handleSubmit}
             category={category}
+            domains={domains}
+            setDomains={setDomains}
+            // Organisation-specific
+            orgName={orgName}
+            setOrgName={setOrgName}
+            pocName={pocName}
+            setPocName={setPocName}
+            pocEmail={pocEmail}
+            setPocEmail={setPocEmail}
+            pocContact={pocContact}
+            setPocContact={setPocContact}
+            // Mode-specific
+            mode={mode}
+            dailyMeetingLink={dailyMeetingLink}
+            setDailyMeetingLink={setDailyMeetingLink}
+            lectureLink={lectureLink}
+            setLectureLink={setLectureLink}
+            venueAddress={venueAddress}
+            setVenueAddress={setVenueAddress}
           />
         )}
       </div>

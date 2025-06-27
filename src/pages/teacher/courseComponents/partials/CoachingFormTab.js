@@ -6,12 +6,12 @@ function CoachingFormTab() {
       <h2 className="text-lg font-semibold mb-2">Coaching Details</h2>
       <input
         type="text"
-        placeholder="Institute Name"
+        placeholder="Coaching Name"
         className="w-full mb-2 px-4 py-2 rounded border dark:bg-gray-600"
       />
       <input
-        type="number"
-        placeholder="Years of Experience"
+        type="text"
+        placeholder="Full Address of coaching"
         className="w-full mb-2 px-4 py-2 rounded border dark:bg-gray-600"
       />
     </div>
