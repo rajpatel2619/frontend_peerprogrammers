@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
+import CreateCourseFirstTab from "./teacher/courseComponents/CreateCourseFirstTab";
+import CreateCourseSecondTab from "./teacher/courseComponents/CreateCourseSecondTab";
+
 const API = process.env.REACT_APP_API;
 
 function CreateCourse() {
   const [step, setStep] = useState(1);
-
   const [title, setTitle] = useState("");
+  const [domains, setDomains] = useState([]);
   const [category, setCategory] = useState("");
-  const [courseType, setCourseType] = useState("");
-  const [syllabusFile, setSyllabusFile] = useState(null);
+  const [mode, setMode] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
+  const [syllabusFile, setSyllabusFile] = useState(null);
   const [creatorIds, setCreatorIds] = useState([""]);
   const [token, setToken] = useState("");
 
@@ -25,9 +30,9 @@ function CreateCourse() {
   }, []);
 
   const handleCreatorChange = (index, value) => {
-    const updatedIds = [...creatorIds];
-    updatedIds[index] = value;
-    setCreatorIds(updatedIds);
+    const updated = [...creatorIds];
+    updated[index] = value;
+    setCreatorIds(updated);
   };
 
   const addMoreCreator = () => {
@@ -35,12 +40,20 @@ function CreateCourse() {
   };
 
   const handleSubmit = async () => {
-    if (!title || !category || !courseType || creatorIds.some(id => id.trim() === "")) {
-      alert("Please fill all fields and ensure Creator IDs are valid.");
+    if (
+      !title ||
+      !category ||
+      !mode ||
+      !startDate ||
+      !endDate ||
+      domains.length === 0 ||
+      creatorIds.some(id => id.trim() === "")
+    ) {
+      alert("Please fill all fields and ensure creator IDs are valid.");
       return;
     }
 
-    const parsedCreatorIds = creatorIds.map(id => parseInt(id));
+    const parsedCreatorIds = creatorIds.map((id) => parseInt(id));
     if (parsedCreatorIds.some(isNaN)) {
       alert("One or more creator IDs are not valid numbers.");
       return;
@@ -49,9 +62,15 @@ function CreateCourse() {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("category", category);
-    formData.append("mode", courseType);
+    formData.append("mode", mode);
+    formData.append("start_date", startDate);
+    formData.append("end_date", endDate);
     formData.append("creator_ids", JSON.stringify(parsedCreatorIds));
-    if (syllabusFile) formData.append("syllabus", syllabusFile);
+    formData.append("domains", JSON.stringify(domains));
+
+    if (syllabusFile) {
+      formData.append("syllabus", syllabusFile);
+    }
 
     try {
       const res = await fetch(`${API}/courses`, {
@@ -81,105 +100,33 @@ function CreateCourse() {
       <div className="flex-1 p-10 w-full space-y-6 text-gray-800 dark:text-white">
         <h1 className="text-3xl font-bold">Create New Course</h1>
 
-        {/* Step 1: General Info */}
-        {step === 1 && (
-          <div className="space-y-4 bg-white dark:bg-gray-800 p-6 rounded shadow">
-            <div>
-              <label className="block mb-1 font-medium">Course Title</label>
-              <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full px-4 py-2 rounded border dark:bg-gray-700"
-                placeholder="Enter course title"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 font-medium">Course Category</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-4 py-2 rounded border dark:bg-gray-700"
-              >
-                <option value="">Select category</option>
-                <option value="Programming">Programming</option>
-                <option value="Math">Math</option>
-                <option value="Science">Science</option>
-                <option value="Design">Design</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block mb-1 font-medium">Course Type</label>
-              <select
-                value={courseType}
-                onChange={(e) => setCourseType(e.target.value)}
-                className="w-full px-4 py-2 rounded border dark:bg-gray-700"
-              >
-                <option value="">Select type</option>
-                <option value="Online">Online</option>
-                <option value="Offline">Offline</option>
-                <option value="Hybrid">Hybrid</option>
-              </select>
-            </div>
-
-            <button
-              onClick={() => setStep(2)}
-              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-            >
-              Next
-            </button>
-          </div>
-        )}
-
-        {/* Step 2: More Info */}
-        {step === 2 && (
-          <div className="space-y-4 bg-white dark:bg-gray-800 p-6 rounded shadow">
-            <div>
-              <label className="block mb-1 font-medium">Upload Syllabus PDF</label>
-              <input
-                type="file"
-                accept="application/pdf"
-                onChange={(e) => setSyllabusFile(e.target.files[0])}
-                className="w-full dark:bg-gray-700"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 font-medium">Add Co-Mentors (User IDs)</label>
-              {creatorIds.map((id, index) => (
-                <input
-                  key={index}
-                  type="text"
-                  value={id}
-                  onChange={(e) => handleCreatorChange(index, e.target.value)}
-                  placeholder={`Co-Mentor ${index + 1}`}
-                  className="w-full mb-2 px-4 py-2 rounded border dark:bg-gray-700"
-                />
-              ))}
-              <button
-                onClick={addMoreCreator}
-                className="text-blue-600 hover:underline text-sm mt-1"
-              >
-                + Add another
-              </button>
-            </div>
-
-            <div className="flex justify-between mt-4">
-              <button
-                onClick={() => setStep(1)}
-                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
-              >
-                Back
-              </button>
-              <button
-                onClick={handleSubmit}
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-              >
-                Submit
-              </button>
-            </div>
-          </div>
+        {step === 1 ? (
+          <CreateCourseFirstTab
+            title={title}
+            setTitle={setTitle}
+            domains={domains}
+            setDomains={setDomains}
+            category={category}
+            setCategory={setCategory}
+            mode={mode}
+            setMode={setMode}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
+            onNext={() => setStep(2)}
+          />
+        ) : (
+          <CreateCourseSecondTab
+            syllabusFile={syllabusFile}
+            setSyllabusFile={setSyllabusFile}
+            creatorIds={creatorIds}
+            handleCreatorChange={handleCreatorChange}
+            addMoreCreator={addMoreCreator}
+            onBack={() => setStep(1)}
+            onSubmit={handleSubmit}
+            category={category}
+          />
         )}
       </div>
     </div>
