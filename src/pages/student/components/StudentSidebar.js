@@ -7,13 +7,13 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const Sidebar = () => {
+const StudentSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const links = [
-    { name: "Dashboard", icon: <FaHome />, path: "/teacher/dashboard" },
-    { name: "Courses", icon: <FaBook />, path: "/teacher/courses" },
+    { name: "Dashboard", icon: <FaHome />, path: "/student/dashboard" },
+    { name: "Courses", icon: <FaBook />, path: "/student/courses" },
   ];
 
   return (
@@ -73,4 +73,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default StudentSidebar;

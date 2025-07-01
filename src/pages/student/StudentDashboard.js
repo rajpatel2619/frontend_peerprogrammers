@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../components/sidebar';
+import StudentSidebar from './components/StudentSidebar';
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function StudentDashboard() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <Sidebar />
+      <StudentSidebar />
       <h1>Student Dashboard</h1>
     </div>
   );

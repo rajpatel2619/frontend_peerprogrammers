@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../components/sidebar';
+import TeacherSidebar from './components/TeacherSidebar';
 
 export default function TeachingCourses() {
   const [courses, setCourses] = useState([]);
@@ -52,16 +52,10 @@ export default function TeachingCourses() {
 
   return (
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
-      <Sidebar onNavigate={(path) => navigate(path)} />
+      <TeacherSidebar onNavigate={(path) => navigate(path)} />
 
       <div className="flex-1 p-10 w-full">
-        {/* Create Course Banner */}
-        <div
-          onClick={() => navigate('/teacher/courses/new')}
-          className="cursor-pointer mb-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg shadow text-center transition"
-        >
-          + Create New Course
-        </div>
+        
         <p className="text-2xl font-bold text-gray-900 dark:text-white ">My Courses</p> <br></br>
     
         {/* Search + Filter Form */}
