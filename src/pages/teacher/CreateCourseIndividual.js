@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./components/TeacherSidebar";
+const API = process.env.REACT_APP_API;
 
 export default function CreateCourseIndividual() {
   const [title, setTitle] = useState("");
@@ -10,8 +11,10 @@ export default function CreateCourseIndividual() {
   const [endDate, setEndDate] = useState("");
   const [domains, setDomains] = useState([]);
   const [domainOptions, setDomainOptions] = useState([]);
-  const [syllabusFile, setSyllabusFile] = useState(null);
-  const [coverPhoto, setCoverPhoto] = useState(null);
+  // const [syllabusFile, setSyllabusFile] = useState(null);
+  // const [coverPhoto, setCoverPhoto] = useState(null);
+  const [syllabusFile, setSyllabusFile] = useState("");
+  const [coverPhoto, setCoverPhoto] = useState("");
   const [description, setDescription] = useState("");
   const [creatorIds, setCreatorIds] = useState([]);
   const [dailyMeetingLink, setDailyMeetingLink] = useState("");
@@ -28,6 +31,36 @@ export default function CreateCourseIndividual() {
   const [ultraWhatsapp, setUltraWhatsapp] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+  setTitle("Advanced AI & Deep Learning Bootcamp");
+  setPrice("7999");
+  setMode("recorded");
+  setStartDate("2025-09-01");
+  setEndDate("2025-11-15");
+  setDomains(["AI", "Deep Learning"]);
+  setDomainOptions(["Web Development", "Data Science", "AI", "Blockchain"]);
+  setDescription("Dive deep into AI algorithms, neural networks, and state-of-the-art deep learning models.");
+  setCreatorIds([3]);
+  setLectureLink("https://youtube.com/playlist?list=advanced-ai-dl");
+
+  setBasicSeats("80");
+  setBasicPrice("7999");
+  setBasicWhatsapp("https://chat.whatsapp.com/ai-basic");
+
+  setPremiumSeats("40");
+  setPremiumPrice("14999");
+  setPremiumWhatsapp("https://chat.whatsapp.com/ai-premium");
+
+  setUltraSeats("15");
+  setUltraPrice("24999");
+  setUltraWhatsapp("https://chat.whatsapp.com/ai-ultra");
+
+  setSyllabusFile("http://example.com/ai-syllabus.pdf");
+  setCoverPhoto("http://example.com/ai-cover.jpg");
+}, []);
+
+
 
   useEffect(() => {
     fetch("/api/domains")
@@ -54,10 +87,16 @@ export default function CreateCourseIndividual() {
     setDomains(selected);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
+    const user = stored ? JSON.parse(stored) : null;
+    const userId = user?.id;
+
+
     const parsedCreatorIds = creatorIds.map((id) => parseInt(id));
 
     const courseDetails = {
+      userId, 
       title,
       mode,
       start_date: startDate,
@@ -70,14 +109,41 @@ export default function CreateCourseIndividual() {
       ...(mode === "recorded"
         ? { price, lecture_link: lectureLink }
         : {
-            daily_meeting_link: dailyMeetingLink,
-            basic_plan: { seats: basicSeats, price: basicPrice, whatsapp: basicWhatsapp },
-            premium_plan: { seats: premiumSeats, price: premiumPrice, whatsapp: premiumWhatsapp },
-            ultra_plan: { seats: ultraSeats, price: ultraPrice, whatsapp: ultraWhatsapp },
-          }),
+          daily_meeting_link: dailyMeetingLink,
+          basic_plan: { seats: basicSeats, price: basicPrice, whatsapp: basicWhatsapp },
+          premium_plan: { seats: premiumSeats, price: premiumPrice, whatsapp: premiumWhatsapp },
+          ultra_plan: { seats: ultraSeats, price: ultraPrice, whatsapp: ultraWhatsapp },
+        }),
     };
 
-    console.log("Course Submission Data:", courseDetails);
+
+    try {
+      const token =
+        localStorage.getItem("token") || sessionStorage.getItem("user");
+
+      if (!token) throw new Error("No token found");
+
+      const res = await fetch(`${API}/create-course`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(courseDetails),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || "Failed to create course");
+      }
+
+      const result = await res.json();
+      console.log("Course created:", result);
+
+    } catch (err) {
+      console.error("Course creation failed:", err.message);
+    }
+
   };
 
   return (
