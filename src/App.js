@@ -17,6 +17,7 @@ import CourseDetails from "./pages/CourseDetails";
 import PageNotFound from "./pages/PageNotFound";
 import CourseTabs from "./components/home/CourseTabs";
 import CreateCourseIndividual from "./pages/teacher/CreateCourseIndividual";
+import Resources from "./pages/Resources";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
       <Routes>
         {/* Course and profiles details route */}
         <Route path="/" element={<Home />} />
+        <Route path="/resources" element={<Resources />} />
         <Route path="/courses/:courseId" element={<CourseDetails />} />
         <Route path="/profiles/students/:studentId" element={StudentPublicProfile} />
         <Route path="/profiles/teachers/:teacherId" element={TeacherPublicProfile} />
