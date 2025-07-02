@@ -18,6 +18,7 @@ import PageNotFound from "./pages/PageNotFound";
 import CourseTabs from "./components/home/CourseTabs";
 import CreateCourseIndividual from "./pages/teacher/CreateCourseIndividual";
 import Resources from "./pages/Resources";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -50,7 +51,9 @@ function App() {
         {/* Catch-all route for 404 */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <Footer />
       </div>
+
     </Router>
   );
 }
