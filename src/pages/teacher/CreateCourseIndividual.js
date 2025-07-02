@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useParams} from "react-router-dom";
 import Sidebar from "./components/TeacherSidebar";
+
 const API = process.env.REACT_APP_API;
 
 export default function CreateCourseIndividual() {
+  const { courseId } = useParams();
+  const isEditMode = Boolean(courseId);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [mode, setMode] = useState("live");
@@ -31,34 +34,73 @@ export default function CreateCourseIndividual() {
   const [ultraWhatsapp, setUltraWhatsapp] = useState("");
 
   const navigate = useNavigate();
-
   useEffect(() => {
-  setTitle("Advanced AI & Deep Learning Bootcamp");
-  setPrice("7999");
-  setMode("recorded");
-  setStartDate("2025-09-01");
-  setEndDate("2025-11-15");
-  setDomains(["AI", "Deep Learning"]);
-  setDomainOptions(["Web Development", "Data Science", "AI", "Blockchain"]);
-  setDescription("Dive deep into AI algorithms, neural networks, and state-of-the-art deep learning models.");
-  setCreatorIds([3]);
-  setLectureLink("https://youtube.com/playlist?list=advanced-ai-dl");
+    if (isEditMode) {
+      const token = localStorage.getItem("token") || sessionStorage.getItem("user");
+      fetch(`${API}/courses/${courseId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setTitle(data.title || "");
+          setMode(data.mode || "live");
+          setStartDate(data.start_date || "");
+          setEndDate(data.end_date || "");
+          setDomains(data.domains || []);
+          setDescription(data.description || "");
+          setCreatorIds(data.creator_ids || []);
+          setSyllabusFile(data.syllabusFile || "");
+          setCoverPhoto(data.coverPhoto || "");
+  
+          if (data.mode === "recorded") {
+            setPrice(data.price || "");
+            setLectureLink(data.lecture_link || "");
+          } else {
+            setDailyMeetingLink(data.daily_meeting_link || "");
+            setBasicSeats(data.basic_plan?.seats || "");
+            setBasicPrice(data.basic_plan?.price || "");
+            setBasicWhatsapp(data.basic_plan?.whatsapp || "");
+            setPremiumSeats(data.premium_plan?.seats || "");
+            setPremiumPrice(data.premium_plan?.price || "");
+            setPremiumWhatsapp(data.premium_plan?.whatsapp || "");
+            setUltraSeats(data.ultra_plan?.seats || "");
+            setUltraPrice(data.ultra_plan?.price || "");
+            setUltraWhatsapp(data.ultra_plan?.whatsapp || "");
+          }
+        })
+        .catch((err) => console.error("Failed to fetch course:", err));
+    }
+  }, [courseId]);
+  
+//   useEffect(() => {
+//   setTitle("Advanced AI & Deep Learning Bootcamp");
+//   setPrice("7999");
+//   setMode("recorded");
+//   setStartDate("2025-09-01");
+//   setEndDate("2025-11-15");
+//   setDomains(["AI", "Deep Learning"]);
+//   setDomainOptions(["Web Development", "Data Science", "AI", "Blockchain"]);
+//   setDescription("Dive deep into AI algorithms, neural networks, and state-of-the-art deep learning models.");
+//   setCreatorIds([3]);
+//   setLectureLink("https://youtube.com/playlist?list=advanced-ai-dl");
 
-  setBasicSeats("80");
-  setBasicPrice("7999");
-  setBasicWhatsapp("https://chat.whatsapp.com/ai-basic");
+//   setBasicSeats("80");
+//   setBasicPrice("7999");
+//   setBasicWhatsapp("https://chat.whatsapp.com/ai-basic");
 
-  setPremiumSeats("40");
-  setPremiumPrice("14999");
-  setPremiumWhatsapp("https://chat.whatsapp.com/ai-premium");
+//   setPremiumSeats("40");
+//   setPremiumPrice("14999");
+//   setPremiumWhatsapp("https://chat.whatsapp.com/ai-premium");
 
-  setUltraSeats("15");
-  setUltraPrice("24999");
-  setUltraWhatsapp("https://chat.whatsapp.com/ai-ultra");
+//   setUltraSeats("15");
+//   setUltraPrice("24999");
+//   setUltraWhatsapp("https://chat.whatsapp.com/ai-ultra");
 
-  setSyllabusFile("http://example.com/ai-syllabus.pdf");
-  setCoverPhoto("http://example.com/ai-cover.jpg");
-}, []);
+//   setSyllabusFile("http://example.com/ai-syllabus.pdf");
+//   setCoverPhoto("http://example.com/ai-cover.jpg");
+// }, []);
 
 
 
@@ -91,12 +133,10 @@ export default function CreateCourseIndividual() {
     const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
     const user = stored ? JSON.parse(stored) : null;
     const userId = user?.id;
-
-
     const parsedCreatorIds = creatorIds.map((id) => parseInt(id));
-
+  
     const courseDetails = {
-      userId, 
+      userId,
       title,
       mode,
       start_date: startDate,
@@ -109,42 +149,45 @@ export default function CreateCourseIndividual() {
       ...(mode === "recorded"
         ? { price, lecture_link: lectureLink }
         : {
-          daily_meeting_link: dailyMeetingLink,
-          basic_plan: { seats: basicSeats, price: basicPrice, whatsapp: basicWhatsapp },
-          premium_plan: { seats: premiumSeats, price: premiumPrice, whatsapp: premiumWhatsapp },
-          ultra_plan: { seats: ultraSeats, price: ultraPrice, whatsapp: ultraWhatsapp },
-        }),
+            daily_meeting_link: dailyMeetingLink,
+            basic_plan: { seats: basicSeats, price: basicPrice, whatsapp: basicWhatsapp },
+            premium_plan: { seats: premiumSeats, price: premiumPrice, whatsapp: premiumWhatsapp },
+            ultra_plan: { seats: ultraSeats, price: ultraPrice, whatsapp: ultraWhatsapp },
+          }),
     };
-
-
+  
     try {
-      const token =
-        localStorage.getItem("token") || sessionStorage.getItem("user");
-
+      const token = localStorage.getItem("token") || sessionStorage.getItem("user");
       if (!token) throw new Error("No token found");
-
-      const res = await fetch(`${API}/create-course`, {
-        method: "POST",
+  
+      const url = isEditMode
+        ? `${API}/courses/${courseId}/details`
+        : `${API}/create-course`;
+  
+      const method = isEditMode ? "PUT" : "POST";
+  
+      const res = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(courseDetails),
       });
-
+  
       if (!res.ok) {
         const text = await res.text();
-        throw new Error(text || "Failed to create course");
+        throw new Error(text || "Failed to save course");
       }
-
+  
       const result = await res.json();
-      console.log("Course created:", result);
-
+      console.log("Success:", result);
+      navigate("/teacher/dashboard"); // or wherever needed
     } catch (err) {
-      console.error("Course creation failed:", err.message);
+      console.error("Error submitting form:", err.message);
     }
-
   };
+  
 
   return (
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -265,9 +308,9 @@ export default function CreateCourseIndividual() {
           </div>
 
           <div className="flex justify-end mt-6">
-            <button onClick={handleSubmit} className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
-              Submit
-            </button>
+          <button onClick={handleSubmit} className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
+            {isEditMode ? "Update Course" : "Submit"}
+          </button>
           </div>
         </div>
       </div>

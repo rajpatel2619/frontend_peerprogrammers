@@ -43,6 +43,8 @@ function App() {
         <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
         <Route path="/teacher/courses" element={<TeachingCourses />} />
         <Route path="/teacher/courses/new/individual" element={<CreateCourseIndividual />} />
+        <Route path="/teacher/courses/edit/individual/:courseId" element={<CreateCourseIndividual />} />
+
         {/* Home route */}
         <Route path="/CourseTabs" element={<CourseTabs />} />
         {/* Catch-all route for 404 */}

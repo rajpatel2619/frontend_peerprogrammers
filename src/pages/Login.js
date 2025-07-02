@@ -34,10 +34,10 @@ export default function Login() {
       }
 
       if (remember) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.access_token);
         localStorage.setItem('user', JSON.stringify(data.user));
       } else {
-        sessionStorage.setItem('token', data.token);
+        sessionStorage.setItem('token', data.access_token);
         sessionStorage.setItem('user', JSON.stringify(data.user));
       }
 
