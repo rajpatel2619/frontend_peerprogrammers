@@ -87,15 +87,22 @@ export default function CreateCourseIndividual() {
 
   // Fetch domain options
   useEffect(() => {
-    fetch("/api/domains")
+    fetch(`${API}/all-domain-tags`)
       .then((res) => res.json())
-      .then((data) => setDomainOptions(data))
+      .then((data) => {
+        // console.log(data);
+        const formattedOptions = data.tags.map((tag) => ({
+          value: tag.id,
+          label: tag.name,
+        }));
+        setDomainOptions(formattedOptions);
+      })
       .catch((err) => console.error("Error loading domains", err));
   }, []);
 
   // Fetch all users for co-mentor options
-  useEffect(() => {     
-   const token = localStorage.getItem("token") || sessionStorage.getItem("user");
+  useEffect(() => {
+    const token = localStorage.getItem("token") || sessionStorage.getItem("user");
 
     fetch(`${API}/all_users`, {
       headers: {
@@ -107,7 +114,7 @@ export default function CreateCourseIndividual() {
         console.log(data);
         const formatted = data.users.map((user) => ({
           value: user.id,
-          label: user.name + " ("+user.email+")",
+          label: user.name + " (" + user.email + ")",
         }));
         setAllUsers(formatted);
       })
@@ -115,8 +122,8 @@ export default function CreateCourseIndividual() {
   }, []);
 
   const handleDomainSelect = (e) => {
-    const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
-    setDomains(selected);
+    const selectedValues = Array.from(e.target.selectedOptions, (option) => option.value);
+    setDomains(selectedValues);
   };
 
   const handleSubmit = async () => {
@@ -145,24 +152,26 @@ export default function CreateCourseIndividual() {
       ...(mode === "recorded"
         ? { price, lecture_link: lectureLink }
         : {
-            daily_meeting_link: dailyMeetingLink,
-            basic_plan: {
-              seats: basicSeats,
-              price: basicPrice,
-              whatsapp: basicWhatsapp,
-            },
-            premium_plan: {
-              seats: premiumSeats,
-              price: premiumPrice,
-              whatsapp: premiumWhatsapp,
-            },
-            ultra_plan: {
-              seats: ultraSeats,
-              price: ultraPrice,
-              whatsapp: ultraWhatsapp,
-            },
-          }),
+          daily_meeting_link: dailyMeetingLink,
+          basic_plan: {
+            seats: basicSeats,
+            price: basicPrice,
+            whatsapp: basicWhatsapp,
+          },
+          premium_plan: {
+            seats: premiumSeats,
+            price: premiumPrice,
+            whatsapp: premiumWhatsapp,
+          },
+          ultra_plan: {
+            seats: ultraSeats,
+            price: ultraPrice,
+            whatsapp: ultraWhatsapp,
+          },
+        }),
     };
+
+    console.log(courseDetails)
 
     try {
       const token =
@@ -314,12 +323,19 @@ export default function CreateCourseIndividual() {
           {/* Domains */}
           <div>
             <label className="block mb-1 font-medium">Domains</label>
-            <select multiple value={domains} onChange={handleDomainSelect} className="w-full px-4 py-2 rounded border dark:bg-gray-700 h-32">
-              {domainOptions.map((domain) => (
-                <option key={domain.id} value={domain.id}>{domain.name}</option>
-              ))}
-            </select>
+            <Select
+              isMulti
+              value={domainOptions.filter((option) => domains.includes(option.value))}
+              onChange={(selectedOptions) => {
+                const values = selectedOptions.map((option) => option.value);
+                setDomains(values);
+              }}
+              options={domainOptions}
+              placeholder="Search and select domains"
+              className="text-black"
+            />
           </div>
+
 
           {/* Files */}
           <div>
