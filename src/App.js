@@ -19,6 +19,8 @@ import CourseTabs from "./components/home/CourseTabs";
 import CreateCourseIndividual from "./pages/teacher/CreateCourseIndividual";
 import Resources from "./pages/Resources";
 import Footer from "./components/Footer";
+import TempCourses from "./pages/temp_courses/TempCourses";
+import TempCoursesDetail from "./pages/temp_courses/TempCoursesDetail";
 
 function App() {
   return (
@@ -48,6 +50,9 @@ function App() {
 
         {/* Home route */}
         <Route path="/CourseTabs" element={<CourseTabs />} />
+        {/* temp courses */}
+        <Route path="/temp_courses" element={<TempCourses />} />
+        <Route path="/temp_courses/:slug" element={<TempCoursesDetail />} />
         {/* Catch-all route for 404 */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>

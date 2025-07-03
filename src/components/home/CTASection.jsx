@@ -34,7 +34,7 @@ const CTASection = () => {
             Discover career opportunities in AI, ML, and Prompt Engineering.
             Equip yourself with the right skills to join the revolution.
           </p>
-          <Link to="/CourseTabs">
+          <Link to="/temp_courses">
             <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-semibold transition">
               Explore Courses
             </button>
