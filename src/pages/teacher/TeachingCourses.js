@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TeacherSidebar from './components/TeacherSidebar';
 
-
 const API = process.env.REACT_APP_API;
 
 export default function TeachingCourses() {
@@ -40,6 +39,7 @@ export default function TeachingCourses() {
     fetch(`${API}/courses/by-user/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Cache-Control': 'no-cache',
       },
     })
       .then(res => res.json())
