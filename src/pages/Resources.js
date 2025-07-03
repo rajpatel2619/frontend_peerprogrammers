@@ -1,17 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-// import { useRouter } from "next/navigation";
-
-const resourceData = {
-  "AI/ML": ["Basics", "Deep Learning", "LLMs"],
-  "Programming": ["C++", "C", "Python", "Java"]
-};
-
-const resources = [
-  { domain: "AI/ML", subdomain: "Basics", title: "ML Basics - Andrew Ng", url: "https://www.youtube.com/playlist?list=XYZ" },
-  { domain: "AI/ML", subdomain: "Deep Learning", title: "Deep Learning Specialization", url: "https://www.youtube.com/playlist?list=ABC" },
-  { domain: "Programming", subdomain: "C++", title: "C++ for Beginners", url: "https://www.youtube.com/playlist?list=123" },
-  { domain: "Programming", subdomain: "Python", title: "Python Full Course", url: "https://www.youtube.com/playlist?list=456" },
-];
+import resourceJson from "../data/resources.json";
 
 export default function DomainFilterPage() {
   const [selectedDomain, setSelectedDomain] = useState("");
@@ -20,16 +8,24 @@ export default function DomainFilterPage() {
   const [showSubdomainDropdown, setShowSubdomainDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
+  const resourceData = resourceJson.resourceData;
+  const resources = resourceJson.resources;
+
   const applyFilter = () => {
-    const result = resources.filter(res =>
-      res.domain === selectedDomain && res.subdomain === selectedSubdomain
+    const result = resources.filter(
+      (res) =>
+        res.domain === selectedDomain &&
+        res.subdomain === selectedSubdomain
     );
     setFilteredResources(result);
   };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
         setShowSubdomainDropdown(false);
       }
     };
@@ -49,7 +45,9 @@ export default function DomainFilterPage() {
         ref={dropdownRef}
       >
         <div className="relative w-full sm:w-64 min-w-[16rem]">
-          <label className="block font-semibold mb-1">Select Domain</label>
+          <label className="block font-semibold mb-1">
+            Select Domain
+          </label>
           <select
             value={selectedDomain}
             onChange={(e) => {
@@ -60,24 +58,30 @@ export default function DomainFilterPage() {
             className="w-full px-4 py-2 border rounded"
           >
             <option value="">-- Choose Domain --</option>
-            {Object.keys(resourceData).map(domain => (
-              <option key={domain} value={domain}>{domain}</option>
+            {Object.keys(resourceData).map((domain) => (
+              <option key={domain} value={domain}>
+                {domain}
+              </option>
             ))}
           </select>
         </div>
 
         {selectedDomain && (
           <div className="relative w-full sm:w-64 min-w-[16rem]">
-            <label className="block font-semibold mb-1">Select Subdomain</label>
+            <label className="block font-semibold mb-1">
+              Select Subdomain
+            </label>
             <button
-              onClick={() => setShowSubdomainDropdown(prev => !prev)}
+              onClick={() =>
+                setShowSubdomainDropdown((prev) => !prev)
+              }
               className="w-full px-4 py-2 border rounded text-left bg-gray-100 hover:bg-gray-200"
             >
               {selectedSubdomain || "-- Choose Subdomain --"}
             </button>
             {showSubdomainDropdown && (
               <div className="absolute top-12 left-0 w-full bg-white border rounded shadow-lg z-30 p-3 max-h-48 overflow-y-auto">
-                {resourceData[selectedDomain].map(subdomain => (
+                {resourceData[selectedDomain].map((subdomain) => (
                   <label
                     key={subdomain}
                     className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded"
@@ -113,15 +117,27 @@ export default function DomainFilterPage() {
 
       {/* Filtered Resources Display */}
       <div>
-        <h2 className="text-xl font-semibold mb-3">Filtered Resources</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          Filtered Resources
+        </h2>
         {filteredResources.length === 0 ? (
-          <p className="text-gray-500">No resources found. Select filters and click apply.</p>
+          <p className="text-gray-500">
+            No resources found. Select filters and click apply.
+          </p>
         ) : (
           <ul className="space-y-4">
             {filteredResources.map((res, index) => (
-              <li key={index} className="border p-4 rounded shadow">
+              <li
+                key={index}
+                className="border p-4 rounded shadow"
+              >
                 <h3 className="text-lg font-bold">{res.title}</h3>
-                <p className="text-sm text-gray-600">{res.domain} / {res.subdomain}</p>
+                <p className="text-sm text-gray-600">
+                  {res.domain} / {res.subdomain}
+                </p>
+                <p className="mt-2 text-gray-700">
+                  {res.description}
+                </p>
                 <a
                   href={res.url}
                   target="_blank"

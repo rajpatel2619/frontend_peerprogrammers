@@ -1,0 +1,36 @@
+{
+  "resourceData": {
+    "AI/ML": ["Basics", "Deep Learning", "LLMs"],
+    "Programming": ["C++", "C", "Python", "Java"]
+  },
+  "resources": [
+    {
+      "domain": "AI/ML",
+      "subdomain": "Basics",
+      "title": "ML Basics - Andrew Ng",
+      "description": "An introductory machine learning course covering fundamental concepts and algorithms, taught by Andrew Ng.",
+      "url": "https://www.youtube.com/playlist?list=XYZ"
+    },
+    {
+      "domain": "AI/ML",
+      "subdomain": "Deep Learning",
+      "title": "Deep Learning Specialization",
+      "description": "Comprehensive deep learning specialization covering neural networks, CNNs, and advanced topics.",
+      "url": "https://www.youtube.com/playlist?list=ABC"
+    },
+    {
+      "domain": "Programming",
+      "subdomain": "C++",
+      "title": "C++ for Beginners",
+      "description": "A beginner-friendly video series teaching the fundamentals of C++ programming language.",
+      "url": "https://www.youtube.com/playlist?list=123"
+    },
+    {
+      "domain": "Programming",
+      "subdomain": "Python",
+      "title": "Python Full Course",
+      "description": "Complete Python course for beginners and intermediates covering syntax, data structures, and projects.",
+      "url": "https://www.youtube.com/playlist?list=456"
+    }
+  ]
+}
