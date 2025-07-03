@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import CourseCard from "./CourseCard";
 
-const LOCAL_STORAGE_KEY = "peerProgrammersCourses";
-const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // e.g. 24 hours
-
 const CourseTabs = () => {
   const [coursesByCategory, setCoursesByCategory] = useState({});
   const [activeTab, setActiveTab] = useState(null);
   const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
-    const fetchAndStoreCourses = async () => {
+    const fetchCourses = async () => {
       try {
-        const res = await fetch("https://backend-peerprogrammers.onrender.com/all-courses");
+        const res = await fetch(
+          "https://backend-peerprogrammers.onrender.com/all-courses"
+        );
         const data = await res.json();
         const allCourses = data.courses || [];
 
@@ -31,46 +30,12 @@ const CourseTabs = () => {
         setCoursesByCategory(categorized);
         const firstCategory = Object.keys(categorized)[0];
         setActiveTab(firstCategory);
-
-        // Save to localStorage with timestamp
-        const cache = {
-          timestamp: Date.now(),
-          data: categorized,
-        };
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cache));
       } catch (err) {
         console.error("Failed to fetch courses:", err);
       }
     };
 
-    const loadFromLocalStorage = () => {
-      const cached = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (!cached) return false;
-
-      try {
-        const parsed = JSON.parse(cached);
-        const { timestamp, data } = parsed;
-
-        // Check if cache is expired
-        if (Date.now() - timestamp > CACHE_DURATION_MS) {
-          console.log("Cache expired. Fetching fresh data.");
-          return false;
-        }
-
-        setCoursesByCategory(data);
-        const firstCategory = Object.keys(data)[0];
-        setActiveTab(firstCategory);
-        return true;
-      } catch (err) {
-        console.error("Failed to parse cached data:", err);
-        return false;
-      }
-    };
-
-    const hasCache = loadFromLocalStorage();
-    if (!hasCache) {
-      fetchAndStoreCourses();
-    }
+    fetchCourses();
   }, []);
 
   useEffect(() => {

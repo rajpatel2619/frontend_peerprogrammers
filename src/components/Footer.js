@@ -23,14 +23,13 @@ export default function Footer() {
           <ul className="space-y-2 text-sm">
             <li className="flex items-center gap-2">
               <HiOutlineMail className="text-blue-600" />
-              <a href="mailto:Kakhilesh79@gmail.com" className="hover:text-blue-600">
+              <a href="mailto:peerprogrammers@gmail.com" className="hover:text-blue-600">
                 Send us a message
               </a>
             </li>
             <li className="flex items-center gap-2">
               <FaWhatsapp  className="text-blue-600" />
-              <Link target="_blank" to="https://chat.whatsapp.com/JjllfudxuUnCAhGk754toQ
-">
+              <Link target="_blank" to="https://whatsapp.com/channel/0029Vb5qezi47XeGL4ZY5W1s">
               <span>Join community</span>
               </Link>
             </li>

@@ -127,14 +127,28 @@ export default function DomainFilterPage() {
                   {res.domain} / {res.subdomain}
                 </p>
                 <p className="mt-2 text-gray-500">{res.description}</p>
-                <a
-                  href={res.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline mt-2 inline-block "
-                >
-                  Link
-                </a>
+                <div className="mt-2">
+                  <a
+                    href={res.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline inline-block"
+                  >
+                    Content Link
+                  </a>
+
+                    <span className="ml-2 text-sm text-gray-600 dark:text-neutral-400">
+                      —
+                      <a
+                        href={"https://www.linkedin.com/in/rajpatel2619/"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline ml-1"
+                      >
+                        Shared by Raj
+                      </a>
+                    </span>
+                </div>
               </li>
             ))}
           </ul>
