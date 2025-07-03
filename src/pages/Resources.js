@@ -1,31 +1,28 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import resourceJson from "../data/resources.json";
 
 export default function DomainFilterPage() {
-  const [selectedDomain, setSelectedDomain] = useState("");
-  const [selectedSubdomain, setSelectedSubdomain] = useState("");
+  const resourceData = resourceJson.resourceData;
+  const resources = resourceJson.resources;
+
+  const [selectedDomain, setSelectedDomain] = useState("AI");
+  const [selectedSubdomain, setSelectedSubdomain] = useState("Deep Learning");
   const [filteredResources, setFilteredResources] = useState([]);
   const [showSubdomainDropdown, setShowSubdomainDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
-  const resourceData = resourceJson.resourceData;
-  const resources = resourceJson.resources;
-
-  const applyFilter = () => {
+  // Wrap applyFilter in useCallback to avoid ESLint warning
+  const applyFilter = useCallback(() => {
     const result = resources.filter(
       (res) =>
-        res.domain === selectedDomain &&
-        res.subdomain === selectedSubdomain
+        res.domain === selectedDomain && res.subdomain === selectedSubdomain
     );
     setFilteredResources(result);
-  };
+  }, [resources, selectedDomain, selectedSubdomain]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowSubdomainDropdown(false);
       }
     };
@@ -35,19 +32,22 @@ export default function DomainFilterPage() {
     };
   }, []);
 
+  // Automatically filter initially
+  useEffect(() => {
+    applyFilter();
+  }, [applyFilter]);
+
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Filter Resources</h1>
 
       {/* Filter Section */}
       <div
-        className="sticky top-4 bg-white shadow rounded p-4 mb-6 text-black flex gap-6 flex-wrap z-10"
+        className="sticky top-4 bg-white dark:bg-gray-800 shadow rounded p-4 mb-6 text-black dark:text-white flex gap-6 flex-wrap z-10"
         ref={dropdownRef}
       >
         <div className="relative w-full sm:w-64 min-w-[16rem]">
-          <label className="block font-semibold mb-1">
-            Select Domain
-          </label>
+          <label className="block font-semibold mb-1">Select Domain</label>
           <select
             value={selectedDomain}
             onChange={(e) => {
@@ -55,7 +55,7 @@ export default function DomainFilterPage() {
               setSelectedSubdomain("");
               setShowSubdomainDropdown(false);
             }}
-            className="w-full px-4 py-2 border rounded"
+            className="w-full px-4 py-2 border rounded bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
           >
             <option value="">-- Choose Domain --</option>
             {Object.keys(resourceData).map((domain) => (
@@ -68,23 +68,19 @@ export default function DomainFilterPage() {
 
         {selectedDomain && (
           <div className="relative w-full sm:w-64 min-w-[16rem]">
-            <label className="block font-semibold mb-1">
-              Select Subdomain
-            </label>
+            <label className="block font-semibold mb-1">Select Subdomain</label>
             <button
-              onClick={() =>
-                setShowSubdomainDropdown((prev) => !prev)
-              }
-              className="w-full px-4 py-2 border rounded text-left bg-gray-100 hover:bg-gray-200"
+              onClick={() => setShowSubdomainDropdown((prev) => !prev)}
+              className="w-full px-4 py-2 border rounded text-left bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-black dark:text-white border-gray-300 dark:border-gray-600"
             >
               {selectedSubdomain || "-- Choose Subdomain --"}
             </button>
             {showSubdomainDropdown && (
-              <div className="absolute top-12 left-0 w-full bg-white border rounded shadow-lg z-30 p-3 max-h-48 overflow-y-auto">
+              <div className="absolute top-12 left-0 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow-lg z-30 p-3 max-h-48 overflow-y-auto">
                 {resourceData[selectedDomain].map((subdomain) => (
                   <label
                     key={subdomain}
-                    className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded"
+                    className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
                   >
                     <input
                       type="radio"
@@ -95,7 +91,7 @@ export default function DomainFilterPage() {
                         setSelectedSubdomain(subdomain);
                         setShowSubdomainDropdown(false);
                       }}
-                      className="form-radio"
+                      className="form-radio text-blue-600 dark:text-blue-400"
                     />
                     <span>{subdomain}</span>
                   </label>
@@ -108,7 +104,7 @@ export default function DomainFilterPage() {
         <div className="flex items-end">
           <button
             onClick={applyFilter}
-            className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="mt-6 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded dark:bg-blue-500 dark:hover:bg-blue-600"
           >
             Apply Filters
           </button>
@@ -117,9 +113,7 @@ export default function DomainFilterPage() {
 
       {/* Filtered Resources Display */}
       <div>
-        <h2 className="text-xl font-semibold mb-3">
-          Filtered Resources
-        </h2>
+        <h2 className="text-xl font-semibold mb-3">Filtered Resources</h2>
         {filteredResources.length === 0 ? (
           <p className="text-gray-500">
             No resources found. Select filters and click apply.
@@ -127,24 +121,19 @@ export default function DomainFilterPage() {
         ) : (
           <ul className="space-y-4">
             {filteredResources.map((res, index) => (
-              <li
-                key={index}
-                className="border p-4 rounded shadow"
-              >
+              <li key={index} className="border p-4 rounded shadow">
                 <h3 className="text-lg font-bold">{res.title}</h3>
                 <p className="text-sm text-gray-600">
                   {res.domain} / {res.subdomain}
                 </p>
-                <p className="mt-2 text-gray-700">
-                  {res.description}
-                </p>
+                <p className="mt-2 text-gray-500">{res.description}</p>
                 <a
                   href={res.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline mt-2 inline-block"
+                  className="text-blue-600 hover:underline mt-2 inline-block "
                 >
-                  Watch Playlist
+                  Link
                 </a>
               </li>
             ))}

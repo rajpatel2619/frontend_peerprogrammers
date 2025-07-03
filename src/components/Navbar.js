@@ -104,7 +104,7 @@ export default function Navbar() {
       Resources
     </button>
 
-    {/* {token && (
+    {token && (
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setShowDropdown(!showDropdown)}
@@ -137,7 +137,7 @@ export default function Navbar() {
           </div>
         )}
       </div>
-    )} */}
+    )}
   </div>
 </nav>
 
