@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Select from "react-select";
 import Sidebar from "./components/TeacherSidebar";
 
 const API = process.env.REACT_APP_API;
@@ -7,6 +8,7 @@ const API = process.env.REACT_APP_API;
 export default function CreateCourseIndividual() {
   const { courseId } = useParams();
   const isEditMode = Boolean(courseId);
+
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [mode, setMode] = useState("live");
@@ -14,12 +16,9 @@ export default function CreateCourseIndividual() {
   const [endDate, setEndDate] = useState("");
   const [domains, setDomains] = useState([]);
   const [domainOptions, setDomainOptions] = useState([]);
-  // const [syllabusFile, setSyllabusFile] = useState(null);
-  // const [coverPhoto, setCoverPhoto] = useState(null);
   const [syllabusFile, setSyllabusFile] = useState("");
   const [coverPhoto, setCoverPhoto] = useState("");
   const [description, setDescription] = useState("");
-  const [creatorIds, setCreatorIds] = useState([]);
   const [dailyMeetingLink, setDailyMeetingLink] = useState("");
   const [lectureLink, setLectureLink] = useState("");
 
@@ -33,7 +32,12 @@ export default function CreateCourseIndividual() {
   const [ultraPrice, setUltraPrice] = useState("");
   const [ultraWhatsapp, setUltraWhatsapp] = useState("");
 
+  const [allUsers, setAllUsers] = useState([]);
+  const [selectedCoMentors, setSelectedCoMentors] = useState([]);
+
   const navigate = useNavigate();
+
+  // Fetch course if in edit mode
   useEffect(() => {
     if (isEditMode) {
       const token = localStorage.getItem("token") || sessionStorage.getItem("user");
@@ -50,7 +54,6 @@ export default function CreateCourseIndividual() {
           setEndDate(data.end_date || "");
           setDomains(data.domains || []);
           setDescription(data.description || "");
-          setCreatorIds(data.creator_ids || []);
           setSyllabusFile(data.syllabusFile || "");
           setCoverPhoto(data.coverPhoto || "");
 
@@ -69,41 +72,20 @@ export default function CreateCourseIndividual() {
             setUltraPrice(data.ultra_plan?.price || "");
             setUltraWhatsapp(data.ultra_plan?.whatsapp || "");
           }
+
+          // Load co-mentors from creator_ids
+          if (data.creator_ids?.length && allUsers.length) {
+            const matched = allUsers.filter((u) =>
+              data.creator_ids.includes(u.value)
+            );
+            setSelectedCoMentors(matched);
+          }
         })
         .catch((err) => console.error("Failed to fetch course:", err));
     }
-  }, [courseId]);
+  }, [courseId, allUsers]);
 
-  //   useEffect(() => {
-  //   setTitle("Advanced AI & Deep Learning Bootcamp");
-  //   setPrice("7999");
-  //   setMode("recorded");
-  //   setStartDate("2025-09-01");
-  //   setEndDate("2025-11-15");
-  //   setDomains(["AI", "Deep Learning"]);
-  //   setDomainOptions(["Web Development", "Data Science", "AI", "Blockchain"]);
-  //   setDescription("Dive deep into AI algorithms, neural networks, and state-of-the-art deep learning models.");
-  //   setCreatorIds([3]);
-  //   setLectureLink("https://youtube.com/playlist?list=advanced-ai-dl");
-
-  //   setBasicSeats("80");
-  //   setBasicPrice("7999");
-  //   setBasicWhatsapp("https://chat.whatsapp.com/ai-basic");
-
-  //   setPremiumSeats("40");
-  //   setPremiumPrice("14999");
-  //   setPremiumWhatsapp("https://chat.whatsapp.com/ai-premium");
-
-  //   setUltraSeats("15");
-  //   setUltraPrice("24999");
-  //   setUltraWhatsapp("https://chat.whatsapp.com/ai-ultra");
-
-  //   setSyllabusFile("http://example.com/ai-syllabus.pdf");
-  //   setCoverPhoto("http://example.com/ai-cover.jpg");
-  // }, []);
-
-
-
+  // Fetch domain options
   useEffect(() => {
     fetch("/api/domains")
       .then((res) => res.json())
@@ -111,23 +93,32 @@ export default function CreateCourseIndividual() {
       .catch((err) => console.error("Error loading domains", err));
   }, []);
 
-  const handleCreatorChange = (index, value) => {
-    const updated = [...creatorIds];
-    updated[index] = value;
-    setCreatorIds(updated);
-  };
+  // Fetch all users for co-mentor options
+  useEffect(() => {     
+   const token = localStorage.getItem("token") || sessionStorage.getItem("user");
 
-  const addMoreCreator = () => setCreatorIds([...creatorIds, ""]);
-  const removeCreator = (index) => {
-    const updated = [...creatorIds];
-    updated.splice(index, 1);
-    setCreatorIds(updated);
-  };
+    fetch(`${API}/all_users`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        const formatted = data.users.map((user) => ({
+          value: user.id,
+          label: user.name + " ("+user.email+")",
+        }));
+        setAllUsers(formatted);
+      })
+      .catch((err) => console.error("Error fetching users", err));
+  }, []);
 
   const handleDomainSelect = (e) => {
     const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
     setDomains(selected);
   };
+
   const handleSubmit = async () => {
     const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
     const user = stored ? JSON.parse(stored) : null;
@@ -138,7 +129,7 @@ export default function CreateCourseIndividual() {
       return;
     }
 
-    const parsedCreatorIds = creatorIds.map((id) => parseInt(id));
+    const parsedCreatorIds = selectedCoMentors.map((c) => c.value);
 
     const courseDetails = {
       userId,
@@ -154,11 +145,23 @@ export default function CreateCourseIndividual() {
       ...(mode === "recorded"
         ? { price, lecture_link: lectureLink }
         : {
-          daily_meeting_link: dailyMeetingLink,
-          basic_plan: { seats: basicSeats, price: basicPrice, whatsapp: basicWhatsapp },
-          premium_plan: { seats: premiumSeats, price: premiumPrice, whatsapp: premiumWhatsapp },
-          ultra_plan: { seats: ultraSeats, price: ultraPrice, whatsapp: ultraWhatsapp },
-        }),
+            daily_meeting_link: dailyMeetingLink,
+            basic_plan: {
+              seats: basicSeats,
+              price: basicPrice,
+              whatsapp: basicWhatsapp,
+            },
+            premium_plan: {
+              seats: premiumSeats,
+              price: premiumPrice,
+              whatsapp: premiumWhatsapp,
+            },
+            ultra_plan: {
+              seats: ultraSeats,
+              price: ultraPrice,
+              whatsapp: ultraWhatsapp,
+            },
+          }),
     };
 
     try {
@@ -188,50 +191,76 @@ export default function CreateCourseIndividual() {
 
       const result = await res.json();
       console.log("Success:", result);
-      navigate("/teacher/dashboard"); // Navigate after success
+      navigate("/teacher/courses");
     } catch (err) {
       console.error("Error submitting form:", err.message);
       alert("Error: " + err.message);
     }
   };
 
-
   return (
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
       <Sidebar onNavigate={(path) => navigate(path)} />
       <div className="flex-1 p-10 w-full space-y-6 text-gray-800 dark:text-white">
-        <h1 className="text-3xl font-bold">Create New Course - For Individuals</h1>
+        <h1 className="text-3xl font-bold">
+          {isEditMode ? "Edit Course" : "Create New Course - For Individuals"}
+        </h1>
 
         <div className="space-y-4 bg-white dark:bg-gray-800 p-6 rounded shadow">
+          {/* Title */}
           <div>
             <label className="block mb-1 font-medium">Course Title</label>
-            <input value={title} onChange={(e) => setTitle(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-700" placeholder="Enter course title" />
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full px-4 py-2 rounded border dark:bg-gray-700"
+              placeholder="Enter course title"
+            />
           </div>
 
+          {/* Mode */}
           <div>
             <label className="block mb-1 font-medium">Mode</label>
-            <select value={mode} onChange={(e) => setMode(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-700">
+            <select
+              disabled={isEditMode}
+              value={mode}
+              onChange={(e) => setMode(e.target.value)}
+              className="w-full px-4 py-2 rounded border dark:bg-gray-700"
+            >
               <option value="live">Live</option>
               <option value="recorded">Recorded</option>
             </select>
           </div>
 
+          {/* Pricing Section */}
           {mode === "recorded" ? (
             <>
               <div>
-                <label className="block mb-1 font-medium">Price (in ₹)</label>
-                <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-700" placeholder="Enter course price" />
+                <label className="block mb-1 font-medium">Price (₹)</label>
+                <input
+                  type="number"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="w-full px-4 py-2 rounded border dark:bg-gray-700"
+                />
               </div>
               <div>
                 <label className="block mb-1 font-medium">Lecture Link</label>
-                <input type="url" value={lectureLink} onChange={(e) => setLectureLink(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-700" />
+                <input
+                  type="url"
+                  value={lectureLink}
+                  onChange={(e) => setLectureLink(e.target.value)}
+                  className="w-full px-4 py-2 rounded border dark:bg-gray-700"
+                />
               </div>
             </>
           ) : (
             <>
+              {/* Live Plan Details */}
               <div>
                 <label className="block mb-2 font-bold text-lg">Pricing Details</label>
                 <div className="space-y-4 border rounded p-4 dark:border-gray-700">
+                  {/* Basic */}
                   <div>
                     <label className="block mb-1 font-medium">Basic Plan</label>
                     <div className="flex gap-4 mb-2">
@@ -241,6 +270,7 @@ export default function CreateCourseIndividual() {
                     </div>
                   </div>
 
+                  {/* Premium */}
                   <div>
                     <label className="block mb-1 font-medium">Premium Plan</label>
                     <div className="flex gap-4 mb-2">
@@ -250,6 +280,7 @@ export default function CreateCourseIndividual() {
                     </div>
                   </div>
 
+                  {/* Ultra */}
                   <div>
                     <label className="block mb-1 font-medium">Ultra Premium Plan</label>
                     <div className="flex gap-4">
@@ -268,6 +299,7 @@ export default function CreateCourseIndividual() {
             </>
           )}
 
+          {/* Dates */}
           <div className="flex gap-4">
             <div className="flex-1">
               <label className="block mb-1 font-medium">Start Date</label>
@@ -279,6 +311,7 @@ export default function CreateCourseIndividual() {
             </div>
           </div>
 
+          {/* Domains */}
           <div>
             <label className="block mb-1 font-medium">Domains</label>
             <select multiple value={domains} onChange={handleDomainSelect} className="w-full px-4 py-2 rounded border dark:bg-gray-700 h-32">
@@ -288,32 +321,36 @@ export default function CreateCourseIndividual() {
             </select>
           </div>
 
+          {/* Files */}
           <div>
             <label className="block mb-1 font-medium">Upload Syllabus PDF</label>
             <input type="file" accept="application/pdf" onChange={(e) => setSyllabusFile(e.target.files[0])} className="w-full dark:bg-gray-700" />
           </div>
-
           <div>
             <label className="block mb-1 font-medium">Upload Cover Photo</label>
             <input type="file" accept="image/*" onChange={(e) => setCoverPhoto(e.target.files[0])} className="w-full dark:bg-gray-700" />
           </div>
 
+          {/* Description */}
           <div>
             <label className="block mb-1 font-medium">Course Description</label>
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} placeholder="Enter course description" className="w-full px-4 py-2 rounded border dark:bg-gray-700" />
           </div>
 
+          {/* Co-Mentors */}
           <div>
-            <label className="block mb-1 font-medium">Add Co-Mentors (User IDs)</label>
-            {creatorIds.map((id, index) => (
-              <div key={index} className="flex items-center mb-2 gap-2">
-                <input type="text" value={id} onChange={(e) => handleCreatorChange(index, e.target.value)} placeholder={`Co-Mentor ${index + 1}`} className="w-full px-4 py-2 rounded border dark:bg-gray-700" />
-                <button onClick={() => removeCreator(index)} className="text-red-500 hover:text-red-700 font-bold px-2 py-1">❌</button>
-              </div>
-            ))}
-            <button onClick={addMoreCreator} className="text-blue-600 hover:underline text-sm mt-1">+ Add another</button>
+            <label className="block mb-1 font-medium">Add Co-Mentors (Searchable)</label>
+            <Select
+              isMulti
+              value={selectedCoMentors}
+              onChange={setSelectedCoMentors}
+              options={allUsers}
+              placeholder="Search and select co-mentors"
+              className="text-black"
+            />
           </div>
 
+          {/* Submit */}
           <div className="flex justify-end mt-6">
             <button onClick={handleSubmit} className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
               {isEditMode ? "Update Course" : "Submit"}
