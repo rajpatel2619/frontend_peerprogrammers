@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TeacherSidebar from './components/TeacherSidebar';
 
-const API = 'https://backend-peerprogrammers.onrender.com';
+
+const API = process.env.REACT_APP_API;
 
 export default function TeachingCourses() {
   const [courses, setCourses] = useState([]);
@@ -10,9 +11,12 @@ export default function TeachingCourses() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState(''); // "published" or "unpublished"
+  const [userId, setUserId] = useState();
   const navigate = useNavigate();
 
+
   useEffect(() => {
+
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
     if (!userStr) {
@@ -27,7 +31,9 @@ export default function TeachingCourses() {
       navigate('/login');
       return;
     }
+
     const userId = user.id;
+    setUserId(userId);
     console.log('User ID:', userId);
     console.log('token:', token);
     console.log('API:', `${API}/courses/by-user/${userId}`);
@@ -60,7 +66,7 @@ export default function TeachingCourses() {
     const filtered = courses.filter(course => {
       const titleMatch = (course.title?.toLowerCase() || '').includes(search.toLowerCase());
 
-      const isPublished = course.id % 2 === 0;
+      const isPublished = course.is_published;
       const filterMatch =
         filter === 'published' ? isPublished :
         filter === 'unpublished' ? !isPublished : true;
@@ -78,10 +84,34 @@ export default function TeachingCourses() {
   const handleView = (courseId) => {
     window.open(`/courses/${courseId}`, '_blank');
   };
-  const handlePublish = (courseId, isPublished) => {
-    alert(`Toggle ${isPublished ? 'Unpublish' : 'Publish'} for course ${courseId}`);
-    // TODO: Connect actual API for publish/unpublish
-  };
+
+ const handlePublish = async (userId, courseId, isPublished) => {
+  const endpoint = isPublished
+    ? `${API}/unpublish-courses/${userId}/${courseId}`
+    : `${API}/publish-courses/${userId}/${courseId}`;
+
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(`Error: ${data.detail}`);
+    } else {
+      alert(`${isPublished ? "Unpublished" : "Published"} course ${courseId}`);
+      alert("handle updated data")
+      // Optional: refresh course list or update UI state
+    }
+  } catch (error) {
+    alert("API call failed: " + error.message);
+  }
+};
+
 
   const formatDate = (dateStr) => {
     if (!dateStr) return '-';
@@ -136,7 +166,7 @@ export default function TeachingCourses() {
               </thead>
               <tbody>
                 {filteredCourses.map((course, idx) => {
-                  const isPublished = course.id % 2 === 0;
+                  const isPublished = course.is_published;
 
                   return (
                     <tr key={course.id} className="border-t border-gray-300 dark:border-gray-600">
@@ -159,7 +189,7 @@ export default function TeachingCourses() {
                           View
                         </button>
                         <button
-                          onClick={() => handlePublish(course.id, isPublished)}
+                          onClick={() => handlePublish(userId, course.id, isPublished)}
                           className={`${
                             isPublished
                               ? 'bg-red-600 hover:bg-red-700'

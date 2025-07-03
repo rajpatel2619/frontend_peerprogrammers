@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate , useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "./components/TeacherSidebar";
 
 const API = process.env.REACT_APP_API;
@@ -53,7 +53,7 @@ export default function CreateCourseIndividual() {
           setCreatorIds(data.creator_ids || []);
           setSyllabusFile(data.syllabusFile || "");
           setCoverPhoto(data.coverPhoto || "");
-  
+
           if (data.mode === "recorded") {
             setPrice(data.price || "");
             setLectureLink(data.lecture_link || "");
@@ -73,34 +73,34 @@ export default function CreateCourseIndividual() {
         .catch((err) => console.error("Failed to fetch course:", err));
     }
   }, [courseId]);
-  
-//   useEffect(() => {
-//   setTitle("Advanced AI & Deep Learning Bootcamp");
-//   setPrice("7999");
-//   setMode("recorded");
-//   setStartDate("2025-09-01");
-//   setEndDate("2025-11-15");
-//   setDomains(["AI", "Deep Learning"]);
-//   setDomainOptions(["Web Development", "Data Science", "AI", "Blockchain"]);
-//   setDescription("Dive deep into AI algorithms, neural networks, and state-of-the-art deep learning models.");
-//   setCreatorIds([3]);
-//   setLectureLink("https://youtube.com/playlist?list=advanced-ai-dl");
 
-//   setBasicSeats("80");
-//   setBasicPrice("7999");
-//   setBasicWhatsapp("https://chat.whatsapp.com/ai-basic");
+  //   useEffect(() => {
+  //   setTitle("Advanced AI & Deep Learning Bootcamp");
+  //   setPrice("7999");
+  //   setMode("recorded");
+  //   setStartDate("2025-09-01");
+  //   setEndDate("2025-11-15");
+  //   setDomains(["AI", "Deep Learning"]);
+  //   setDomainOptions(["Web Development", "Data Science", "AI", "Blockchain"]);
+  //   setDescription("Dive deep into AI algorithms, neural networks, and state-of-the-art deep learning models.");
+  //   setCreatorIds([3]);
+  //   setLectureLink("https://youtube.com/playlist?list=advanced-ai-dl");
 
-//   setPremiumSeats("40");
-//   setPremiumPrice("14999");
-//   setPremiumWhatsapp("https://chat.whatsapp.com/ai-premium");
+  //   setBasicSeats("80");
+  //   setBasicPrice("7999");
+  //   setBasicWhatsapp("https://chat.whatsapp.com/ai-basic");
 
-//   setUltraSeats("15");
-//   setUltraPrice("24999");
-//   setUltraWhatsapp("https://chat.whatsapp.com/ai-ultra");
+  //   setPremiumSeats("40");
+  //   setPremiumPrice("14999");
+  //   setPremiumWhatsapp("https://chat.whatsapp.com/ai-premium");
 
-//   setSyllabusFile("http://example.com/ai-syllabus.pdf");
-//   setCoverPhoto("http://example.com/ai-cover.jpg");
-// }, []);
+  //   setUltraSeats("15");
+  //   setUltraPrice("24999");
+  //   setUltraWhatsapp("https://chat.whatsapp.com/ai-ultra");
+
+  //   setSyllabusFile("http://example.com/ai-syllabus.pdf");
+  //   setCoverPhoto("http://example.com/ai-cover.jpg");
+  // }, []);
 
 
 
@@ -128,13 +128,18 @@ export default function CreateCourseIndividual() {
     const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
     setDomains(selected);
   };
-
   const handleSubmit = async () => {
     const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
     const user = stored ? JSON.parse(stored) : null;
     const userId = user?.id;
+
+    if (!userId) {
+      alert("User not logged in");
+      return;
+    }
+
     const parsedCreatorIds = creatorIds.map((id) => parseInt(id));
-  
+
     const courseDetails = {
       userId,
       title,
@@ -149,23 +154,24 @@ export default function CreateCourseIndividual() {
       ...(mode === "recorded"
         ? { price, lecture_link: lectureLink }
         : {
-            daily_meeting_link: dailyMeetingLink,
-            basic_plan: { seats: basicSeats, price: basicPrice, whatsapp: basicWhatsapp },
-            premium_plan: { seats: premiumSeats, price: premiumPrice, whatsapp: premiumWhatsapp },
-            ultra_plan: { seats: ultraSeats, price: ultraPrice, whatsapp: ultraWhatsapp },
-          }),
+          daily_meeting_link: dailyMeetingLink,
+          basic_plan: { seats: basicSeats, price: basicPrice, whatsapp: basicWhatsapp },
+          premium_plan: { seats: premiumSeats, price: premiumPrice, whatsapp: premiumWhatsapp },
+          ultra_plan: { seats: ultraSeats, price: ultraPrice, whatsapp: ultraWhatsapp },
+        }),
     };
-  
+
     try {
-      const token = localStorage.getItem("token") || sessionStorage.getItem("user");
+      const token =
+        localStorage.getItem("token") || sessionStorage.getItem("token");
       if (!token) throw new Error("No token found");
-  
+
       const url = isEditMode
-        ? `${API}/courses/${courseId}/details`
+        ? `${API}/update-course/${userId}/${courseId}`
         : `${API}/create-course`;
-  
+
       const method = isEditMode ? "PUT" : "POST";
-  
+
       const res = await fetch(url, {
         method,
         headers: {
@@ -174,20 +180,21 @@ export default function CreateCourseIndividual() {
         },
         body: JSON.stringify(courseDetails),
       });
-  
+
       if (!res.ok) {
         const text = await res.text();
         throw new Error(text || "Failed to save course");
       }
-  
+
       const result = await res.json();
       console.log("Success:", result);
-      navigate("/teacher/dashboard"); // or wherever needed
+      navigate("/teacher/dashboard"); // Navigate after success
     } catch (err) {
       console.error("Error submitting form:", err.message);
+      alert("Error: " + err.message);
     }
   };
-  
+
 
   return (
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -308,9 +315,9 @@ export default function CreateCourseIndividual() {
           </div>
 
           <div className="flex justify-end mt-6">
-          <button onClick={handleSubmit} className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
-            {isEditMode ? "Update Course" : "Submit"}
-          </button>
+            <button onClick={handleSubmit} className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
+              {isEditMode ? "Update Course" : "Submit"}
+            </button>
           </div>
         </div>
       </div>

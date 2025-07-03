@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+
+const API = process.env.REACT_APP_API;
+
+
 function CourseDetails() {
   const { courseId } = useParams();
   const [course, setCourse] = useState(null);
@@ -11,7 +15,7 @@ function CourseDetails() {
       setLoading(true);
       try {
         const response = await fetch(
-          "https://backend-peerprogrammers.onrender.com/all-courses"
+          `${API}/all-courses`
         );
         const data = await response.json();
 
