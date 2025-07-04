@@ -35,6 +35,13 @@
     {
       "domain": "AI",
       "subdomain": "Practice Platform",
+      "title": "Google NotebookLM",
+      "description": "Use the power of AI for quick summarization and note taking, NotebookLM is your powerful virtual research assistant rooted in information you can trust.",
+      "url": "https://notebooklm.google.com/"
+    },
+    {
+      "domain": "AI",
+      "subdomain": "Practice Platform",
       "title": "PyTorch.io",
       "description": "LearnPyTorch.io is a dedicated resource offering clear, beginner-friendly tutorials and projects to help learners master PyTorch for deep learning. It’s perfect for anyone wanting practical, hands-on experience building neural networks and AI models.",
       "url": "https://www.learnpytorch.io/"
