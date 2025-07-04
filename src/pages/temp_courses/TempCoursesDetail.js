@@ -136,10 +136,10 @@ export default function TempCoursesDetail() {
               <li className="text-green-500">🎥 Live Classes</li>
             </ul>
 
-            <div className="text-xl font-semibold">
+            {/* <div className="text-xl font-semibold">
               <span className="line-through text-neutral-500 mr-2">₹{course.price}</span>
               <span className="text-green-400">₹{course.discountedPrice}</span>
-            </div>
+            </div> */}
             <p className="text-sm text-neutral-400">Batch of 30 only, so hurry up!</p>
 
             <a
