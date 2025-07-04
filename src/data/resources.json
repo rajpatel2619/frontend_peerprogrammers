@@ -69,6 +69,13 @@
     },
     {
       "domain": "AI",
+      "subdomain": "Practice Platform",
+      "title": "Tensorflow Playground",
+      "description": "A tiny neural network library that meets the demands of this educational visualization. For real-world applications, consider the TensorFlow library.",
+      "url": "https://playground.tensorflow.org/"
+    },
+    {
+      "domain": "AI",
       "subdomain": "Computer Vision",
       "title": "Computer vision from scratch by Vizuara",
       "description": "Computer Vision from Scratch by Vizuara is a free, in-depth YouTube course taught by Naman Dwivedi (MIT PhD) that starts with traditional image processing and builds up to modern CV techniques like CNNs, Vision Transformers, object detection, and segmentation . It combines strong theoretical foundations with practical implementations (pure Python, TensorFlow, PyTorch) designed for learners transitioning into computer vision roles",
