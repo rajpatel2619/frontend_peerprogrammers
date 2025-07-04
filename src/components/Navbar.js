@@ -73,7 +73,7 @@ export default function Navbar() {
         {/* Right: Desktop Navigation */}
         <div className="hidden md:flex items-center gap-2 ml-auto">
           <button onClick={() => navigate("/")} className={iconTextBtn}>Home</button>
-          <button onClick={() => navigate("/temp_courses")} className={iconTextBtn}>Courses</button>
+          {/* <button onClick={() => navigate("/temp_courses")} className={iconTextBtn}>Courses</button> */}
           <button onClick={() => navigate("/resources")} className={iconTextBtn}>Resources</button>
 
           {token && (
@@ -130,9 +130,9 @@ export default function Navbar() {
           <button onClick={() => { navigate("/"); setMobileMenuOpen(false); }} className={iconTextBtn}>
             Home
           </button>
-          <button onClick={() => { navigate("/temp_courses"); setMobileMenuOpen(false); }} className={iconTextBtn}>
+          {/* <button onClick={() => { navigate("/temp_courses"); setMobileMenuOpen(false); }} className={iconTextBtn}>
             Courses
-          </button>
+          </button> */}
           <button onClick={() => { navigate("/resources"); setMobileMenuOpen(false); }} className={iconTextBtn}>
             Resources
           </button>
