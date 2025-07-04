@@ -130,9 +130,9 @@ export default function Navbar() {
           <button onClick={() => { navigate("/"); setMobileMenuOpen(false); }} className={iconTextBtn}>
             Home
           </button>
-          <button onClick={() => { navigate("/temp_courses"); setMobileMenuOpen(false); }} className={iconTextBtn}>
+          {/* <button onClick={() => { navigate("/temp_courses"); setMobileMenuOpen(false); }} className={iconTextBtn}>
             Courses
-          </button>
+          </button> */}
           <button onClick={() => { navigate("/resources"); setMobileMenuOpen(false); }} className={iconTextBtn}>
             Resources
           </button>
