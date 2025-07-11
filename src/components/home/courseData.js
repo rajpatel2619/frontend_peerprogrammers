@@ -6,6 +6,7 @@ const courseData = {
       instructor: "John Doe",
       image: "https://dummyimage.com/400x300/cccccc/000000&text=Course+Image",
       price: "$49",
+      
     },
     {
       title: "Advanced Next.js",
@@ -13,6 +14,7 @@ const courseData = {
       instructor: "Jane Smith",
       image: "https://dummyimage.com/400x300/cccccc/000000&text=Course+Image",
       price: "$59",
+      
     },
     {
       title: "Vue Masterclass",
@@ -20,6 +22,7 @@ const courseData = {
       instructor: "Emma Brown",
       image: "https://dummyimage.com/400x300/cccccc/000000&text=Course+Image",
       price: "$45",
+     
     },
     {
       title: "Node.js Essentials",
@@ -27,13 +30,15 @@ const courseData = {
       instructor: "Mike Johnson",
       image: "https://dummyimage.com/400x300/cccccc/000000&text=Course+Image",
       price: "$39",
+      
     },
     {
-      title: "Angular Basics",
-      description: "Build dynamic apps with Angular",
-      instructor: "Olivia Green",
-      image: "https://dummyimage.com/400x300/cccccc/000000&text=Course+Image",
-      price: "$42",
+       title: "Node.js Essentials",
+       description: "Build dynamic apps with Angular",
+       instructor: "Olivia Green",
+       image: "https://dummyimage.com/400x300/cccccc/000000&text=Course+Image",
+       price: "$42",
+        
     },
     {
       title: "Fullstack JavaScript",
@@ -41,6 +46,7 @@ const courseData = {
       instructor: "Liam White",
       image: "https://dummyimage.com/400x300/cccccc/000000&text=Course+Image",
       price: "$69",
+     
     },
     {
       title: "CSS Grid & Flexbox",
