@@ -9,24 +9,44 @@ const CourseDetails = () => {
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   const fetchCourses = async () => {
+  //     try {
+  //       const res = await fetch(`${API}/all-courses`);
+  //       const data = await res.json();
+  //       const allCourses = data.courses || [];
+  //       const selected = allCourses.find(
+  //         (c) => String(c.id) === String(courseId)
+  //       );
+  //       setCourse(selected);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error(error);
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchCourses();
+  // }, [courseId]);
+
   useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const res = await fetch(`${API}/all-courses`);
-        const data = await res.json();
-        const allCourses = data.courses || [];
-        const selected = allCourses.find(
-          (c) => String(c.id) === String(courseId)
-        );
-        setCourse(selected);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
-    };
-    fetchCourses();
-  }, [courseId]);
+  const fetchCourses = async () => {
+    try {
+      const res = await fetch('/course_sample.json'); // relative to public/
+      const data = await res.json();
+      const allCourses = data || []; // assuming the file is an array
+      const selected = allCourses
+      console.log("Selected course:", selected);
+      setCourse(selected);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error loading local courses:", error);
+      setLoading(false);
+    }
+  };
+
+  fetchCourses();
+}, [courseId]);
+
 
   if (loading) return <div className="text-gray-900 dark:text-white p-10">Loading...</div>;
   if (!course) return <div className="text-gray-900 dark:text-white p-10">Course not found.</div>;
