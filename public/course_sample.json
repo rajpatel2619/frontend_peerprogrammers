@@ -1,0 +1,47 @@
+{
+  "id": 101,
+  "title": "Cloud Computing with AWS",
+  "mode": "recorded",
+  "creatorid": 2,
+  "is_published": true,
+  "syllabus_link": "https://example.com/syllabus/aws-course.pdf",
+  "co_mentors": "3,4",
+  "cover_photo": "https://example.com/images/aws-course-cover.jpg",
+  "description": "A beginner to intermediate course on AWS covering core services, architecture, and deployment.",
+  "start_date": "2025-07-10",
+  "end_date": "2025-08-10",
+  "daily_meeting_link": null,
+  "lecture_link": "https://example.com/lectures/aws",
+  "price": 499,
+  "basic_plan": {
+    "seats": 50,
+    "price": 199,
+    "whatsapp": "https://chat.whatsapp.com/basicplanlink",
+    "meeting_link": "https://zoom.us/basic-plan-meeting"
+  },
+  "premium_plan": {
+    "seats": 30,
+    "price": 349,
+    "whatsapp": "https://chat.whatsapp.com/premiumplanlink",
+    "meeting_link": "https://zoom.us/premium-plan-meeting"
+  },
+  "ultra_plan": {
+    "seats": 10,
+    "price": 499,
+    "whatsapp": "https://chat.whatsapp.com/ultraplanlink",
+    "meeting_link": "https://zoom.us/ultra-plan-meeting"
+  },
+  "domains": [
+    {
+      "name": "AWS",
+      "id": 51
+    },
+    {
+      "name": "Cloud",
+      "id": 52
+    }
+  ],
+  "creator_ids": [2],
+  "created_at": "2025-07-01T12:00:00",
+  "updated_at": "2025-07-11T10:00:00"
+}

@@ -6,10 +6,10 @@ export default function StudentDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    }
+    // const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    // if (!token) {
+    //   navigate('/login');
+    // }
   }, [navigate]);
 
   const handleLogout = () => {
