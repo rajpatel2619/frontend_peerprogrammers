@@ -1,47 +1,906 @@
-{
-  "id": 101,
-  "title": "Cloud Computing with AWS",
-  "mode": "recorded",
-  "creatorid": 2,
-  "is_published": true,
-  "syllabus_link": "https://example.com/syllabus/aws-course.pdf",
-  "co_mentors": "3,4",
-  "cover_photo": "https://example.com/images/aws-course-cover.jpg",
-  "description": "A beginner to intermediate course on AWS covering core services, architecture, and deployment.",
-  "start_date": "2025-07-10",
-  "end_date": "2025-08-10",
-  "daily_meeting_link": null,
-  "lecture_link": "https://example.com/lectures/aws",
-  "price": 499,
-  "basic_plan": {
-    "seats": 50,
-    "price": 199,
-    "whatsapp": "https://chat.whatsapp.com/basicplanlink",
-    "meeting_link": "https://zoom.us/basic-plan-meeting"
-  },
-  "premium_plan": {
-    "seats": 30,
-    "price": 349,
-    "whatsapp": "https://chat.whatsapp.com/premiumplanlink",
-    "meeting_link": "https://zoom.us/premium-plan-meeting"
-  },
-  "ultra_plan": {
-    "seats": 10,
+[
+  {
+    "id": 101,
+    "title": "Cloud Computing with AWS",
+    "mode": "recorded",
+    "creatorid": 2,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/aws-course.pdf",
+    "co_mentors": "3,4",
+    "cover_photo": "https://example.com/images/aws-course-cover.jpg",
+    "images": [
+      "https://example.com/images/aws-course-cover.jpg",
+      "https://example.com/images/aws-architecture-1.jpg",
+      "https://example.com/images/aws-services-1.jpg",
+      "https://example.com/images/aws-deployment-1.jpg"
+    ],
+    "description": "A beginner to intermediate course on AWS covering core services, architecture, and deployment.",
+    "start_date": "2025-07-10",
+    "end_date": "2025-08-10",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/aws",
     "price": 499,
-    "whatsapp": "https://chat.whatsapp.com/ultraplanlink",
-    "meeting_link": "https://zoom.us/ultra-plan-meeting"
-  },
-  "domains": [
-    {
-      "name": "AWS",
-      "id": 51
+    "basic_plan": {
+      "seats": 50,
+      "price": 199,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink",
+      "meeting_link": "https://zoom.us/basic-plan-meeting"
     },
-    {
-      "name": "Cloud",
-      "id": 52
-    }
-  ],
-  "creator_ids": [2],
-  "created_at": "2025-07-01T12:00:00",
-  "updated_at": "2025-07-11T10:00:00"
-}
+    "premium_plan": {
+      "seats": 30,
+      "price": 349,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink",
+      "meeting_link": "https://zoom.us/premium-plan-meeting"
+    },
+    "ultra_plan": {
+      "seats": 10,
+      "price": 499,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting"
+    },
+    "domains": [
+      {
+        "name": "AWS",
+        "id": 51
+      },
+      {
+        "name": "Cloud",
+        "id": 52
+      }
+    ],
+    "creator_ids": [2],
+    "created_at": "2025-07-01T12:00:00",
+    "updated_at": "2025-07-11T10:00:00"
+  },
+  {
+    "id": 102,
+    "title": "Data Science with Python",
+    "mode": "live",
+    "creatorid": 3,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/data-science-course.pdf",
+    "co_mentors": "5,6",
+    "cover_photo": "https://example.com/images/data-science-course-cover.jpg",
+    "images": [
+      "https://example.com/images/data-science-course-cover.jpg",
+      "https://example.com/images/python-ml-2.jpg",
+      "https://example.com/images/data-visualization-2.jpg",
+      "https://example.com/images/machine-learning-2.jpg"
+    ],
+    "description": "An advanced course on data science techniques using Python, including machine learning and data visualization.",
+    "start_date": "2025-08-15",
+    "end_date": "2025-09-15",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/data-science",
+    "price": 599,
+    "basic_plan": {
+      "seats": 40,
+      "price": 249,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-ds",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-ds"
+    },
+    "premium_plan": {
+      "seats": 20,
+      "price": 449,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-ds",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-ds"
+    },
+    "ultra_plan": {
+      "seats": 5,
+      "price": 599,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-ds",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-ds"
+    },
+    "domains": [
+      {
+        "name": "Data Science",
+        "id": 53
+      },
+      {
+        "name": "Python",
+        "id": 54
+      }
+    ],
+    "creator_ids": [3],
+    "created_at": "2025-07-05T14:00:00",
+    "updated_at": null
+  },
+  {
+    "id": 103,
+    "title": "Web Development Bootcamp",
+    "mode": "hybrid",
+    "creatorid": 4,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/web-dev-course.pdf",
+    "co_mentors": "7,8",
+    "cover_photo": "https://example.com/images/web-dev-course-cover.jpg",
+    "images": [
+      "https://example.com/images/web-dev-course-cover.jpg",
+      "https://example.com/images/frontend-backend-2.jpg",
+      "https://example.com/images/fullstack-2.jpg",
+      "https://example.com/images/web-technologies-2.jpg"
+    ],
+    "description": "A comprehensive bootcamp covering front-end and back-end web development technologies.",
+    "start_date": "2025-09-01",
+    "end_date": "2025-10-01",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/web-development",
+    "price": 699,
+    "basic_plan": {
+      "seats": 60,
+      "price": 299,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-webdev",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-webdev"
+    },
+    "premium_plan": {
+      "seats": 25,
+      "price": 499,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-webdev",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-webdev"
+    },
+    "ultra_plan": {
+      "seats": 15,
+      "price": 699,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-webdev",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-webdev"
+    },
+    "domains": [
+      {
+        "name": "Web Development",
+        "id": 55
+      },
+      {
+        "name": "Full Stack",
+        "id": 56
+      }
+    ],
+    "creator_ids": [4],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 104,
+    "title": "Machine Learning Fundamentals",
+    "mode": "recorded",
+    "creatorid": 5,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/ml-course.pdf",
+    "co_mentors": "9,10",
+    "cover_photo": "https://example.com/images/ml-course-cover.jpg",
+    "images": [
+      "https://example.com/images/ml-course-cover.jpg",
+      "https://example.com/images/ml-algorithms-2.jpg",
+      "https://example.com/images/ml-applications-2.jpg",
+      "https://example.com/images/ml-concepts-2.jpg"
+    ],
+    "description": "An introductory course on machine learning concepts, algorithms, and applications.",
+    "start_date": "2025-10-05",
+    "end_date": "2025-11-05",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/machine-learning",
+    "price": 549,
+    "basic_plan": {
+      "id": 58
+    },
+    "creator_ids": [5],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 105,
+    "title": "Cybersecurity Essentials",
+    "mode": "live",
+    "creatorid": 6,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/cybersecurity-course.pdf",
+    "co_mentors": "11,12",
+    "cover_photo": "https://example.com/images/cybersecurity-course-cover.jpg",
+    "images": [
+      "https://example.com/images/cybersecurity-course-cover.jpg",
+      "https://example.com/images/cybersecurity-tools-2.jpg",
+      "https://example.com/images/network-security-2.jpg",
+      "https://example.com/images/digital-assets-2.jpg"
+    ],
+    "description": "A course focused on cybersecurity principles, practices, and tools to protect digital assets.",
+    "start_date": "2025-11-10",
+    "end_date": "2025-12-10",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/cybersecurity",
+    "price": 699,
+    "basic_plan": {
+      "seats": 50,
+      "price": 249,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-cyber",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-cyber"
+    },
+    "premium_plan": {
+      "seats": 20,
+      "price": 449,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-cyber",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-cyber"
+    },
+    "ultra_plan": {
+      "seats": 10,
+      "price": 699,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-cyber",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-cyber"
+    },
+    "domains": [
+      {
+        "name": "Cybersecurity",
+        "id": 59
+      },
+      {
+        "name": "Network Security",
+        "id": 60
+      }
+    ],
+    "creator_ids": [6],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 106,
+    "title": "Blockchain Development",
+    "mode": "hybrid",
+    "creatorid": 7,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/blockchain-course.pdf",
+    "co_mentors": "13,14",
+    "cover_photo": "https://example.com/images/blockchain-course-cover.jpg",
+    "images": [
+      "https://example.com/images/blockchain-course-cover.jpg",
+      "https://example.com/images/blockchain-technology-2.jpg",
+      "https://example.com/images/smart-contracts-2.jpg",
+      "https://example.com/images/decentralized-apps-2.jpg"
+    ],
+    "description": "A course on blockchain technology, smart contracts, and decentralized applications.",
+    "start_date": "2025-12-15",
+    "end_date": "2026-01-15",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/blockchain",
+    "price": 799,
+    "basic_plan": {
+      "seats": 40,
+      "price": 299,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-blockchain",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-blockchain"
+    },
+    "premium_plan": {
+      "seats": 15,
+      "price": 549,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-blockchain",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-blockchain"
+    },
+    "ultra_plan": {
+      "seats": 5,
+      "price": 799,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-blockchain",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-blockchain"
+    },
+    "domains": [
+      {
+        "name": "Blockchain",
+        "id": 61
+      },
+      {
+        "name": "Cryptocurrency",
+        "id": 62
+      }
+    ],
+    "creator_ids": [7],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 107,
+    "title": "Mobile App Development",
+    "mode": "recorded",
+    "creatorid": 8,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/mobile-app-course.pdf",
+    "co_mentors": "15,16",
+    "cover_photo": "https://example.com/images/mobile-app-course-cover.jpg",
+    "images": [
+      "https://example.com/images/mobile-app-course-cover.jpg",
+      "https://example.com/images/android-development-2.jpg",
+      "https://example.com/images/ios-development-2.jpg",
+      "https://example.com/images/mobile-frameworks-2.jpg"
+    ],
+    "description": "A course on mobile app development for Android and iOS platforms using modern frameworks.",
+    "start_date": "2026-01-20",
+    "end_date": "2026-02-20",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/mobile-app-development",
+    "price": 699,
+    "basic_plan": {
+      "seats": 50,
+      "price": 249,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-mobile",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-mobile"
+    },
+    "premium_plan": {
+      "seats": 20,
+      "price": 449,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-mobile",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-mobile"
+    },
+    "ultra_plan": {
+      "seats": 10,
+      "price": 699,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-mobile",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-mobile"
+    },
+    "domains": [
+      {
+        "name": "Mobile Development",
+        "id": 63
+      },
+      {
+        "name": "Android",
+        "id": 64
+      }
+    ],
+    "creator_ids": [8],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 108,
+    "title": "DevOps Practices",
+    "mode": "live",
+    "creatorid": 9,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/devops-course.pdf",
+    "co_mentors": "17,18",
+    "cover_photo": "https://example.com/images/devops-course-cover.jpg",
+    "images": [
+      "https://example.com/images/devops-course-cover.jpg",
+      "https://example.com/images/ci-cd-2.jpg",
+      "https://example.com/images/continuous-integration-2.jpg",
+      "https://example.com/images/continuous-delivery-2.jpg"
+    ],
+    "description": "A course on DevOps practices, tools, and methodologies for continuous integration and delivery.",
+    "start_date": "2026-02-25",
+    "end_date": "2026-03-25",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/devops",
+    "price": 799,
+    "basic_plan": {
+      "seats": 40,
+      "price": 299,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-devops",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-devops"
+    },
+    "premium_plan": {
+      "seats": 15,
+      "price": 549,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-devops",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-devops"
+    },
+    "ultra_plan": {
+      "seats": 5,
+      "price": 799,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-devops",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-devops"
+    },
+    "domains": [
+      {
+        "name": "DevOps",
+        "id": 65
+      },
+      {
+        "name": "CI/CD",
+        "id": 66
+      }
+    ],
+    "creator_ids": [9],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 109,
+    "title": "UI/UX Design Principles",
+    "mode": "hybrid",
+    "creatorid": 10,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/uiux-course.pdf",
+    "co_mentors": "19,20",
+    "cover_photo": "https://example.com/images/mobile-app-course-cover.jpg",
+    "images": [
+      "https://example.com/images/mobile-app-course-cover.jpg",
+      "https://example.com/images/android-development-2.jpg",
+      "https://example.com/images/ios-development-2.jpg",
+      "https://example.com/images/mobile-frameworks-2.jpg"
+    ],
+    "description": "A course on UI/UX design principles, tools, and best practices for creating user-friendly interfaces.",
+    "start_date": "2026-03-30",
+    "end_date": "2026-04-30",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/uiux-design",
+    "price": 699,
+    "basic_plan": {
+      "seats": 50,
+      "price": 249,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-uiux",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-uiux"
+    },
+    "premium_plan": {
+      "seats": 20,
+      "price": 449,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-uiux",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-uiux"
+    },
+    "ultra_plan": {
+      "seats": 10,
+      "price": 699,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-uiux",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-uiux"
+    },
+    "domains": [
+      {
+        "name": "UI Design",
+        "id": 67
+      },
+      {
+        "name": "UX Design",
+        "id": 68
+      }
+    ],
+    "creator_ids": [10],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 101,
+    "title": "Cloud Computing with AWS",
+    "mode": "recorded",
+    "creatorid": 2,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/aws-course.pdf",
+    "co_mentors": "3,4",
+    "cover_photo": "https://example.com/images/aws-course-cover.jpg",
+    "images": [
+      "https://example.com/images/aws-course-cover.jpg",
+      "https://example.com/images/aws-architecture-1.jpg",
+      "https://example.com/images/aws-services-1.jpg",
+      "https://example.com/images/aws-deployment-1.jpg"
+    ],
+    "description": "A beginner to intermediate course on AWS covering core services, architecture, and deployment.",
+    "start_date": "2025-07-10",
+    "end_date": "2025-08-10",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/aws",
+    "price": 499,
+    "basic_plan": {
+      "seats": 50,
+      "price": 199,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink",
+      "meeting_link": "https://zoom.us/basic-plan-meeting"
+    },
+    "premium_plan": {
+      "seats": 30,
+      "price": 349,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink",
+      "meeting_link": "https://zoom.us/premium-plan-meeting"
+    },
+    "ultra_plan": {
+      "seats": 10,
+      "price": 499,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting"
+    },
+    "domains": [
+      {
+        "name": "AWS",
+        "id": 51
+      },
+      {
+        "name": "Cloud",
+        "id": 52
+      }
+    ],
+    "creator_ids": [2],
+    "created_at": "2025-07-01T12:00:00",
+    "updated_at": "2025-07-11T10:00:00"
+  },
+  {
+    "id": 102,
+    "title": "Data Science with Python",
+    "mode": "live",
+    "creatorid": 3,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/data-science-course.pdf",
+    "co_mentors": "5,6",
+    "cover_photo": "https://example.com/images/data-science-course-cover.jpg",
+    "images": [
+      "https://example.com/images/data-science-course-cover.jpg",
+      "https://example.com/images/python-ml-2.jpg",
+      "https://example.com/images/data-visualization-2.jpg",
+      "https://example.com/images/machine-learning-2.jpg"
+    ],
+    "description": "An advanced course on data science techniques using Python, including machine learning and data visualization.",
+    "start_date": "2025-08-15",
+    "end_date": "2025-09-15",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/data-science",
+    "price": 599,
+    "basic_plan": {
+      "seats": 40,
+      "price": 249,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-ds",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-ds"
+    },
+    "premium_plan": {
+      "seats": 20,
+      "price": 449,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-ds",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-ds"
+    },
+    "ultra_plan": {
+      "seats": 5,
+      "price": 599,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-ds",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-ds"
+    },
+    "domains": [
+      {
+        "name": "Data Science",
+        "id": 53
+      },
+      {
+        "name": "Python",
+        "id": 54
+      }
+    ],
+    "creator_ids": [3],
+    "created_at": "2025-07-05T14:00:00",
+    "updated_at": null
+  },
+  {
+    "id": 103,
+    "title": "Web Development Bootcamp",
+    "mode": "hybrid",
+    "creatorid": 4,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/web-dev-course.pdf",
+    "co_mentors": "7,8",
+    "cover_photo": "https://example.com/images/web-dev-course-cover.jpg",
+    "images": [
+      "https://example.com/images/web-dev-course-cover.jpg",
+      "https://example.com/images/frontend-backend-2.jpg",
+      "https://example.com/images/fullstack-2.jpg",
+      "https://example.com/images/web-technologies-2.jpg"
+    ],
+    "description": "A comprehensive bootcamp covering front-end and back-end web development technologies.",
+    "start_date": "2025-09-01",
+    "end_date": "2025-10-01",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/web-development",
+    "price": 699,
+    "basic_plan": {
+      "seats": 60,
+      "price": 299,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-webdev",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-webdev"
+    },
+    "premium_plan": {
+      "seats": 25,
+      "price": 499,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-webdev",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-webdev"
+    },
+    "ultra_plan": {
+      "seats": 15,
+      "price": 699,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-webdev",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-webdev"
+    },
+    "domains": [
+      {
+        "name": "Web Development",
+        "id": 55
+      },
+      {
+        "name": "Full Stack",
+        "id": 56
+      }
+    ],
+    "creator_ids": [4],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 104,
+    "title": "Machine Learning Fundamentals",
+    "mode": "recorded",
+    "creatorid": 5,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/ml-course.pdf",
+    "co_mentors": "9,10",
+    "cover_photo": "https://example.com/images/ml-course-cover.jpg",
+    "images": [
+      "https://example.com/images/ml-course-cover.jpg",
+      "https://example.com/images/ml-algorithms-2.jpg",
+      "https://example.com/images/ml-applications-2.jpg",
+      "https://example.com/images/ml-concepts-2.jpg"
+    ],
+    "description": "An introductory course on machine learning concepts, algorithms, and applications.",
+    "start_date": "2025-10-05",
+    "end_date": "2025-11-05",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/machine-learning",
+    "price": 549,
+    "basic_plan": {
+      "id": 58
+    },
+    "creator_ids": [5],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 105,
+    "title": "Cybersecurity Essentials",
+    "mode": "live",
+    "creatorid": 6,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/cybersecurity-course.pdf",
+    "co_mentors": "11,12",
+    "cover_photo": "https://example.com/images/cybersecurity-course-cover.jpg",
+    "images": [
+      "https://example.com/images/cybersecurity-course-cover.jpg",
+      "https://example.com/images/cybersecurity-tools-2.jpg",
+      "https://example.com/images/network-security-2.jpg",
+      "https://example.com/images/digital-assets-2.jpg"
+    ],
+    "description": "A course focused on cybersecurity principles, practices, and tools to protect digital assets.",
+    "start_date": "2025-11-10",
+    "end_date": "2025-12-10",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/cybersecurity",
+    "price": 699,
+    "basic_plan": {
+      "seats": 50,
+      "price": 249,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-cyber",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-cyber"
+    },
+    "premium_plan": {
+      "seats": 20,
+      "price": 449,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-cyber",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-cyber"
+    },
+    "ultra_plan": {
+      "seats": 10,
+      "price": 699,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-cyber",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-cyber"
+    },
+    "domains": [
+      {
+        "name": "Cybersecurity",
+        "id": 59
+      },
+      {
+        "name": "Network Security",
+        "id": 60
+      }
+    ],
+    "creator_ids": [6],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 106,
+    "title": "Blockchain Development",
+    "mode": "hybrid",
+    "creatorid": 7,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/blockchain-course.pdf",
+    "co_mentors": "13,14",
+    "cover_photo": "https://example.com/images/blockchain-course-cover.jpg",
+    "images": [
+      "https://example.com/images/blockchain-course-cover.jpg",
+      "https://example.com/images/blockchain-technology-2.jpg",
+      "https://example.com/images/smart-contracts-2.jpg",
+      "https://example.com/images/decentralized-apps-2.jpg"
+    ],
+    "description": "A course on blockchain technology, smart contracts, and decentralized applications.",
+    "start_date": "2025-12-15",
+    "end_date": "2026-01-15",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/blockchain",
+    "price": 799,
+    "basic_plan": {
+      "seats": 40,
+      "price": 299,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-blockchain",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-blockchain"
+    },
+    "premium_plan": {
+      "seats": 15,
+      "price": 549,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-blockchain",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-blockchain"
+    },
+    "ultra_plan": {
+      "seats": 5,
+      "price": 799,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-blockchain",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-blockchain"
+    },
+    "domains": [
+      {
+        "name": "Blockchain",
+        "id": 61
+      },
+      {
+        "name": "Cryptocurrency",
+        "id": 62
+      }
+    ],
+    "creator_ids": [7],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 107,
+    "title": "Mobile App Development",
+    "mode": "recorded",
+    "creatorid": 8,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/mobile-app-course.pdf",
+    "co_mentors": "15,16",
+    "cover_photo": "https://example.com/images/mobile-app-course-cover.jpg",
+    "images": [
+      "https://example.com/images/mobile-app-course-cover.jpg",
+      "https://example.com/images/android-development-2.jpg",
+      "https://example.com/images/ios-development-2.jpg",
+      "https://example.com/images/mobile-frameworks-2.jpg"
+    ],
+    "description": "A course on mobile app development for Android and iOS platforms using modern frameworks.",
+    "start_date": "2026-01-20",
+    "end_date": "2026-02-20",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/mobile-app-development",
+    "price": 699,
+    "basic_plan": {
+      "seats": 50,
+      "price": 249,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-mobile",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-mobile"
+    },
+    "premium_plan": {
+      "seats": 20,
+      "price": 449,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-mobile",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-mobile"
+    },
+    "ultra_plan": {
+      "seats": 10,
+      "price": 699,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-mobile",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-mobile"
+    },
+    "domains": [
+      {
+        "name": "Mobile Development",
+        "id": 63
+      },
+      {
+        "name": "Android",
+        "id": 64
+      }
+    ],
+    "creator_ids": [8],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 108,
+    "title": "DevOps Practices",
+    "mode": "live",
+    "creatorid": 9,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/devops-course.pdf",
+    "co_mentors": "17,18",
+    "cover_photo": "https://example.com/images/devops-course-cover.jpg",
+    "images": [
+      "https://example.com/images/devops-course-cover.jpg",
+      "https://example.com/images/ci-cd-2.jpg",
+      "https://example.com/images/continuous-integration-2.jpg",
+      "https://example.com/images/continuous-delivery-2.jpg"
+    ],
+    "description": "A course on DevOps practices, tools, and methodologies for continuous integration and delivery.",
+    "start_date": "2026-02-25",
+    "end_date": "2026-03-25",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/devops",
+    "price": 799,
+    "basic_plan": {
+      "seats": 40,
+      "price": 299,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-devops",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-devops"
+    },
+    "premium_plan": {
+      "seats": 15,
+      "price": 549,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-devops",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-devops"
+    },
+    "ultra_plan": {
+      "seats": 5,
+      "price": 799,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-devops",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-devops"
+    },
+    "domains": [
+      {
+        "name": "DevOps",
+        "id": 65
+      },
+      {
+        "name": "CI/CD",
+        "id": 66
+      }
+    ],
+    "creator_ids": [9],
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": 109,
+    "title": "UI/UX Design Principles",
+    "mode": "hybrid",
+    "creatorid": 10,
+    "is_published": true,
+    "syllabus_link": "https://example.com/syllabus/uiux-course.pdf",
+    "co_mentors": "19,20",
+    "cover_photo": "https://example.com/images/mobile-app-course-cover.jpg",
+    "images": [
+      "https://example.com/images/mobile-app-course-cover.jpg",
+      "https://example.com/images/android-development-2.jpg",
+      "https://example.com/images/ios-development-2.jpg",
+      "https://example.com/images/mobile-frameworks-2.jpg"
+    ],
+    "description": "A course on UI/UX design principles, tools, and best practices for creating user-friendly interfaces.",
+    "start_date": "2026-03-30",
+    "end_date": "2026-04-30",
+    "daily_meeting_link": null,
+    "lecture_link": "https://example.com/lectures/uiux-design",
+    "price": 699,
+    "basic_plan": {
+      "seats": 50,
+      "price": 249,
+      "whatsapp": "https://chat.whatsapp.com/basicplanlink-uiux",
+      "meeting_link": "https://zoom.us/basic-plan-meeting-uiux"
+    },
+    "premium_plan": {
+      "seats": 20,
+      "price": 449,
+      "whatsapp": "https://chat.whatsapp.com/premiumplanlink-uiux",
+      "meeting_link": "https://zoom.us/premium-plan-meeting-uiux"
+    },
+    "ultra_plan": {
+      "seats": 10,
+      "price": 699,
+      "whatsapp": "https://chat.whatsapp.com/ultraplanlink-uiux",
+      "meeting_link": "https://zoom.us/ultra-plan-meeting-uiux"
+    },
+    "domains": [
+      {
+        "name": "UI Design",
+        "id": 67
+      },
+      {
+        "name": "UX Design",
+        "id": 68
+      }
+    ],
+    "creator_ids": [10],
+    "created_at": null,
+    "updated_at": null
+  }
+]
