@@ -22,6 +22,7 @@ import Resources from "./pages/Resources";
 import Footer from "./components/Footer";
 import TempCourses from "./pages/temp_courses/TempCourses";
 import TempCoursesDetail from "./pages/temp_courses/TempCoursesDetail";
+import Contact from "./pages/contact";
 // hellos
 function App() {
   return (

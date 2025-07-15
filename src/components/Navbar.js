@@ -61,7 +61,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-white dark:bg-black border-b border-blue-400/30 px-6 md:px-20 py-3 shadow-md flex items-center justify-between">
+      <nav className="sticky top-0 z-50 bg-transparent:bg-black border-b border-blue-400/30 px-6 md:px-20 py-3 shadow-md flex items-center justify-between">
         {/* Left: Logo */}
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/")}>
           <img src={logo} alt="Logo" className="h-10 w-10" />
@@ -75,6 +75,8 @@ export default function Navbar() {
           <button onClick={() => navigate("/")} className={iconTextBtn}>Home</button>
           {/* <button onClick={() => navigate("/temp_courses")} className={iconTextBtn}>Courses</button> */}
           <button onClick={() => navigate("/resources")} className={iconTextBtn}>Resources</button>
+          <button onClick={() => navigate("/Training")} className={iconTextBtn}>Training</button>
+          <button onClick={() => navigate("/Contact")} className={iconTextBtn}>Contact Us</button>
 
           {token && (
             <div className="relative" ref={dropdownRef}>
@@ -136,6 +138,13 @@ export default function Navbar() {
           <button onClick={() => { navigate("/resources"); setMobileMenuOpen(false); }} className={iconTextBtn}>
             Resources
           </button>
+          <button onClick={() => { navigate("/contact"); setMobileMenuOpen(false); }} className={iconTextBtn}>
+            Training
+          </button>
+          <button onClick={() => { navigate("/contact"); setMobileMenuOpen(false); }} className={iconTextBtn}>
+            Contact Us
+          </button>
+
 
           {token && (
             <>
