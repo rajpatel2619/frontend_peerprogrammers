@@ -1,3 +1,5 @@
+
+// src/components/Navbar.jsx
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -10,12 +12,14 @@ import {
   HiMenu,
   HiX,
 } from "react-icons/hi";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo2.png";
+// import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const dropdownRef = useRef(null);
+
   const token = localStorage.getItem("token") || sessionStorage.getItem("token");
   const isStudent = location.pathname.startsWith("/student");
 
@@ -55,9 +59,12 @@ export default function Navbar() {
     navigate(isStudent ? "/teacher/dashboard" : "/student/dashboard");
   };
 
-  const baseBtn = "flex items-center gap-2 px-3 py-1.5 rounded-md transition-colors duration-200 font-medium whitespace-nowrap";
-  const iconTextBtn = baseBtn + " text-blue-600 hover:bg-blue-100 dark:text-blue-400 dark:hover:bg-blue-900";
-  const profileDropdownBtn = "flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-400";
+  const baseBtn =
+    "flex items-center gap-2 px-3 py-1.5 rounded-md transition-colors duration-200 font-medium whitespace-nowrap";
+  const iconTextBtn =
+    baseBtn + " text-blue-600 hover:bg-blue-100 dark:text-blue-400 dark:hover:bg-blue-900";
+  const profileDropdownBtn =
+    "flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-400";
 
   return (
     <>
@@ -73,8 +80,9 @@ export default function Navbar() {
         {/* Right: Desktop Navigation */}
         <div className="hidden md:flex items-center gap-2 ml-auto">
           <button onClick={() => navigate("/")} className={iconTextBtn}>Home</button>
-          {/* <button onClick={() => navigate("/temp_courses")} className={iconTextBtn}>Courses</button> */}
           <button onClick={() => navigate("/resources")} className={iconTextBtn}>Resources</button>
+          <button onClick={() => navigate("/training")} className={iconTextBtn}>Training</button>
+          <button onClick={() => navigate("/contact")} className={iconTextBtn}>Contact Us</button>
 
           {token && (
             <div className="relative" ref={dropdownRef}>
@@ -102,7 +110,7 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Right: Mobile Hamburger */}
+        {/* Mobile Hamburger */}
         <div className="md:hidden">
           <button
             onClick={() => setMobileMenuOpen(true)}
@@ -113,7 +121,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Slide-in Menu */}
+      {/* Mobile Menu */}
       <div
         className={`fixed top-0 right-0 w-64 h-full bg-white dark:bg-gray-900 shadow-lg z-50 transform transition-transform ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
@@ -130,11 +138,14 @@ export default function Navbar() {
           <button onClick={() => { navigate("/"); setMobileMenuOpen(false); }} className={iconTextBtn}>
             Home
           </button>
-          {/* <button onClick={() => { navigate("/temp_courses"); setMobileMenuOpen(false); }} className={iconTextBtn}>
-            Courses
-          </button> */}
           <button onClick={() => { navigate("/resources"); setMobileMenuOpen(false); }} className={iconTextBtn}>
             Resources
+          </button>
+          <button onClick={() => { navigate("/training"); setMobileMenuOpen(false); }} className={iconTextBtn}>
+            Training
+          </button>
+          <button onClick={() => { navigate("/contact"); setMobileMenuOpen(false); }} className={iconTextBtn}>
+            Contact Us
           </button>
 
           {token && (
@@ -153,7 +164,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Floating Dark Mode Toggle */}
+      {/* Floating Dark Mode Button */}
       <div className="fixed bottom-4 right-4 z-50">
         <button
           onClick={() => setDarkMode(!darkMode)}
@@ -173,3 +184,4 @@ export default function Navbar() {
     </>
   );
 }
+

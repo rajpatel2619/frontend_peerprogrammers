@@ -21,7 +21,9 @@ import Resources from "./pages/Resources";
 import Footer from "./components/Footer";
 import TempCourses from "./pages/temp_courses/TempCourses";
 import TempCoursesDetail from "./pages/temp_courses/TempCoursesDetail";
-
+import Contact from "./pages/contact";
+import Training from './pages/Training'
+// hellos
 function App() {
   return (
     <Router>
@@ -32,6 +34,7 @@ function App() {
         {/* Course and profiles details route */}
         <Route path="/" element={<Home />} />
         <Route path="/resources" element={<Resources />} />
+        
         <Route path="/courses/:courseId" element={<CourseDetails />} />
         <Route path="/profiles/students/:studentId" element={StudentPublicProfile} />
         <Route path="/profiles/teachers/:teacherId" element={TeacherPublicProfile} />
@@ -55,6 +58,11 @@ function App() {
         <Route path="/temp_courses/:slug" element={<TempCoursesDetail />} />
         {/* Catch-all route for 404 */}
         <Route path="*" element={<PageNotFound />} />
+
+        <Route path="/Contact" element={<Contact/>} />
+        <Route path="/training" element={<Training />} />
+        
+
       </Routes>
       <Footer />
       </div>
@@ -64,3 +72,6 @@ function App() {
 }
 
 export default App;
+
+
+

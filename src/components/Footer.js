@@ -50,6 +50,12 @@ export default function Footer() {
             <li>
               <Link to="/resources" className="hover:text-blue-600">Resources</Link>
             </li>
+            <li>
+              <Link to="/training" className="hover:text-blue-600">Training</Link>
+            </li>
+            <li>
+              <Link to="/contact" className="hover:text-blue-600">Contact Us</Link>
+            </li>
             {/* <li>
               <Link to="https://chat.whatsapp.com/JjllfudxuUnCAhGk754toQ
 " className="hover:text-blue-600">WhatsApp community</Link>
