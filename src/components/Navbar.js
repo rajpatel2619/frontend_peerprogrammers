@@ -12,8 +12,8 @@ import {
   HiMenu,
   HiX,
 } from "react-icons/hi";
-import logo from "../assets/logo2.png";
-// import logo from "../assets/logo.png";
+// import logo from "../assets/logo2.png";
+ import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const navigate = useNavigate();
