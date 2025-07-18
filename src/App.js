@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import StudentPublicProfile from "./pages/StudentPublicProfile";
 import TeacherPublicProfile from "./pages/TeacherPublicProfile";
+//  import OtpVerification from './pages/OtpVerification'; 
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -23,7 +24,7 @@ import TempCourses from "./pages/temp_courses/TempCourses";
 import TempCoursesDetail from "./pages/temp_courses/TempCoursesDetail";
 import Contact from "./pages/contact";
 import Training from './pages/Training'
-// hellos
+import ChangePassword from "./pages/ChangePassword";
 function App() {
   return (
     <Router>
@@ -34,10 +35,10 @@ function App() {
         {/* Course and profiles details route */}
         <Route path="/" element={<Home />} />
         <Route path="/resources" element={<Resources />} />
-        
+        <Route path="/reset-password" element={<ChangePassword />} />
         <Route path="/courses/:courseId" element={<CourseDetails />} />
-        <Route path="/profiles/students/:studentId" element={StudentPublicProfile} />
-        <Route path="/profiles/teachers/:teacherId" element={TeacherPublicProfile} />
+        <Route path="/profiles/:userId" element={userPublicProfile} />
+        {/* <Route path="/profiles/teachers/:teacherId" element={TeacherPublicProfile} /> */}
         {/* Authentication routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -50,6 +51,8 @@ function App() {
         <Route path="/teacher/courses" element={<TeachingCourses />} />
         <Route path="/teacher/courses/new/individual" element={<CreateCourseIndividual />} />
         <Route path="/teacher/courses/edit/individual/:courseId" element={<CreateCourseIndividual />} />
+        {/* <Route path="/otp-verification" element={<OtpVerification />} /> */}
+
 
         {/* Home route */}
         <Route path="/CourseTabs" element={<CourseTabs />} />

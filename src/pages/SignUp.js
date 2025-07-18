@@ -50,7 +50,9 @@ export default function SignUp() {
         sessionStorage.setItem('token', data.token);
       }
 
-      navigate('/login');
+      // navigate('/login');
+      navigate('/otp-verification');
+
     } catch (err) {
       setError(err.message);
     }

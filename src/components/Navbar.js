@@ -83,6 +83,8 @@ export default function Navbar() {
           <button onClick={() => navigate("/resources")} className={iconTextBtn}>Resources</button>
           <button onClick={() => navigate("/training")} className={iconTextBtn}>Training</button>
           <button onClick={() => navigate("/contact")} className={iconTextBtn}>Contact Us</button>
+          <button onClick={() => navigate("/login")} className={iconTextBtn}>Login</button>
+
 
           {token && (
             <div className="relative" ref={dropdownRef}>
@@ -146,6 +148,9 @@ export default function Navbar() {
           </button>
           <button onClick={() => { navigate("/contact"); setMobileMenuOpen(false); }} className={iconTextBtn}>
             Contact Us
+          </button>
+          <button onClick={() => { navigate("/login"); setMobileMenuOpen(false); }} className={iconTextBtn}>
+            Login
           </button>
 
           {token && (
