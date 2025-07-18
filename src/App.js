@@ -1,9 +1,6 @@
 // src/App.js
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import StudentPublicProfile from "./pages/StudentPublicProfile";
-import TeacherPublicProfile from "./pages/TeacherPublicProfile";
-//  import OtpVerification from './pages/OtpVerification'; 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; 
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -25,6 +22,8 @@ import TempCoursesDetail from "./pages/temp_courses/TempCoursesDetail";
 import Contact from "./pages/contact";
 import Training from './pages/Training'
 import ChangePassword from "./pages/ChangePassword";
+import UserPublicProfile from "./pages/UserPublicProfile";
+import OtpVerification from "./pages/OtpVerification";
 function App() {
   return (
     <Router>
@@ -37,7 +36,7 @@ function App() {
         <Route path="/resources" element={<Resources />} />
         <Route path="/reset-password" element={<ChangePassword />} />
         <Route path="/courses/:courseId" element={<CourseDetails />} />
-        <Route path="/profiles/:userId" element={userPublicProfile} />
+        <Route path="/profiles/:userId" element={<UserPublicProfile />} />
         {/* <Route path="/profiles/teachers/:teacherId" element={TeacherPublicProfile} /> */}
         {/* Authentication routes */}
         <Route path="/login" element={<Login />} />
@@ -51,7 +50,7 @@ function App() {
         <Route path="/teacher/courses" element={<TeachingCourses />} />
         <Route path="/teacher/courses/new/individual" element={<CreateCourseIndividual />} />
         <Route path="/teacher/courses/edit/individual/:courseId" element={<CreateCourseIndividual />} />
-        {/* <Route path="/otp-verification" element={<OtpVerification />} /> */}
+        <Route path="/otp-verification" element={<OtpVerification />} />
 
 
         {/* Home route */}

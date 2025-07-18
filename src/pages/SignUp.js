@@ -29,26 +29,26 @@ export default function SignUp() {
     }
 
     try {
-      const response = await fetch(`${API}/signup`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          first_name,
-          last_name,
-          phone_number,
-          password,
-          repassword
-        }),
-      });
+      // const response = await fetch(`${API}/signup`, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     email,
+      //     first_name,
+      //     last_name,
+      //     phone_number,
+      //     password,
+      //     repassword
+      //   }),
+      // });
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.detail || 'Signup failed');
-      } else {
-        localStorage.setItem('token', data.token);
-        sessionStorage.setItem('token', data.token);
-      }
+      // const data = await response.json();
+      // if (!response.ok) {
+      //   throw new Error(data.detail || 'Signup failed');
+      // } else {
+      //   localStorage.setItem('token', data.token);
+      //   sessionStorage.setItem('token', data.token);
+      // }
 
       // navigate('/login');
       navigate('/otp-verification');
