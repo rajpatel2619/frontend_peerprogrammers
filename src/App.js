@@ -11,7 +11,9 @@ import Navbar from "./components/Navbar";
 import ForgotPassword from "./pages/ForgotPassword";
 import MyProfile from "./pages/MyProfile";
 import TeachingCourses from "./pages/teacher/TeachingCourses";
-import CourseDetails from "./pages/CourseDetails";
+// import CourseDetails from "./pages/CourseDetails";
+import CourseDetailPage from './pages/CourseDetailPage';
+
 import PageNotFound from "./pages/PageNotFound";
 import CourseTabs from "./components/home/CourseTabs";
 import CreateCourseIndividual from "./pages/teacher/CreateCourseIndividual";
@@ -20,7 +22,14 @@ import Footer from "./components/Footer";
 import TempCourses from "./pages/temp_courses/TempCourses";
 import TempCoursesDetail from "./pages/temp_courses/TempCoursesDetail";
 import Contact from "./pages/contact";
-import Training from './pages/Training'
+// import Training from './pages/Training'
+import Training from './components/Training';
+import InstructorModal from "./components/InstructorModal";
+
+
+import TeacherTab from "./components/TeacherTab";
+import StudentTab from "./components/StudentTab";
+
 import ChangePassword from "./pages/ChangePassword";
 import UserPublicProfile from "./pages/UserPublicProfile";
 import OtpVerification from "./pages/OtpVerification";
@@ -35,7 +44,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/reset-password" element={<ChangePassword />} />
-        <Route path="/courses/:courseId" element={<CourseDetails />} />
+        {/* <Route path="/courses/:courseId" element={<CourseDetails />} /> */}
+         <Route path="/course/:courseId" element={<CourseDetailPage />} />
         <Route path="/profiles/:userId" element={<UserPublicProfile />} />
         {/* <Route path="/profiles/teachers/:teacherId" element={TeacherPublicProfile} /> */}
         {/* Authentication routes */}
@@ -63,6 +73,9 @@ function App() {
 
         <Route path="/Contact" element={<Contact/>} />
         <Route path="/training" element={<Training />} />
+        <Route path="/instructor" element={<InstructorModal />} />
+        <Route path="/teacher" element={<TeacherTab />} />
+        <Route path="/student" element={<StudentTab />} />
         
 
       </Routes>
@@ -74,6 +87,5 @@ function App() {
 }
 
 export default App;
-
 
 
