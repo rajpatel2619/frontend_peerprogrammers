@@ -1,16 +1,5 @@
 import React from 'react';
-import {
-  X,
-  Award,
-  BookOpen,
-  Users,
-  Star,
-  Calendar,
-  MapPin,
-  Mail,
-  Linkedin,
-  Github,
-} from 'lucide-react';
+import { X, Award, BookOpen, Users, Star, Calendar, MapPin, Mail, Linkedin, Github } from 'lucide-react';
 
 const InstructorModal = ({ isOpen, onClose, instructor }) => {
   if (!isOpen) return null;
@@ -65,7 +54,9 @@ const InstructorModal = ({ isOpen, onClose, instructor }) => {
             </div>
             <div className="text-center p-4 bg-green-50 dark:bg-green-900/30 rounded-lg">
               <Users className="h-8 w-8 text-green-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-green-900 dark:text-green-100">{instructor.studentsCount.toLocaleString()}</div>
+              <div className="text-2xl font-bold text-green-900 dark:text-green-100">
+                {instructor.studentsCount.toLocaleString()}
+              </div>
               <div className="text-green-600 dark:text-green-300">Students Taught</div>
             </div>
             <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/30 rounded-lg">

@@ -12,7 +12,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import MyProfile from "./pages/MyProfile";
 import TeachingCourses from "./pages/teacher/TeachingCourses";
 // import CourseDetails from "./pages/CourseDetails";
-import CourseDetailPage from './pages/CourseDetailPage';
+// import CourseDetailPage from './pages/CourseDetailPage';
+import CourseDetailPage from "./pages/CourseDetailPage";
 
 import PageNotFound from "./pages/PageNotFound";
 import CourseTabs from "./components/home/CourseTabs";
@@ -76,8 +77,8 @@ function App() {
         <Route path="/instructor" element={<InstructorModal />} />
         <Route path="/teacher" element={<TeacherTab />} />
         <Route path="/student" element={<StudentTab />} />
-        
 
+        <Route path="/course/:courseId" element={<CourseDetailPage />} />
       </Routes>
       <Footer />
       </div>
