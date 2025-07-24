@@ -4,12 +4,8 @@ import CTASection from '../components/home/CTASection';
 
 
 import FAQs from '../components/home/FAQs';
-import Features from '../components/Features';
-
-
 
 import Features from '../components/Features';
-
 
 
 const HomePage = () => { // Note: Capitalized component name
@@ -22,12 +18,6 @@ const HomePage = () => { // Note: Capitalized component name
       {/* <CourseCard /> */}
       {/* <CourseTabs /> */}
       <FAQs />
-
-      <Features/>
-      {/* <CTASection /> */}
-      {/* <CourseCard /> */}
-      {/* <CourseTabs /> */}
-      
 
 
       <Features/>
