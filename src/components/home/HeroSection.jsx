@@ -27,7 +27,7 @@ const Hero: React.FC = () => {
             <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
               Join our collaborative learning platform where aspiring developers learn together, share
               knowledge, and build amazing projects. Start your coding journey today with expert-led
-              courses and peer support.
+              courses and peer supports.
             </p>
 
             {/* CTA Buttons */}
