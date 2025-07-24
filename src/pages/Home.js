@@ -8,8 +8,6 @@ import Features from '../components/Features';
 
 
 
-import Features from '../components/Features';
-
 
 
 const HomePage = () => { // Note: Capitalized component name
