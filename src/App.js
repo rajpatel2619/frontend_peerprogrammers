@@ -1,8 +1,6 @@
 // src/App.js
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import StudentPublicProfile from "./pages/StudentPublicProfile";
-import TeacherPublicProfile from "./pages/TeacherPublicProfile";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; 
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -21,7 +19,11 @@ import Resources from "./pages/Resources";
 import Footer from "./components/Footer";
 import TempCourses from "./pages/temp_courses/TempCourses";
 import TempCoursesDetail from "./pages/temp_courses/TempCoursesDetail";
-
+import Contact from "./pages/contact";
+import Training from './pages/Training'
+import ChangePassword from "./pages/ChangePassword";
+import UserPublicProfile from "./pages/UserPublicProfile";
+import OtpVerification from "./pages/OtpVerification";
 function App() {
   return (
     <Router>
@@ -32,9 +34,10 @@ function App() {
         {/* Course and profiles details route */}
         <Route path="/" element={<Home />} />
         <Route path="/resources" element={<Resources />} />
+        <Route path="/reset-password" element={<ChangePassword />} />
         <Route path="/courses/:courseId" element={<CourseDetails />} />
-        <Route path="/profiles/students/:studentId" element={StudentPublicProfile} />
-        <Route path="/profiles/teachers/:teacherId" element={TeacherPublicProfile} />
+        <Route path="/profiles/:userId" element={<UserPublicProfile />} />
+        {/* <Route path="/profiles/teachers/:teacherId" element={TeacherPublicProfile} /> */}
         {/* Authentication routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -47,6 +50,8 @@ function App() {
         <Route path="/teacher/courses" element={<TeachingCourses />} />
         <Route path="/teacher/courses/new/individual" element={<CreateCourseIndividual />} />
         <Route path="/teacher/courses/edit/individual/:courseId" element={<CreateCourseIndividual />} />
+        <Route path="/otp-verification" element={<OtpVerification />} />
+
 
         {/* Home route */}
         <Route path="/CourseTabs" element={<CourseTabs />} />
@@ -55,6 +60,11 @@ function App() {
         <Route path="/temp_courses/:slug" element={<TempCoursesDetail />} />
         {/* Catch-all route for 404 */}
         <Route path="*" element={<PageNotFound />} />
+
+        <Route path="/Contact" element={<Contact/>} />
+        <Route path="/training" element={<Training />} />
+        
+
       </Routes>
       <Footer />
       </div>
@@ -64,3 +74,6 @@ function App() {
 }
 
 export default App;
+
+
+
