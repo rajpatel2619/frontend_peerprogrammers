@@ -58,7 +58,7 @@ const Hero: React.FC = () => {
               <div className="absolute -top-4 -left-4 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
                 <div className="flex items-center space-x-3">
                   <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Live Coding Session</span>
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Live Coding Sessions</span>
                 </div>
               </div>
             </div>
