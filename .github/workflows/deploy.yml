@@ -36,7 +36,7 @@ jobs:
           fi
 
           ssh vps "
-            set -e  # Exit if any command fails
+            set -e
             cd $TARGET_DIR
 
             echo 'Fetching latest code...'
@@ -49,13 +49,10 @@ jobs:
             echo 'Building React app...'
             npm run build
 
-            echo 'Restarting application...'
-            # Restart app with PM2 (or start if not running)
-            if pm2 list | grep -q 'frontend-app'; then
-              pm2 restart frontend-app
-            else
-              pm2 start npm --name 'frontend-app' -- start
-            fi
+            echo 'Deploying build files to Nginx directory...'
+            # Adjust this path if your Nginx serves from a different folder
+            rm -rf /var/www/html/*
+            cp -r build/* /var/www/html/
 
             echo 'Deployment completed successfully.'
           "
