@@ -27,7 +27,7 @@ jobs:
             StrictHostKeyChecking no
           EOL
 
-      - name: Deploy and Build on VPS
+      - name: Deploy to VPS
         run: |
           if [[ "${GITHUB_REF_NAME}" == "develop" ]]; then
             TARGET_DIR="/var/www/peerprogrammers/developement/frontend_peerprogrammers"
@@ -36,23 +36,10 @@ jobs:
           fi
 
           ssh vps "
-            set -e
-            cd $TARGET_DIR
-
-            echo 'Fetching latest code...'
-            git fetch origin
-            git reset --hard origin/${GITHUB_REF_NAME}
-
-            echo 'Installing dependencies...'
-            npm ci --legacy-peer-deps
-
-            echo 'Building React app...'
-            npm run build
-
-            echo 'Deploying build files to Nginx directory...'
-            # Adjust this path if your Nginx serves from a different folder
-            rm -rf /var/www/html/*
-            cp -r build/* /var/www/html/
-
-            echo 'Deployment completed successfully.'
+            cd $TARGET_DIR && \
+            git fetch origin && \
+            git reset --hard origin/${GITHUB_REF_NAME} && \
+            npm install && \
+            npm run build && \
+            pm2 restart all || true
           "
