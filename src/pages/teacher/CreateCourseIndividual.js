@@ -1,379 +1,244 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
-import Sidebar from "./components/TeacherSidebar";
 
 const API = process.env.REACT_APP_API;
 
-export default function CreateCourseIndividual() {
+export default function CreateCoursePage() {
+  const navigate = useNavigate();
   const { courseId } = useParams();
-  const isEditMode = Boolean(courseId);
 
   const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
-  const [mode, setMode] = useState("live");
+  const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [domains, setDomains] = useState([]);
-  const [domainOptions, setDomainOptions] = useState([]);
-  const [syllabusFile, setSyllabusFile] = useState("");
-  const [coverPhoto, setCoverPhoto] = useState("");
-  const [description, setDescription] = useState("");
-  const [dailyMeetingLink, setDailyMeetingLink] = useState("");
-  const [lectureLink, setLectureLink] = useState("");
-
-  const [basicSeats, setBasicSeats] = useState("");
-  const [basicPrice, setBasicPrice] = useState("");
-  const [basicWhatsapp, setBasicWhatsapp] = useState("");
-  const [premiumSeats, setPremiumSeats] = useState("");
-  const [premiumPrice, setPremiumPrice] = useState("");
-  const [premiumWhatsapp, setPremiumWhatsapp] = useState("");
-  const [ultraSeats, setUltraSeats] = useState("");
-  const [ultraPrice, setUltraPrice] = useState("");
-  const [ultraWhatsapp, setUltraWhatsapp] = useState("");
-
-  const [allUsers, setAllUsers] = useState([]);
+  const [mode, setMode] = useState("recorded");
   const [selectedCoMentors, setSelectedCoMentors] = useState([]);
+  const [coMentorOptions, setCoMentorOptions] = useState([]);
+  const [selectedDomains, setSelectedDomains] = useState([]);
+  const [domainOptions, setDomainOptions] = useState([]);
+  const [lectureLink, setLectureLink] = useState("");
+  const [coverPhoto, setCoverPhoto] = useState(null);
+  const [syllabusFile, setSyllabusFile] = useState(null);
+  const [price, setPrice] = useState("");
+  const [basicSeats, setBasicSeats] = useState("");
+  const [basicWhatsapp, setBasicWhatsapp] = useState("");
+  const [courseData, setCourseData] = useState(null);
 
-  const navigate = useNavigate();
+  const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
+  const user = stored ? JSON.parse(stored) : null;
+  const userId = user?.id;
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
-  // Fetch course if in edit mode
+  // Load user options
   useEffect(() => {
-    if (isEditMode) {
-      const token = localStorage.getItem("token") || sessionStorage.getItem("user");
-      fetch(`${API}/courses/${courseId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    fetch(`${API}/all_users`)
+      .then((res) => res.json())
+      .then((data) => {
+        const options = data.users.map((user) => ({
+          value: user.id,
+          label: user.name || user.username,
+        }));
+        setCoMentorOptions(options);
       })
-        .then((res) => res.json())
-        .then((data) => {
-          setTitle(data.title || "");
-          setMode(data.mode || "live");
-          setStartDate(data.start_date || "");
-          setEndDate(data.end_date || "");
-          setDomains(data.domains || []);
-          setDescription(data.description || "");
-          setSyllabusFile(data.syllabusFile || "");
-          setCoverPhoto(data.coverPhoto || "");
+      .catch((err) => console.error("Failed to fetch users:", err));
+  }, []);
 
-          if (data.mode === "recorded") {
-            setPrice(data.price || "");
-            setLectureLink(data.lecture_link || "");
-          } else {
-            setDailyMeetingLink(data.daily_meeting_link || "");
-            setBasicSeats(data.basic_plan?.seats || "");
-            setBasicPrice(data.basic_plan?.price || "");
-            setBasicWhatsapp(data.basic_plan?.whatsapp || "");
-            setPremiumSeats(data.premium_plan?.seats || "");
-            setPremiumPrice(data.premium_plan?.price || "");
-            setPremiumWhatsapp(data.premium_plan?.whatsapp || "");
-            setUltraSeats(data.ultra_plan?.seats || "");
-            setUltraPrice(data.ultra_plan?.price || "");
-            setUltraWhatsapp(data.ultra_plan?.whatsapp || "");
-          }
-
-          // Load co-mentors from creator_ids
-          if (data.creator_ids?.length && allUsers.length) {
-            const matched = allUsers.filter((u) =>
-              data.creator_ids.includes(u.value)
-            );
-            setSelectedCoMentors(matched);
-          }
-        })
-        .catch((err) => console.error("Failed to fetch course:", err));
-    }
-  }, [courseId, allUsers]);
-
-  // Fetch domain options
+  // Load domain options
   useEffect(() => {
     fetch(`${API}/all-domain-tags`)
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
-        const formattedOptions = data.tags.map((tag) => ({
+        const options = data.tags.map((tag) => ({
           value: tag.id,
           label: tag.name,
         }));
-        setDomainOptions(formattedOptions);
+        setDomainOptions(options);
       })
-      .catch((err) => console.error("Error loading domains", err));
+      .catch((err) => console.error("Failed to fetch domains:", err));
   }, []);
 
-  // Fetch all users for co-mentor options
   useEffect(() => {
-    const token = localStorage.getItem("token") || sessionStorage.getItem("user");
-
-    fetch(`${API}/all_users`, {
+    // Only fetch course detail in edit mode
+    if (!courseId || !userId) return;
+  
+    fetch(`${API}/course-detail/${userId}/${courseId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        const formatted = data.users.map((user) => ({
-          value: user.id,
-          label: user.name + " (" + user.email + ")",
-        }));
-        setAllUsers(formatted);
+        if (data.success) {
+          console.log(data)
+          setCourseData(data.course);
+        } else {
+          console.error("Failed to load course:", data.detail);
+        }
       })
-      .catch((err) => console.error("Error fetching users", err));
-  }, []);
+      .catch((err) => console.error("Failed to fetch course detail:", err));
+  }, [courseId, userId]);
+  
 
-  const handleDomainSelect = (e) => {
-    const selectedValues = Array.from(e.target.selectedOptions, (option) => option.value);
-    setDomains(selectedValues);
-  };
 
-  const handleSubmit = async () => {
-    const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
-    const user = stored ? JSON.parse(stored) : null;
-    const userId = user?.id;
+  // Apply course data after options are available
+  useEffect(() => {
+    if (!courseData || coMentorOptions.length === 0 || domainOptions.length === 0) return;
 
-    if (!userId) {
-      alert("User not logged in");
-      return;
+    setTitle(courseData.title || "");
+    setDescription(courseData.description || "");
+    setStartDate(courseData.start_date || "");
+    setEndDate(courseData.end_date || "");
+    setMode(courseData.mode || "recorded");
+    setLectureLink(courseData.lecture_link || "");
+    setBasicSeats(courseData.seats || "");
+    setBasicWhatsapp(courseData.chatLink || "");
+    setPrice(courseData.price || "");
+
+    if (courseData.co_mentors) {
+      const coMentorIds = courseData.co_mentors.split(",").map((id) => parseInt(id));
+      setSelectedCoMentors(
+        coMentorOptions.filter((opt) => coMentorIds.includes(opt.value))
+      );
     }
 
-    const parsedCreatorIds = selectedCoMentors.map((c) => c.value);
+    if (courseData.domains) {
+      setSelectedDomains(
+        domainOptions.filter((opt) => courseData.domain_ids.includes(opt.value))
+      );
+    }
+  }, [courseData, coMentorOptions, domainOptions]);
 
-    const courseDetails = {
-      userId,
-      title,
-      mode,
-      start_date: startDate,
-      end_date: endDate,
-      domains,
-      creator_ids: parsedCreatorIds,
-      description,
-      syllabusFile,
-      coverPhoto,
-      ...(mode === "recorded"
-        ? { price, lecture_link: lectureLink }
-        : {
-          daily_meeting_link: dailyMeetingLink,
-          basic_plan: {
-            seats: basicSeats,
-            price: basicPrice,
-            whatsapp: basicWhatsapp,
-          },
-          premium_plan: {
-            seats: premiumSeats,
-            price: premiumPrice,
-            whatsapp: premiumWhatsapp,
-          },
-          ultra_plan: {
-            seats: ultraSeats,
-            price: ultraPrice,
-            whatsapp: ultraWhatsapp,
-          },
-        }),
-    };
-
-    console.log(courseDetails)
-
+  const handleSubmit = async () => {
+    if (!userId) return alert("User not logged in");
+  
+    const creatorIds = selectedCoMentors.map((c) => c.value);
+    const domainIds = selectedDomains.map((d) => d.value);
+  
+    const isEditMode = !!courseId;
+  
+    const url = isEditMode
+      ? `${API}/update-course/${userId}/${courseId}`
+      : `${API}/create-course`;
+    const method = isEditMode ? "PUT" : "POST";
+  
     try {
-      const token =
-        localStorage.getItem("token") || sessionStorage.getItem("token");
-      if (!token) throw new Error("No token found");
-
-      const url = isEditMode
-        ? `${API}/update-course/${userId}/${courseId}`
-        : `${API}/create-course`;
-
-      const method = isEditMode ? "PUT" : "POST";
-
-      const res = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(courseDetails),
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || "Failed to save course");
+      let response;
+  
+      if (isEditMode) {
+        // --- UPDATE Mode ---
+        const payload = {
+          userId,
+          title,
+          mode,
+          start_date: startDate || null,
+          end_date: endDate || null,
+          description: description || "",
+          lecture_link: lectureLink || null,
+          price: parseFloat(price) || 0,
+          seats: parseInt(basicSeats) || 0,
+          chatLink: basicWhatsapp || "",
+          co_mentors: creatorIds.filter((id) => id !== userId).join(","),
+          creator_ids: creatorIds,
+          domain_ids: domainIds,
+          syllabus_link: "", // optionally update or keep as is
+          syllausContent: "",
+        };
+  
+        const formData = new FormData();
+        formData.append("payload", JSON.stringify(payload));
+        if (coverPhoto) formData.append("cover_photo", coverPhoto);
+        if (syllabusFile) formData.append("syllabus_file", syllabusFile);
+  
+        response = await fetch(url, {
+          method,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+      } else {
+        // --- CREATE Mode ---
+        const formData = new FormData();
+        formData.append("userId", userId);
+        formData.append("title", title);
+        formData.append("mode", mode);
+        formData.append("start_date", startDate || "");
+        formData.append("end_date", endDate || "");
+        formData.append("description", description || "");
+        formData.append("lecture_link", lectureLink || "");
+        formData.append("syllabus_content", "");
+        formData.append("price", price || 0);
+        formData.append("is_published", true);
+        formData.append("is_extra_registration", false);
+        formData.append("seats", parseInt(basicSeats) || 0);
+        formData.append("chat_link", basicWhatsapp);
+        formData.append("co_mentor_ids", creatorIds.join(","));
+        formData.append("creator_ids", creatorIds.join(","));
+        formData.append("domain_ids", domainIds.join(","));
+        formData.append("cover_photo", coverPhoto);
+        formData.append("syllabus_file", syllabusFile);
+  
+        response = await fetch(url, {
+          method,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
       }
-
-      const result = await res.json();
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Failed to submit course.");
+      }
+  
+      const result = await response.json();
       console.log("Success:", result);
       navigate("/teacher/courses");
     } catch (err) {
-      console.error("Error submitting form:", err.message);
+      console.error("Submit error:", err.message);
       alert("Error: " + err.message);
     }
   };
-
+  
   return (
-    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
-      <Sidebar onNavigate={(path) => navigate(path)} />
-      <div className="flex-1 p-10 w-full space-y-6 text-gray-800 dark:text-white">
-        <h1 className="text-3xl font-bold">
-          {isEditMode ? "Edit Course" : "Create New Course - For Individuals"}
-        </h1>
+    <div className="p-4 max-w-2xl mx-auto">
+      <h1 className="text-xl font-semibold mb-4">{courseId ? "Edit" : "Create"} Course</h1>
 
-        <div className="space-y-4 bg-white dark:bg-gray-800 p-6 rounded shadow">
-          {/* Title */}
-          <div>
-            <label className="block mb-1 font-medium">Course Title</label>
-            <input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-2 rounded border dark:bg-gray-700"
-              placeholder="Enter course title"
-            />
-          </div>
+      <input type="text" placeholder="Course Title" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full mb-2 p-2 border rounded" />
 
-          {/* Mode */}
-          <div>
-            <label className="block mb-1 font-medium">Mode</label>
-            <select
-              disabled={isEditMode}
-              value={mode}
-              onChange={(e) => setMode(e.target.value)}
-              className="w-full px-4 py-2 rounded border dark:bg-gray-700"
-            >
-              <option value="live">Live</option>
-              <option value="recorded">Recorded</option>
-            </select>
-          </div>
+      <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full mb-2 p-2 border rounded" />
 
-          {/* Pricing Section */}
-          {mode === "recorded" ? (
-            <>
-              <div>
-                <label className="block mb-1 font-medium">Price (₹)</label>
-                <input
-                  type="number"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  className="w-full px-4 py-2 rounded border dark:bg-gray-700"
-                />
-              </div>
-              <div>
-                <label className="block mb-1 font-medium">Lecture Link</label>
-                <input
-                  type="url"
-                  value={lectureLink}
-                  onChange={(e) => setLectureLink(e.target.value)}
-                  className="w-full px-4 py-2 rounded border dark:bg-gray-700"
-                />
-              </div>
-            </>
-          ) : (
-            <>
-              {/* Live Plan Details */}
-              <div>
-                <label className="block mb-2 font-bold text-lg">Pricing Details</label>
-                <div className="space-y-4 border rounded p-4 dark:border-gray-700">
-                  {/* Basic */}
-                  <div>
-                    <label className="block mb-1 font-medium">Basic Plan</label>
-                    <div className="flex gap-4 mb-2">
-                      <input type="number" value={basicSeats} onChange={(e) => setBasicSeats(e.target.value)} placeholder="Seats" className="w-1/3 px-4 py-2 rounded border dark:bg-gray-700" />
-                      <input type="number" value={basicPrice} onChange={(e) => setBasicPrice(e.target.value)} placeholder="Price per seat" className="w-1/3 px-4 py-2 rounded border dark:bg-gray-700" />
-                      <input type="url" value={basicWhatsapp} onChange={(e) => setBasicWhatsapp(e.target.value)} placeholder="WhatsApp Link" className="w-1/3 px-4 py-2 rounded border dark:bg-gray-700" />
-                    </div>
-                  </div>
+      <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="w-full mb-2 p-2 border rounded" />
+      <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="w-full mb-2 p-2 border rounded" />
 
-                  {/* Premium */}
-                  <div>
-                    <label className="block mb-1 font-medium">Premium Plan</label>
-                    <div className="flex gap-4 mb-2">
-                      <input type="number" value={premiumSeats} onChange={(e) => setPremiumSeats(e.target.value)} placeholder="Seats" className="w-1/3 px-4 py-2 rounded border dark:bg-gray-700" />
-                      <input type="number" value={premiumPrice} onChange={(e) => setPremiumPrice(e.target.value)} placeholder="Price per seat" className="w-1/3 px-4 py-2 rounded border dark:bg-gray-700" />
-                      <input type="url" value={premiumWhatsapp} onChange={(e) => setPremiumWhatsapp(e.target.value)} placeholder="WhatsApp Link" className="w-1/3 px-4 py-2 rounded border dark:bg-gray-700" />
-                    </div>
-                  </div>
+      <select value={mode} onChange={(e) => setMode(e.target.value)} className="w-full mb-2 p-2 border rounded">
+        <option value="recorded">Recorded</option>
+        <option value="live">Live</option>
+      </select>
 
-                  {/* Ultra */}
-                  <div>
-                    <label className="block mb-1 font-medium">Ultra Premium Plan</label>
-                    <div className="flex gap-4">
-                      <input type="number" value={ultraSeats} onChange={(e) => setUltraSeats(e.target.value)} placeholder="Seats" className="w-1/3 px-4 py-2 rounded border dark:bg-gray-700" />
-                      <input type="number" value={ultraPrice} onChange={(e) => setUltraPrice(e.target.value)} placeholder="Price per seat" className="w-1/3 px-4 py-2 rounded border dark:bg-gray-700" />
-                      <input type="url" value={ultraWhatsapp} onChange={(e) => setUltraWhatsapp(e.target.value)} placeholder="WhatsApp Link" className="w-1/3 px-4 py-2 rounded border dark:bg-gray-700" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <input type="text" placeholder="Lecture Link" value={lectureLink} onChange={(e) => setLectureLink(e.target.value)} className="w-full mb-2 p-2 border rounded" />
 
-              <div>
-                <label className="block mb-1 font-medium">Daily Meeting Link</label>
-                <input type="url" value={dailyMeetingLink} onChange={(e) => setDailyMeetingLink(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-700" />
-              </div>
-            </>
-          )}
+      <label className="block mb-1 font-medium">Cover Photo:</label>
+      <input type="file" accept="image/*" onChange={(e) => setCoverPhoto(e.target.files[0])} className="w-full mb-2" />
 
-          {/* Dates */}
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <label className="block mb-1 font-medium">Start Date</label>
-              <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-700" />
-            </div>
-            <div className="flex-1">
-              <label className="block mb-1 font-medium">End Date</label>
-              <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="w-full px-4 py-2 rounded border dark:bg-gray-700" />
-            </div>
-          </div>
+      <label className="block mb-1 font-medium">Syllabus File (PDF):</label>
+      <input type="file" accept="application/pdf" onChange={(e) => setSyllabusFile(e.target.files[0])} className="w-full mb-2" />
 
-          {/* Domains */}
-          <div>
-            <label className="block mb-1 font-medium">Domains</label>
-            <Select
-              isMulti
-              value={domainOptions.filter((option) => domains.includes(option.value))}
-              onChange={(selectedOptions) => {
-                const values = selectedOptions.map((option) => option.value);
-                setDomains(values);
-              }}
-              options={domainOptions}
-              placeholder="Search and select domains"
-              className="text-black"
-            />
-          </div>
+      <input type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} className="w-full mb-2 p-2 border rounded" />
+      <input type="number" placeholder="Seats" value={basicSeats} onChange={(e) => setBasicSeats(e.target.value)} className="w-full mb-2 p-2 border rounded" />
+      <input type="text" placeholder="WhatsApp Link" value={basicWhatsapp} onChange={(e) => setBasicWhatsapp(e.target.value)} className="w-full mb-2 p-2 border rounded" />
 
+      <label className="block mb-1 font-medium">Select Co-Mentors:</label>
+      <Select isMulti options={coMentorOptions} value={selectedCoMentors} onChange={setSelectedCoMentors} className="mb-4" />
 
-          {/* Files */}
-          <div>
-            <label className="block mb-1 font-medium">Upload Syllabus PDF</label>
-            <input type="file" accept="application/pdf" onChange={(e) => setSyllabusFile(e.target.files[0])} className="w-full dark:bg-gray-700" />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">Upload Cover Photo</label>
-            <input type="file" accept="image/*" onChange={(e) => setCoverPhoto(e.target.files[0])} className="w-full dark:bg-gray-700" />
-          </div>
+      <label className="block mb-1 font-medium">Select Domains:</label>
+      <Select isMulti options={domainOptions} value={selectedDomains} onChange={setSelectedDomains} className="mb-4" />
 
-          {/* Description */}
-          <div>
-            <label className="block mb-1 font-medium">Course Description</label>
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} placeholder="Enter course description" className="w-full px-4 py-2 rounded border dark:bg-gray-700" />
-          </div>
-
-          {/* Co-Mentors */}
-          <div>
-            <label className="block mb-1 font-medium">Add Co-Mentors (Searchable)</label>
-            <Select
-              isMulti
-              value={selectedCoMentors}
-              onChange={setSelectedCoMentors}
-              options={allUsers}
-              placeholder="Search and select co-mentors"
-              className="text-black"
-            />
-          </div>
-
-          {/* Submit */}
-          <div className="flex justify-end mt-6">
-            <button onClick={handleSubmit} className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
-              {isEditMode ? "Update Course" : "Submit"}
-            </button>
-          </div>
-        </div>
-      </div>
+      <button onClick={handleSubmit} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        {courseId ? "Update" : "Submit"} Course
+      </button>
     </div>
   );
 }
