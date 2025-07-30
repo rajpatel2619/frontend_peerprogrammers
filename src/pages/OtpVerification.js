@@ -1,13 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+const API = process.env.REACT_APP_API;
 
 export default function OtpVerification() {
   const [otp, setOtp] = useState('');
+  const [email, setEmail] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const storedEmail = sessionStorage.getItem('tempUserEmail');
+    if (!storedEmail) {
+      setError("Session expired or email not found. Please sign up again.");
+    } else {
+      setEmail(storedEmail);
+    }
+  }, []);
+
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
 
     if (otp.length !== 6) {
       setError("OTP must be 6 digits.");
@@ -15,14 +28,47 @@ export default function OtpVerification() {
     }
 
     try {
-      // Add your API call here for OTP verification
-      // Example:
-      // const res = await fetch(`${API}/verify-otp`, { ... })
+      const response = await fetch(`${API}/verify-otp`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          otp,
+        }),
+      });
 
-      // Dummy success redirect
-      navigate('/student-dashboard');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || "OTP verification failed");
+      }
+
+      console.log(data);
+
+      const user = data.user;
+
+      // Cleanup temp storage
+      sessionStorage.removeItem("tempUserEmail");
+      sessionStorage.removeItem("tempUserId");
+
+      // Store user info if needed
+      sessionStorage.setItem("userId", user.id);
+      sessionStorage.setItem("username", user.username);
+      sessionStorage.setItem("preferredAccount", user.preferredAccount);
+
+      // Navigate based on preferred account type
+      if (user.preferredAccount == 'teacher') {
+        navigate('/teacher/dashboard');
+      } else if (user.preferredAccount == 'student') {
+        navigate('/student/dashboard');
+      } else {
+        setError("Unknown account type. Contact support.");
+      }
+
     } catch (err) {
-      setError("Invalid OTP. Please try again.");
+      setError(err.message);
     }
   };
 

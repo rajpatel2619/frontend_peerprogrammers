@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 const API = process.env.REACT_APP_API;
 
 export default function SignUp() {
@@ -9,6 +10,7 @@ export default function SignUp() {
   const [phone_number, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [repassword, setRepassword] = useState('');
+  const [accountType, setAccountType] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -28,29 +30,35 @@ export default function SignUp() {
       return;
     }
 
+    if (!accountType) {
+      setError("Please select an account type.");
+      return;
+    }
+
     try {
-      // const response = await fetch(`${API}/signup`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     email,
-      //     first_name,
-      //     last_name,
-      //     phone_number,
-      //     password,
-      //     repassword
-      //   }),
-      // });
+      const response = await fetch(`${API}/temp-signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          first_name,
+          last_name,
+          phone_number,
+          password,
+          repassword,
+          accountType
+        }),
+      });
 
-      // const data = await response.json();
-      // if (!response.ok) {
-      //   throw new Error(data.detail || 'Signup failed');
-      // } else {
-      //   localStorage.setItem('token', data.token);
-      //   sessionStorage.setItem('token', data.token);
-      // }
+      const data = await response.json();
 
-      // navigate('/login');
+      if (!response.ok) {
+        throw new Error(data.detail || 'Signup failed');
+      }
+
+      sessionStorage.setItem("tempUserEmail", data.user.email);
+      sessionStorage.setItem("tempUserId", data.userId);
+
       navigate('/otp-verification');
 
     } catch (err) {
@@ -106,6 +114,20 @@ export default function SignUp() {
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Re-enter Password</label>
               <input type="password" value={repassword} onChange={(e) => setRepassword(e.target.value)} required className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Prefered Account</label>
+              <select
+                value={accountType}
+                onChange={(e) => setAccountType(e.target.value)}
+                required
+                className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+              >
+                <option >select preferred account</option>
+                <option value="student">Student</option>
+                <option value="teacher">Mentor</option>
+              </select>
             </div>
 
             <button type="submit" className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium shadow">Sign Up</button>
