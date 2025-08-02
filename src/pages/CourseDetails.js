@@ -1,354 +1,313 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { FaLinkedin, FaGlobe } from "react-icons/fa";
+import { useParams, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom"; 
 
-const API = process.env.REACT_APP_API; // e.g. Vite/CRA env
+const API = process.env.REACT_APP_API;
 
 const CourseDetails = () => {
   const { courseId } = useParams();
+  const navigate = useNavigate();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   const fetchCourses = async () => {
-  //     try {
-  //       const res = await fetch(`${API}/all-courses`);
-  //       const data = await res.json();
-  //       const allCourses = data.courses || [];
-  //       const selected = allCourses.find(
-  //         (c) => String(c.id) === String(courseId)
-  //       );
-  //       setCourse(selected);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.error(error);
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchCourses();
-  // }, [courseId]);
+  const [userRole, setUserRole] = useState("");
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-  const fetchCourses = async () => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchCourseDetails = async () => {
+      try {
+        const res = await fetch(`${API}/courses/${courseId}`);
+        const data = await res.json();
+        if (!data?.id) throw new Error("Course not found.");
+        setCourse(data);
+      } catch (err) {
+        console.error("Failed to fetch course details:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourseDetails();
+  }, [courseId]);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (!user?.id || !courseId) {
+        console.warn("Missing user or courseId:", { userId: user?.id, courseId });
+        return;
+      }
+  
+      try {
+        const query = new URLSearchParams({
+          user_id: String(user.id),
+          course_id: String(courseId),
+        }).toString();
+  
+        const url = `${API}/registrations/role-in-course?${query}`;
+        console.log("🔍 Fetching role from:", url);
+  
+        const res = await fetch(url);
+        if (!res.ok) {
+          const errMsg = await res.text();
+          console.error("❌ API returned error:", res.status, errMsg);
+          return;
+        }
+  
+        const data = await res.json();
+        setUserRole(data.role || "none");
+      } catch (err) {
+        console.error("Failed to fetch user role:", err);
+      }
+    };
+  
+    fetchUserRole();
+  }, [user, courseId]);
+  
+
+  useEffect(() => {
+    if (userRole) {
+      console.log("✅ Updated role:", userRole);
+    }
+  }, [userRole]);
+  
+  
+
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) return resolve(true);
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handleRegister = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    if (userRole !== "none") return;
+
+    const loaded = await loadRazorpayScript();
+    if (!loaded) {
+      alert("Failed to load Razorpay SDK.");
+      return;
+    }
+
     try {
-      const res = await fetch('/course_sample.json'); // relative to public/
+      const query = new URLSearchParams({
+        user_id: user.id,
+        course_id: courseId,
+        amount: course.price,
+      }).toString();
+
+      const res = await fetch(`${API}/registrations/create-order?${query}`, {
+        method: "POST",
+      });
       const data = await res.json();
-      const allCourses = data || []; // assuming the file is an array
-      const selected = allCourses
-      console.log("Selected course:", selected);
-      setCourse(selected);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error loading local courses:", error);
-      setLoading(false);
+      if (!res.ok) throw new Error(data.detail || "Order creation failed");
+
+      const options = {
+        key: "rzp_test_RwT9P8i7ondJMg",
+        amount: data.amount,
+        currency: data.currency,
+        name: course.title,
+        description: "Course Enrollment",
+        order_id: data.order_id,
+        handler: async function (response) {
+          const verifyQuery = new URLSearchParams({
+            user_id: user.id,
+            course_id: courseId,
+            transaction_id: response.razorpay_payment_id,
+            order_id: response.razorpay_order_id,
+            signature: response.razorpay_signature,
+            fee: course.price,
+            email: user.email || "",
+            contact: user.phone || "",
+            payment_method: "razorpay",
+          }).toString();
+
+          const verifyRes = await fetch(`${API}/registrations/verify?${verifyQuery}`, {
+            method: "POST",
+          });
+
+          const verifyData = await verifyRes.json();
+          console.log("✅ Payment Verified:", verifyData);
+          setUserRole("student");
+        },
+        prefill: {
+          name: user.name || "Student",
+          email: user.email || "student@example.com",
+        },
+        theme: { color: "#2563eb" },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error("Payment error:", err.message || err);
     }
   };
 
-  fetchCourses();
-}, [courseId]);
+  if (loading)
+    return <div className="text-center py-10 text-gray-800">Loading...</div>;
 
+  if (!course)
+    return (
+      <div className="text-center py-10 text-red-600">Course not found.</div>
+    );
 
-  if (loading) return <div className="text-gray-900 dark:text-white p-10">Loading...</div>;
-  if (!course) return <div className="text-gray-900 dark:text-white p-10">Course not found.</div>;
+  const getRegisterButtonText = () => {
+    if (!user) return "Login to Register";
+    if (userRole === "creator") return "Creator";
+    if (userRole === "mentor") return "Mentor";
+    if (userRole === "student") return "Already Registered";
+    return "Register Now";
+  };
 
-  // Instructors as array
-  let instructors = [];
-  if (Array.isArray(course.creator_ids)) {
-    instructors = course.creator_ids;
-  } else if (course.creator_ids) {
-    instructors = [course.creator_ids];
-  }
-
-  // Plans
-  const plans = ["basic_plan", "premium_plan", "ultra_plan"]
-    .map((planKey) => ({
-      name: planKey.replace("_", " "),
-      ...course[planKey],
-    }))
-    .filter((p) => p.price);
+  const isRegisterDisabled = () => {
+    return !user || userRole !== "none";
+  };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12 text-gray-900 dark:text-white space-y-10">
-      {/* TITLE + DESCRIPTION */}
-      <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl space-y-3 border border-gray-200 dark:border-neutral-700">
-        <div className="flex flex-wrap gap-2 mb-2">
-          {course.domains?.map((tag, i) => (
-            <span
-              key={i}
-              className="text-xs px-3 py-1 rounded-full bg-blue-600 text-white"
-            >
-              {typeof tag === "object" ? tag.name : tag}
-            </span>
-          ))}
-        </div>
-        <h1 className="text-4xl font-bold">{course.title}</h1>
-        <p className="text-gray-600 dark:text-neutral-300">{course.description}</p>
+    <div className="max-w-6xl mx-auto px-6 pb-24 pt-10 text-gray-900 dark:text-white">
+      {/* Cover Photo and Title */}
+      <div className="relative w-full h-64 sm:h-80 md:h-[400px] overflow-hidden rounded-xl mb-8">
+        <img
+          src={course.cover_photo}
+          alt="Course Cover"
+          className="w-full h-full object-cover"
+        />
+        <h1 className="absolute bottom-4 left-6 text-3xl sm:text-4xl font-bold text-white drop-shadow-xl">
+          {course.title}
+        </h1>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* SIDEBAR */}
-        <div className="order-1 lg:order-2 flex flex-col gap-6 lg:sticky lg:top-20">
-          {/* Instructor Box */}
-          <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border border-gray-200 dark:border-neutral-700">
-            <h2 className="text-2xl font-semibold mb-3">
-              Instructor{instructors.length > 1 ? "s" : ""}
-            </h2>
-
-            {instructors.length > 0 ? (
-              instructors.map((inst, index) => (
-                <div key={index} className="flex items-start gap-4 mb-6">
-                  {inst.avatar && (
-                    <img
-                      src={inst.avatar}
-                      alt={inst.name}
-                      className="w-14 h-14 rounded-full object-cover"
-                    />
-                  )}
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-xl">{inst.name}</h3>
-                    <p className="text-gray-600 dark:text-neutral-400 mt-1">{inst.bio}</p>
-                    <div className="flex gap-4 mt-2">
-                      {inst.linkedin && (
-                        <a
-                          href={inst.linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline text-sm"
-                        >
-                          <FaLinkedin size={16} /> LinkedIn
-                        </a>
-                      )}
-                      {inst.portfolio && (
-                        <a
-                          href={inst.portfolio}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline text-sm"
-                        >
-                          <FaGlobe size={16} /> Portfolio
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-600 dark:text-neutral-400">
-                No instructor details available.
-              </p>
-            )}
-          </div>
-
-          {/* Course Details Box */}
-          <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border border-gray-200 dark:border-neutral-700 shadow-lg space-y-4">
-            <h3 className="text-xl font-semibold mb-2">Course Details:</h3>
-            <ul className="text-sm text-gray-600 dark:text-neutral-300 space-y-1">
-              <li>
-                📅 Start:{" "}
-                <span className="text-gray-900 dark:text-white">
-                  {course.start_date || "TBA"}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Left Side */}
+        <div className="md:col-span-2 space-y-6">
+          {/* Tags */}
+          {course.domain_tags?.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {course.domain_tags.map((tag) => (
+                <span
+                  key={tag.id}
+                  className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
+                >
+                  {tag.name}
                 </span>
-              </li>
-              <li>
-                ⏰ End:{" "}
-                <span className="text-gray-900 dark:text-white">
-                  {course.end_date || "TBA"}
-                </span>
-              </li>
-              <li>
-                🖥️ Mode:{" "}
-                <span className="text-gray-900 dark:text-white">{course.mode}</span>
-              </li>
-              {course.syllabus_link && (
-                <li>
-                  <a
-                    href={course.syllabus_link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    View Syllabus
-                  </a>
-                </li>
-              )}
-              {course.mode === "recorded" && course.lecture_link && (
-                <li>
-                  <a
-                    href={course.lecture_link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition duration-200"
-                  >
-                    Enroll Now
-                  </a>
-                </li>
-              )}
-            </ul>
-
-            {plans.length > 0 && (
-              <>
-                <h3 className="text-xl font-semibold mt-4">Plans:</h3>
-                <ul className="space-y-3">
-                  {plans.map((plan, i) => (
-                    <li
-                      key={i}
-                      className="bg-gray-100 dark:bg-neutral-800 p-4 rounded-md border border-gray-200 dark:border-neutral-700"
-                    >
-                      <p className="text-lg font-bold capitalize text-gray-900 dark:text-white">
-                        {plan.name}
-                      </p>
-                      <p className="text-gray-600 dark:text-neutral-300">
-                        Price:{" "}
-                        <span className="text-gray-900 dark:text-white">
-                          ₹{plan.price}
-                        </span>
-                      </p>
-                      <p className="text-gray-600 dark:text-neutral-300">
-                        Seats:{" "}
-                        <span className="text-gray-900 dark:text-white">
-                          {plan.seats}
-                        </span>
-                      </p>
-                      {plan.whatsapp && (
-                        <a
-                          href={plan.whatsapp}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
-                        >
-                          Join WhatsApp Group
-                        </a>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* MAIN CONTENT */}
-        <div className="order-2 lg:order-1 lg:col-span-2 space-y-10">
-          <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border border-gray-200 dark:border-neutral-700">
-            <h2 className="text-2xl font-semibold mb-3">Course Overview</h2>
-            <p className="text-gray-600 dark:text-neutral-300">{course.description}</p>
-          </div>
-
-          {course.whatYouWillLearn?.length > 0 && (
-            <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border border-gray-200 dark:border-neutral-700">
-              <h2 className="text-2xl font-semibold mb-3">
-                What You Will Learn
-              </h2>
-              <ul className="list-disc list-inside text-gray-600 dark:text-neutral-300 space-y-1">
-                {course.whatYouWillLearn.map((point, i) => (
-                  <li key={i}>{point}</li>
-                ))}
-              </ul>
+              ))}
             </div>
           )}
 
-          {course.content?.length > 0 && (
-            <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border border-gray-200 dark:border-neutral-700">
-              <h2 className="text-2xl font-semibold mb-3">Course Content</h2>
-              <div className="space-y-3">
-                {course.content.map((section, i) => (
-                  <details
-                    key={i}
-                    className="bg-gray-100 dark:bg-neutral-800 rounded-md px-4 py-3 border border-gray-200 dark:border-neutral-700"
-                  >
-                    <summary className="font-medium text-lg cursor-pointer text-gray-900 dark:text-white">
-                      {section.title}
-                    </summary>
-                    <ul className="list-disc list-inside text-gray-600 dark:text-neutral-400 mt-2 pl-4">
-                      {section.topics.map((topic, j) => (
-                        <li key={j}>{topic}</li>
-                      ))}
-                    </ul>
-                  </details>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border border-gray-200 dark:border-neutral-700">
-            <h2 className="text-2xl font-semibold mb-3">Requirements</h2>
-            <ul className="list-disc list-inside text-gray-600 dark:text-neutral-300 space-y-1">
-              <li>Basic computer skills and internet access</li>
-              <li>Willingness to learn and solve real-world problems</li>
-              <li>Curiosity and consistency — that's all you really need!</li>
-              <li>Stable internet connection for accessing course content</li>
-              <li>
-                Basic familiarity with using the terminal/command line (helpful
-                but not required)
-              </li>
-            </ul>
+          {/* Description */}
+          <div>
+            <h2 className="text-xl font-semibold mb-2">Description</h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              {course.description}
+            </p>
           </div>
 
-          {/* FAQs */}
-          <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border border-gray-200 dark:border-neutral-700">
-            <h2 className="text-2xl font-semibold mb-3">
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-3">
-              <details className="bg-gray-100 dark:bg-neutral-800 rounded-md px-4 py-3 border border-gray-200 dark:border-neutral-700">
-                <summary className="font-medium text-lg cursor-pointer text-gray-900 dark:text-white">
-                  Is this course beginner-friendly?
-                </summary>
-                <p className="text-gray-600 dark:text-neutral-400 mt-2 pl-1">
-                  Yes, this course is designed for beginners and those looking
-                  to build solid fundamentals.
-                </p>
-              </details>
-              <details className="bg-gray-100 dark:bg-neutral-800 rounded-md px-4 py-3 border border-gray-200 dark:border-neutral-700">
-                <summary className="font-medium text-lg cursor-pointer text-gray-900 dark:text-white">
-                  Will I receive a certificate?
-                </summary>
-                <p className="text-gray-600 dark:text-neutral-400 mt-2 pl-1">
-                  Yes, you will receive a certificate of completion after the
-                  course.
-                </p>
-              </details>
-              <details className="bg-gray-100 dark:bg-neutral-800 rounded-md px-4 py-3 border border-gray-200 dark:border-neutral-700">
-                <summary className="font-medium text-lg cursor-pointer text-gray-900 dark:text-white">
-                  What is the refund policy?
-                </summary>
-                <p className="text-gray-600 dark:text-neutral-400 mt-2 pl-1">
-                  We offer a 100% money-back guarantee if you are not satisfied
-                  before the course ends.
-                </p>
-              </details>
-            </div>
-          </div>
-
-          <Link
-            to="/"
-            className="text-blue-600 dark:text-blue-400 hover:underline block"
-          >
-            ← Back to Courses
-          </Link>
-        </div>
-      </div>
-
-      {/* Mobile Sticky Buy Button */}
-      {plans[0] && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-neutral-900 px-6 py-4 border-t border-gray-200 dark:border-neutral-700 lg:hidden z-50">
-          <div className="flex justify-between items-center">
-            <div className="text-lg font-semibold text-gray-900 dark:text-white">
-              ₹{plans[0].price}
-            </div>
-            {plans[0].whatsapp && (
+          {/* Syllabus */}
+          {course.syllabus_link && (
+            <div>
+              <h2 className="text-xl font-semibold mb-2">Syllabus</h2>
               <a
-                href={plans[0].whatsapp}
+                href={course.syllabus_link}
                 target="_blank"
                 rel="noreferrer"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition duration-200"
+                className="text-blue-600 hover:underline"
               >
-                Register Now
+                View / Download Syllabus
               </a>
-            )}
+            </div>
+          )}
+
+          {/* Chat Link */}
+          {course.chatLink && (
+            <div>
+              <h2 className="text-xl font-semibold mb-2">Chat Group</h2>
+              <a
+                href={course.chatLink}
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                Join Course Chat
+              </a>
+            </div>
+          )}
+        </div>
+
+        {/* Right Side */}
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold">Authors</h2>
+          {course.mentors?.length > 0 ? (
+            course.mentors.map((mentor, index) => (
+              <div
+                key={index}
+                className="p-4 border rounded-xl bg-white dark:bg-neutral-800 shadow"
+              >
+                <p className="font-semibold">
+                  <Link
+                    to={`/profiles/t/${mentor.user_id}`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {mentor.name || `Mentor #${mentor.user_id}`}
+                  </Link>
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {mentor.email || "Email not available"}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p>No mentors listed.</p>
+          )}
+
+          <div className="border-t pt-4">
+            <p>
+              <strong>Mode:</strong> {course.mode}
+            </p>
+            <p>
+              <strong>Seats:</strong> {course.seats}
+            </p>
+            <p>
+              <strong>Start:</strong> {course.start_date}
+            </p>
+            <p>
+              <strong>End:</strong> {course.end_date}
+            </p>
           </div>
         </div>
-      )}
+      </div>
+
+      {/* Register Section */}
+      <div className="mt-12 border-t pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="text-xl font-semibold text-gray-800 dark:text-white">
+          ₹{course.price}
+        </div>
+        <button
+          disabled={isRegisterDisabled()}
+          onClick={handleRegister}
+          className={`px-6 py-3 rounded-lg font-medium transition ${
+            isRegisterDisabled()
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700 text-white"
+          }`}
+        >
+          {getRegisterButtonText()}
+        </button>
+      </div>
     </div>
   );
 };
