@@ -24,6 +24,8 @@ import Training from './pages/Training'
 import ChangePassword from "./pages/ChangePassword";
 import UserPublicProfile from "./pages/UserPublicProfile";
 import OtpVerification from "./pages/OtpVerification";
+import Courses from "./pages/student/Courses";
+import CourseDashboard from "./pages/student/CourseDashboard";
 function App() {
   return (
     <Router>
@@ -45,6 +47,9 @@ function App() {
         <Route path="/profile" element={<MyProfile />} />
         {/* Student routes */}
         <Route path="/student/dashboard" element={<StudentDashboard />} />
+        <Route path="/student/courses" element={<Courses />} />
+        <Route path="/student/courses/d/:courseId" element={<CourseDashboard />} />
+        
         {/* Teacher routes */}
         <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
         <Route path="/teacher/courses" element={<TeachingCourses />} />
