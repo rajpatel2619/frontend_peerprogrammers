@@ -13,8 +13,9 @@ const Training = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await fetch(`${API}/all-courses`);
+        const res = await fetch(`${API}/all_courses`);
         const data = await res.json();
+        console.log(data);
         if (data.success && Array.isArray(data.courses)) {
           const formatted = data.courses.map((course) => ({
             id: course.id,
