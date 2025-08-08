@@ -82,6 +82,7 @@ const CourseDetails = () => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    console.log(storedUser);
   }, []);
 
   useEffect(() => {
