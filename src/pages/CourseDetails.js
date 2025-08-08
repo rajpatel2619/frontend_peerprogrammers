@@ -92,6 +92,7 @@ const CourseDetails = () => {
         const data = await res.json();
         if (!data?.id) throw new Error("Course not found.");
         setCourse(data);
+        console.log(data);
         if (data.modules && data.modules.length > 0) {
           setActiveModule(data.modules[0]);
         }
@@ -113,8 +114,12 @@ const CourseDetails = () => {
           user_id: String(user.id),
           course_id: String(courseId),
         }).toString();
-        const res = await fetch(`${API}/registrations/role-in-course?${query}`);
+        console.log(query);
+        const res = await fetch(`${API}/registrations/role-in-course/?user_id=${user.id}&course_id=${courseId}`);
+        
+
         const data = await res.json();
+        console.log(data);
         setUserRole(data.role || "none");
       } catch (err) {
         console.error("Failed to fetch user role:", err);
