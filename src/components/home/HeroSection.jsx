@@ -1,7 +1,7 @@
 import React from "react";
 import { ArrowRight, Play } from "lucide-react";
 
-const Hero: React.FC = () => {
+const Hero = () => {
   return (
     <section className="relative bg-gradient-to-br from-blue-50 via-white to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
       {/* Background Bubbles */}
@@ -36,10 +36,10 @@ const Hero: React.FC = () => {
                 Start Learning Today
                 <ArrowRight className="w-5 h-5 ml-2" />
               </button>
-              <button className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 px-8 py-4 rounded-xl font-semibold flex items-center justify-center hover:border-blue-600 hover:text-blue-600 dark:hover:border-blue-400 dark:hover:text-blue-400 transition-all duration-300">
+              {/* <button className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 px-8 py-4 rounded-xl font-semibold flex items-center justify-center hover:border-blue-600 hover:text-blue-600 dark:hover:border-blue-400 dark:hover:text-blue-400 transition-all duration-300">
                 <Play className="w-5 h-5 mr-2" />
                 Watch Demo
-              </button>
+              </button> */}
             </div>
           </div>
 

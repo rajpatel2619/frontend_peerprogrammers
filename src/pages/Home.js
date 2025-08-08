@@ -14,13 +14,13 @@ const HomePage = () => { // Note: Capitalized component name
       <HeroSection />
 
 
-      <CTASection />
+      {/* <CTASection /> */}
       {/* <CourseCard /> */}
       {/* <CourseTabs /> */}
-      <FAQs />
 
 
       <Features/>
+      {/* <FAQs /> */}
       {/* <CTASection /> */}
       {/* <CourseCard /> */}
       {/* <CourseTabs /> */}
