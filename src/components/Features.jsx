@@ -221,9 +221,9 @@ const Features = () => {
 
               {/* Hover Effect */}
               <div className="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <button className="text-blue-600 dark:text-blue-400 font-medium text-sm hover:text-blue-700 transition-colors">
+                {/* <button className="text-blue-600 dark:text-blue-400 font-medium text-sm hover:text-blue-700 transition-colors">
                   Learn More →
-                </button>
+                </button> */}
               </div>
             </div>
           ))}

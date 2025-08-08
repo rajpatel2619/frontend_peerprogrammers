@@ -32,53 +32,53 @@ useEffect(() => {
     });
 }, []);
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-  //   const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
-  //   if (!userStr) {
-  //     navigate('/login');
-  //     return;
-  //   }
-  //   let user;
-  //   try {
-  //     user = JSON.parse(userStr);
-  //   } catch (e) {
-  //     console.error('Invalid user data in storage');
-  //     navigate('/login');
-  //     return;
-  //   }
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
+    if (!userStr) {
+      navigate('/login');
+      return;
+    }
+    let user;
+    try {
+      user = JSON.parse(userStr);
+    } catch (e) {
+      console.error('Invalid user data in storage');
+      navigate('/login');
+      return;
+    }
 
-  //   const userId = user.id;
-  //   setUserId(userId);
-  //   console.log('User ID:', userId);
-  //   console.log('token:', token);
-  //   console.log('API:', `${API}/courses/by-user/${userId}`);
-  //   fetch(`${API}/courses/by-user/${userId}`, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       'Cache-Control': 'no-cache',
-  //     },
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log(data);
-  //       if (data.success) {
-  //         const sorted = [...data.courses].sort(
-  //           (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
-  //         );
-  //         setCourses(sorted);
-  //         setFilteredCourses(sorted);
-  //       } else {
-  //         console.error('API Error:', data);
-  //       }
-  //       setLoading(false);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching courses:', error);
-  //       setLoading(false);
-  //     });
-  // }, [navigate]);
+    const userId = user.id;
+    setUserId(userId);
+    console.log('User ID:', userId);
+    console.log('token:', token);
+    console.log('API:', `${API}/courses/by-user/${userId}`);
+    fetch(`${API}/courses/by-user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Cache-Control': 'no-cache',
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if (data.success) {
+          const sorted = [...data.courses].sort(
+            (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
+          );
+          setCourses(sorted);
+          setFilteredCourses(sorted);
+        } else {
+          console.error('API Error:', data);
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching courses:', error);
+        setLoading(false);
+      });
+  }, [navigate]);
 
   useEffect(() => {
     const filtered = courses.filter(course => {
@@ -105,30 +105,30 @@ useEffect(() => {
   };
 
  const handlePublish = async (userId, courseId, isPublished) => {
-  // const endpoint = isPublished
-  //   ? `${API}/unpublish-courses/${userId}/${courseId}`
-  //   : `${API}/publish-courses/${userId}/${courseId}`;
+  const endpoint = isPublished
+    ? `${API}/unpublish-courses/${userId}/${courseId}`
+    : `${API}/publish-courses/${userId}/${courseId}`;
 
-  // try {
-  //   const response = await fetch(endpoint, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  //   const data = await response.json();
+    const data = await response.json();
 
-  //   if (!response.ok) {
-  //     alert(`Error: ${data.detail}`);
-  //   } else {
-  //     alert(`${isPublished ? "Unpublished" : "Published"} course ${courseId}`);
-  //     alert("handle updated data")
-  //     // Optional: refresh course list or update UI state
-  //   }
-  // } catch (error) {
-  //   alert("API call failed: " + error.message);
-  // }
+    if (!response.ok) {
+      alert(`Error: ${data.detail}`);
+    } else {
+      alert(`${isPublished ? "Unpublished" : "Published"} course ${courseId}`);
+      alert("handle updated data")
+      // Optional: refresh course list or update UI state
+    }
+  } catch (error) {
+    alert("API call failed: " + error.message);
+  }
 };
 
 

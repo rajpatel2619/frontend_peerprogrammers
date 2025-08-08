@@ -6,7 +6,7 @@ const REACT_APP_API = process.env.REACT_APP_API;
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [remember, setRemember] = useState(false);
+  const [remember, setRemember] = useState(false); // Still there if you want to show the checkbox
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -33,13 +33,11 @@ export default function Login() {
         throw new Error(data.detail || 'Invalid email or password');
       }
 
-      if (remember) {
-        localStorage.setItem('token', data.access_token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-      } else {
-        sessionStorage.setItem('token', data.access_token);
-        sessionStorage.setItem('user', JSON.stringify(data.user));
-      }
+      // ✅ Always save in both storages
+      localStorage.setItem('token', data.access_token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      sessionStorage.setItem('token', data.access_token);
+      sessionStorage.setItem('user', JSON.stringify(data.user));
 
       navigate('/student/dashboard');
     } catch (err) {
