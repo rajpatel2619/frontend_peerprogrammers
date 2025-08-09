@@ -1,111 +1,118 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FiHome,
   FiBook,
   FiPlusCircle,
   FiChevronDown,
   FiChevronUp,
-  FiChevronRight,
-  FiChevronLeft
+  FiUsers,
+  FiCalendar,
+  FiMessageSquare,
+  FiSettings,
+  FiAward
 } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const TeacherSidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const TeacherNavbar = () => {
   const [showCreateSubmenu, setShowCreateSubmenu] = useState(false);
+  const [activePath, setActivePath] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    setActivePath(location.pathname);
+  }, [location]);
 
   const handleNavigate = (path) => {
     navigate(path);
-    setIsOpen(false);
   };
 
+  const navItems = [
+    {
+      path: "/teacher/dashboard",
+      icon: <FiHome className="text-lg" />,
+      label: "Dashboard",
+      color: "text-blue-500"
+    },
+    {
+      path: "/teacher/courses",
+      icon: <FiBook className="text-lg" />,
+      label: "My Courses",
+      color: "text-green-500"
+    },
+    {
+      path: "/teacher/courses/new/individual",
+      icon: <FiPlusCircle className="text-orange-500 text-lg" />,
+      label: "Create",
+      color: "text-green-500"
+    },
+    // {
+    //   path: "/teacher/students",
+    //   icon: <FiUsers className="text-lg" />,
+    //   label: "Students",
+    //   color: "text-purple-500"
+    // },
+    // {
+    //   path: "/teacher/schedule",
+    //   icon: <FiCalendar className="text-lg" />,
+    //   label: "Schedule",
+    //   color: "text-yellow-500"
+    // },
+    // {
+    //   path: "/teacher/messages",
+    //   icon: <FiMessageSquare className="text-lg" />,
+    //   label: "Messages",
+    //   color: "text-pink-500"
+    // }
+  ];
+
+  const createMenuItems = [
+    {
+      path: "/teacher/courses/new/individual",
+      label: "For Individuals"
+    },
+    // {
+    //   path: "/teacher/courses/new/group",
+    //   label: "For Groups"
+    // },
+    // {
+    //   path: "/teacher/courses/new/workshop",
+    //   label: "Workshop"
+    // }
+  ];
+
   return (
-    <div className="relative">
-      {/* Toggle Button */}
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed top-20 left-0 z-50 bg-blue-600 text-white p-3 rounded-r-lg shadow-md hover:bg-blue-700 transition-all"
-        >
-          <FiChevronRight className="text-xl" />
-        </button>
-      )}
-
-      {/* Backdrop */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 z-40"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <div
-        className={`fixed top-0 left-0 h-screen w-64 bg-white dark:bg-gray-800 shadow-lg z-50 transform transition-all duration-200 ease-out ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        {/* Close Button */}
-        <div className="flex justify-end p-4">
-          <button
-            onClick={() => setIsOpen(false)}
-            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
-          >
-            <FiChevronLeft className="text-xl" />
-          </button>
-        </div>
-
-        {/* Navigation */}
-        <nav className="p-4 space-y-1">
-          {/* Dashboard */}
-          <button
-            onClick={() => handleNavigate("/teacher/dashboard")}
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors"
-          >
-            <FiHome className="text-blue-500 dark:text-blue-400" />
-            <span className="text-gray-700 dark:text-gray-300">Dashboard</span>
-          </button>
-
-          {/* My Courses */}
-          <button
-            onClick={() => handleNavigate("/teacher/courses")}
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors"
-          >
-            <FiBook className="text-green-500" />
-            <span className="text-gray-700 dark:text-gray-300">My Courses</span>
-          </button>
-
-          {/* Create New Course */}
-          <div className="space-y-1">
-            <button
-              onClick={() => setShowCreateSubmenu((prev) => !prev)}
-              className="flex items-center justify-between w-full px-4 py-3 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <FiPlusCircle className="text-orange-400" />
-                <span className="text-gray-700 dark:text-gray-300">Create Course</span>
-              </div>
-              {showCreateSubmenu ? (
-                <FiChevronUp className="text-gray-400" />
-              ) : (
-                <FiChevronDown className="text-gray-400" />
-              )}
-            </button>
-
-            {showCreateSubmenu && (
+    <div className="fixed top-15 left-0 right-0 z-40 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-self-center h-16">
+      {/* Scrollable Navigation */}
+      <div className="flex-1 overflow-x-auto scrollbar-hide">
+        <div className="flex items-center space-x-4 min-w-max">
+          {navItems.map((item) => {
+            // Calculate approximate width based on text length
+            const textWidth = `min-w-[${item.label.length * 8 + 40}px]`;
+            
+            return (
               <button
-                onClick={() => handleNavigate("/teacher/courses/new/individual")}
-                className="w-full text-left pl-12 pr-4 py-2 text-md rounded-lg text-gray-600 dark:text-gray-400 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors"
+                key={item.path}
+                onClick={() => handleNavigate(item.path)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${textWidth} ${
+                  activePath === item.path
+                    ? "bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 font-medium"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
               >
-                For Individuals
+                <span className={item.color}>{item.icon}</span>
+                <span className="whitespace-nowrap">{item.label}</span>
               </button>
-            )}
-          </div>
-        </nav>
+            );
+          })}
+        </div>
       </div>
     </div>
+  </div>
+</div>
   );
 };
 
-export default TeacherSidebar;
+export default TeacherNavbar;

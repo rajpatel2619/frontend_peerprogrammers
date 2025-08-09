@@ -229,7 +229,10 @@ export default function CreateCoursePage() {
 
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-8 bg-white dark:bg-gray-900 min-h-screen">
+      
       <div className="max-w-7xl mx-auto">
+        <TeacherSidebar onNavigate={(path) => navigate(path)} />
+
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
           {courseId ? (
             <>

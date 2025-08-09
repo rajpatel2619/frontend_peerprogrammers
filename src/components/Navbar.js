@@ -107,6 +107,18 @@ export default function Navbar() {
             <HiBookOpen size={18} /> Resources
           </button>
           <button 
+            onClick={() => navigate("/dsa")} 
+            className={isActive("/dsa") ? activeNavBtn : navBtn}
+          >
+            <HiBookOpen size={18} /> DSA
+          </button>
+          <button 
+            onClick={() => navigate("/cp51")} 
+            className={isActive("/cp51") ? activeNavBtn : navBtn}
+          >
+            <HiBookOpen size={18} /> CP
+          </button>
+          <button 
             onClick={() => navigate("/training")} 
             className={isActive("/training") ? activeNavBtn : navBtn}
           >
@@ -227,6 +239,18 @@ export default function Navbar() {
               className={isActive("/resources") ? activeNavBtn : navBtn}
             >
               <HiBookOpen size={18} /> Resources
+            </button>
+            <button 
+              onClick={() => { navigate("/dsa"); setMobileMenuOpen(false); }} 
+              className={isActive("/dsa") ? activeNavBtn : navBtn}
+            >
+              <HiBookOpen size={18} /> DSA
+            </button>
+            <button 
+              onClick={() => { navigate("/cp"); setMobileMenuOpen(false); }} 
+              className={isActive("/cp") ? activeNavBtn : navBtn}
+            >
+              <HiBookOpen size={18} /> CP
             </button>
             <button 
               onClick={() => { navigate("/training"); setMobileMenuOpen(false); }} 

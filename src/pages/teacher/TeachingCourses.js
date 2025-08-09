@@ -143,7 +143,7 @@ useEffect(() => {
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
       <TeacherSidebar onNavigate={(path) => navigate(path)} />
 
-      <div className="flex-1 p-10 w-full">
+      <div className="flex-1 p-10 w-full mt-10">
         <p className="text-2xl font-bold text-gray-900 dark:text-white mb-4">My Courses</p>
 
         {/* Search + Filter */}

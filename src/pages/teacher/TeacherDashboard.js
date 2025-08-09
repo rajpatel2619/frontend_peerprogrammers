@@ -25,7 +25,7 @@ const TeacherDashboardLayout = () => {
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
       <TeacherSidebar onNavigate={(path) => console.log("Navigate to:", path)} />
       
-      <div className="flex-1 p-6 md:p-10 w-full overflow-auto">
+      <div className="flex-1 p-6 mt-10 md:p-10 w-full overflow-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">

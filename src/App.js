@@ -26,6 +26,9 @@ import UserPublicProfile from "./pages/UserPublicProfile";
 import OtpVerification from "./pages/OtpVerification";
 import Courses from "./pages/student/Courses";
 import CourseDashboard from "./pages/student/CourseDashboard";
+import Dsa from "./pages/Dsa";
+import Cp from "./pages/Cp";
+
 function App() {
   return (
     <Router>
@@ -36,6 +39,8 @@ function App() {
         {/* Course and profiles details route */}
         <Route path="/" element={<Home />} />
         <Route path="/resources" element={<Resources />} />
+        <Route path="/dsa" element={<Dsa />} />
+        <Route path="/cp51" element={<Cp />} />
         <Route path="/reset-password" element={<ChangePassword />} />
         <Route path="/courses/:courseId" element={<CourseDetails />} />
         <Route path="/profiles/t/:userId" element={<UserPublicProfile />} />
