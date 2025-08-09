@@ -143,7 +143,7 @@ const DSASheetPage = () => {
         DSA Practice Sheet
       </h1>
       <p className="text-center text-gray-600 dark:text-gray-400 mb-8">
-        Start Solving Now - One Problem at a Time!
+        Start Solving Now - Consistency is the key of success!
       </p>
 
       {/* Search and Filter Section */}

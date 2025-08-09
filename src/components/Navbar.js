@@ -121,7 +121,7 @@ export default function Navbar() {
             onClick={() => navigate("/training")} 
             className={isActive("/training") ? activeNavBtn : navBtn}
           >
-            <HiAcademicCap size={18} /> Training
+            <HiAcademicCap size={18} /> Courses
           </button>
           <button 
             onClick={() => navigate("/contact")} 
@@ -264,7 +264,7 @@ export default function Navbar() {
               onClick={() => { navigate("/training"); setMobileMenuOpen(false); }} 
               className={isActive("/training") ? activeNavBtn : navBtn}
             >
-              <HiAcademicCap size={18} /> Training
+              <HiAcademicCap size={18} /> Courses
             </button>
             <button 
               onClick={() => { navigate("/contact"); setMobileMenuOpen(false); }} 

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const CPSheet = () => {
   // Sample data structure with individual ratings
   const navigate = useNavigate();
-  const ratings = [800, 900, 1000, 1100, 1200, 1300, 1400, 1500];
+  const ratings = [800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600];
   const [sheets, setSheets] = useState(
     ratings.reduce((acc, rating) => {
       acc[rating] = Array(51).fill().map((_, i) => ({
@@ -171,89 +171,92 @@ const CPSheet = () => {
       </div>
 
       {/* Problems List */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-        <table className="min-w-full">
-          <thead className="bg-gray-100 dark:bg-gray-700">
-            <tr>
-              <th className="px-6 py-3 text-left">Status</th>
-              <th className="px-6 py-3 text-left">Problem</th>
-              <th className="px-6 py-3 text-left">Solutions</th>
-              <th className="px-6 py-3 text-left">Revisit</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-            {filteredProblems.map(problem => (
-              <tr key={problem.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                <td className="px-6 py-4">
-                  <button
-                    onClick={() => toggleSolved(currentRating, problem.id)}
-                    className={`p-2 rounded-full ${
-                      problem.solved
-                        ? 'bg-green-100 text-green-600 dark:bg-green-900/20'
-                        : 'bg-gray-100 text-gray-400 dark:bg-gray-700'
-                    }`}
-                  >
-                    <FiCheck />
-                  </button>
-                </td>
-                <td className="px-6 py-4">
-                  <a
-                    href={problem.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    {problem.title}
-                  </a>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex gap-2">
-                    <a
-                      href={problem.solutions.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600"
-                      title="Code Solution"
-                    >
-                      <FiGithub />
-                    </a>
-                    <a
-                      href={problem.solutions.youtube.hindi}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-red-100 dark:bg-red-900/20 rounded-full hover:bg-red-200 dark:hover:bg-red-900/30"
-                      title="Hindi Solution"
-                    >
-                      <FiYoutube />
-                    </a>
-                    <a
-                      href={problem.solutions.youtube.english}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-red-100 dark:bg-red-900/20 rounded-full hover:bg-red-200 dark:hover:bg-red-900/30"
-                      title="English Solution"
-                    >
-                      <FiYoutube />
-                    </a>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <button
-                    onClick={() => toggleRevisited(currentRating, problem.id)}
-                    className={`p-2 rounded-full ${
-                      problem.revisited
-                        ? 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/20'
-                        : 'bg-gray-100 text-gray-400 dark:bg-gray-700'
-                    }`}
-                  >
-                    <FiStar />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+<div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+  {/* Add this wrapper div for horizontal scrolling */}
+  <div className="overflow-x-auto">
+    <table className="min-w-full">
+      <thead className="bg-gray-100 dark:bg-gray-700">
+        <tr>
+          <th className="px-6 py-3 text-left">Status</th>
+          <th className="px-6 py-3 text-left">Problem</th>
+          <th className="px-6 py-3 text-left">Solutions</th>
+          <th className="px-6 py-3 text-left">Revisit</th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+        {filteredProblems.map(problem => (
+          <tr key={problem.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+            <td className="px-6 py-4">
+              <button
+                onClick={() => toggleSolved(currentRating, problem.id)}
+                className={`p-2 rounded-full ${
+                  problem.solved
+                    ? 'bg-green-100 text-green-600 dark:bg-green-900/20'
+                    : 'bg-gray-100 text-gray-400 dark:bg-gray-700'
+                }`}
+              >
+                <FiCheck />
+              </button>
+            </td>
+            <td className="px-6 py-4">
+              <a
+                href={problem.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                {problem.title}
+              </a>
+            </td>
+            <td className="px-6 py-4">
+              <div className="flex gap-2">
+                <a
+                  href={problem.solutions.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600"
+                  title="Code Solution"
+                >
+                  <FiGithub />
+                </a>
+                <a
+                  href={problem.solutions.youtube.hindi}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 bg-red-100 dark:bg-red-900/20 rounded-full hover:bg-red-200 dark:hover:bg-red-900/30"
+                  title="Hindi Solution"
+                >
+                  <FiYoutube />
+                </a>
+                <a
+                  href={problem.solutions.youtube.english}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 bg-red-100 dark:bg-red-900/20 rounded-full hover:bg-red-200 dark:hover:bg-red-900/30"
+                  title="English Solution"
+                >
+                  <FiYoutube />
+                </a>
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <button
+                onClick={() => toggleRevisited(currentRating, problem.id)}
+                className={`p-2 rounded-full ${
+                  problem.revisited
+                    ? 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/20'
+                    : 'bg-gray-100 text-gray-400 dark:bg-gray-700'
+                }`}
+              >
+                <FiStar />
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
     </div>
   );
 };

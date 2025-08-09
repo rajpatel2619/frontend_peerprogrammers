@@ -51,7 +51,7 @@ export default function Footer() {
               <Link to="/resources" className="hover:text-blue-600">Resources</Link>
             </li>
             <li>
-              <Link to="/training" className="hover:text-blue-600">Training</Link>
+              <Link to="/training" className="hover:text-blue-600">Courses</Link>
             </li>
             <li>
               <Link to="/contact" className="hover:text-blue-600">Contact Us</Link>

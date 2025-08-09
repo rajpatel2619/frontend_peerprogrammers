@@ -15,6 +15,13 @@ function DsaLeaderboard() {
     { id: 10, name: "Jack", problemsSolved: 12, rank: 10 },
   ];
 
+  // Calculate totals
+  const totalUsers = leaderboardData.length;
+  const totalProblems = 450; // Assuming a total DSA problem count
+  const totalSolved = leaderboardData.reduce((sum, user) => sum + user.problemsSolved, 0);
+  const averageSolved = Math.round(totalSolved / totalUsers);
+  const completionPercentage = Math.round((totalSolved / (totalProblems * totalUsers)) * 100);
+
   // Function to determine title with icons
   const getTitle = (solved) => {
     if (solved < 5) return "🥉 Bronze";
@@ -43,55 +50,89 @@ function DsaLeaderboard() {
         DSA Leaderboard
       </h1>
       
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Coders</h3>
+          <p className="text-2xl font-semibold text-gray-900 dark:text-white">{totalUsers}</p>
+        </div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Problems</h3>
+          <p className="text-2xl font-semibold text-gray-900 dark:text-white">{totalProblems}</p>
+        </div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Avg. Solved</h3>
+          <p className="text-2xl font-semibold text-gray-900 dark:text-white">{averageSolved}</p>
+        </div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Solved</h3>
+          <p className="text-2xl font-semibold text-gray-900 dark:text-white">{totalSolved}</p>
+        </div>
+      </div>
+
+      {/* Leaderboard Table */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-50 dark:bg-gray-700">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Rank
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Coder
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Problems Solved
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Title
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-            {leaderboardData.map((user) => (
-              <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getRankColor(user.rank)}`}>
-                    #{user.rank}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900 dark:text-white">
-                    {user.name}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-700 dark:text-gray-300">
-                    {user.problemsSolved}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-semibold">
-                    {getTitle(user.problemsSolved)}
-                  </div>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-700">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Rank
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Coder
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Problems Solved
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Progress
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Title
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              {leaderboardData.map((user) => (
+                <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getRankColor(user.rank)}`}>
+                      #{user.rank}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900 dark:text-white">
+                      {user.name}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-700 dark:text-gray-300">
+                      {user.problemsSolved} <span className="text-xs text-gray-500">({Math.round((user.problemsSolved/totalProblems)*100)}%)</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                      <div 
+                        className="bg-blue-500 h-2.5 rounded-full" 
+                        style={{ width: `${(user.problemsSolved / totalProblems) * 100}%` }}
+                      ></div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-semibold">
+                      {getTitle(user.problemsSolved)}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-        Updated: {new Date().toLocaleDateString()}
+        Updated: {new Date().toLocaleDateString()} • Community completion: {completionPercentage}%
       </div>
     </div>
   );

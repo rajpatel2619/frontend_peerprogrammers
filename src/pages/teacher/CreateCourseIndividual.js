@@ -14,9 +14,11 @@ import {
   FiFile,
   FiPlus,
   FiEdit,
+  FiTrash2,
   FiChevronDown,
   FiChevronUp
 } from "react-icons/fi";
+
 const API = process.env.REACT_APP_API;
 
 export default function CreateCoursePage() {
@@ -39,14 +41,13 @@ export default function CreateCoursePage() {
   const [basicSeats, setBasicSeats] = useState("");
   const [basicWhatsapp, setBasicWhatsapp] = useState("");
   const [courseData, setCourseData] = useState(null);
-  const [moduleCount, setModuleCount] = useState(0);
   const [modules, setModules] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
   const user = stored ? JSON.parse(stored) : null;
   const userId = user?.id;
-  const token =
-    localStorage.getItem("token") || sessionStorage.getItem("token");
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
   // Load user options
   useEffect(() => {
@@ -76,8 +77,8 @@ export default function CreateCoursePage() {
       .catch((err) => console.error("Failed to fetch domains:", err));
   }, []);
 
+  // Load course data in edit mode
   useEffect(() => {
-    // Only fetch course detail in edit mode
     if (!courseId || !userId) return;
 
     fetch(`${API}/course-detail/${userId}/${courseId}`, {
@@ -88,23 +89,17 @@ export default function CreateCoursePage() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          console.log(data);
           setCourseData(data.course);
         } else {
           console.error("Failed to load course:", data.detail);
         }
       })
       .catch((err) => console.error("Failed to fetch course detail:", err));
-  }, [courseId, userId]);
+  }, [courseId, userId, token]);
 
   // Apply course data after options are available
   useEffect(() => {
-    if (
-      !courseData ||
-      coMentorOptions.length === 0 ||
-      domainOptions.length === 0
-    )
-      return;
+    if (!courseData || coMentorOptions.length === 0 || domainOptions.length === 0) return;
 
     setTitle(courseData.title || "");
     setDescription(courseData.description || "");
@@ -130,7 +125,46 @@ export default function CreateCoursePage() {
         domainOptions.filter((opt) => courseData.domain_ids.includes(opt.value))
       );
     }
+
+    if (courseData.modules && courseData.modules.length > 0) {
+      setModules(courseData.modules);
+    }
   }, [courseData, coMentorOptions, domainOptions]);
+
+  // Module management functions
+  const addModule = () => {
+    setModules([...modules, { title: "", lessons: [] }]);
+  };
+
+  const removeModule = (index) => {
+    const updatedModules = [...modules];
+    updatedModules.splice(index, 1);
+    setModules(updatedModules);
+  };
+
+  const updateModuleTitle = (index, title) => {
+    const updated = [...modules];
+    updated[index].title = title;
+    setModules(updated);
+  };
+
+  const addLesson = (moduleIndex) => {
+    const updated = [...modules];
+    updated[moduleIndex].lessons.push({ title: "", resources: [] });
+    setModules(updated);
+  };
+
+  const removeLesson = (moduleIndex, lessonIndex) => {
+    const updated = [...modules];
+    updated[moduleIndex].lessons.splice(lessonIndex, 1);
+    setModules(updated);
+  };
+
+  const updateLessonTitle = (moduleIndex, lessonIndex, title) => {
+    const updated = [...modules];
+    updated[moduleIndex].lessons[lessonIndex].title = title;
+    setModules(updated);
+  };
 
   const handleSubmit = async () => {
     if (!userId) return alert("User not logged in");
@@ -139,7 +173,6 @@ export default function CreateCoursePage() {
     const domainIds = selectedDomains.map((d) => d.value);
 
     const isEditMode = !!courseId;
-
     const url = isEditMode
       ? `${API}/update-course/${userId}/${courseId}`
       : `${API}/create-course`;
@@ -149,7 +182,6 @@ export default function CreateCoursePage() {
       let response;
 
       if (isEditMode) {
-        // --- UPDATE Mode ---
         const payload = {
           userId,
           title,
@@ -164,8 +196,9 @@ export default function CreateCoursePage() {
           co_mentors: creatorIds.filter((id) => id !== userId).join(","),
           creator_ids: creatorIds,
           domain_ids: domainIds,
-          syllabus_link: "", // optionally update or keep as is
+          syllabus_link: "",
           syllausContent: "",
+          modules: JSON.stringify(modules)
         };
 
         const formData = new FormData();
@@ -181,7 +214,6 @@ export default function CreateCoursePage() {
           body: formData,
         });
       } else {
-        // --- CREATE Mode ---
         const formData = new FormData();
         formData.append("userId", userId);
         formData.append("title", title);
@@ -199,10 +231,9 @@ export default function CreateCoursePage() {
         formData.append("co_mentor_ids", creatorIds.join(","));
         formData.append("creator_ids", creatorIds.join(","));
         formData.append("domain_ids", domainIds.join(","));
-        formData.append("cover_photo", coverPhoto);
-        formData.append("syllabus_file", syllabusFile);
-        formData.append("modules", JSON.stringify(modules)); // For POST mode
-        // Or add `modules` to the payload object in update mode
+        formData.append("modules", JSON.stringify(modules));
+        if (coverPhoto) formData.append("cover_photo", coverPhoto);
+        if (syllabusFile) formData.append("syllabus_file", syllabusFile);
 
         response = await fetch(url, {
           method,
@@ -224,12 +255,21 @@ export default function CreateCoursePage() {
     } catch (err) {
       console.error("Submit error:", err.message);
       alert("Error: " + err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-8 bg-white dark:bg-gray-900 min-h-screen">
-      
       <div className="max-w-7xl mx-auto">
         <TeacherSidebar onNavigate={(path) => navigate(path)} />
 
@@ -241,7 +281,7 @@ export default function CreateCoursePage() {
             </>
           ) : (
             <>
-              
+              <FiPlus className="text-blue-500" size={24} />
               Create New Course
             </>
           )}
@@ -347,30 +387,9 @@ export default function CreateCoursePage() {
                 Course Structure
               </h2>
             </div>
+            
             <div className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Number of Modules
-                  </label>
-                  <input
-                    type="number"
-                    min={0}
-                    value={moduleCount || ""}
-                    onChange={(e) => {
-                      const count = parseInt(e.target.value) || 0;
-                      setModuleCount(count);
-                      setModules(
-                        Array(count)
-                          .fill("")
-                          .map((_, i) => modules[i] || "")
-                      );
-                    }}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter number of modules"
-                  />
-                </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Lecture Link
@@ -383,27 +402,99 @@ export default function CreateCoursePage() {
                     placeholder="https://meet.google.com/..."
                   />
                 </div>
+                
+                <div className="flex items-end">
+                  <button
+                    type="button"
+                    onClick={addModule}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  >
+                    <FiPlus size={16} />
+                    Add Module
+                  </button>
+                </div>
               </div>
 
-              <div className="space-y-4">
-                {modules.map((mod, index) => (
-                  <div key={index}>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Module {index + 1} Title
-                    </label>
-                    <input
-                      type="text"
-                      value={modules[index]}
-                      onChange={(e) => {
-                        const updated = [...modules];
-                        updated[index] = e.target.value;
-                        setModules(updated);
-                      }}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder={`Module ${index + 1} title`}
-                    />
+              <div className="space-y-6">
+                {modules.map((module, moduleIndex) => (
+                  <div key={moduleIndex} className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-xs border border-gray-200 dark:border-gray-600">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-medium text-gray-800 dark:text-white">
+                        Module {moduleIndex + 1}
+                      </h3>
+                      <button
+                        type="button"
+                        onClick={() => removeModule(moduleIndex)}
+                        className="text-red-500 hover:text-red-700 dark:hover:text-red-400 p-1"
+                        title="Remove module"
+                      >
+                        <FiTrash2 size={16} />
+                      </button>
+                    </div>
+                    
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Module Title
+                      </label>
+                      <input
+                        type="text"
+                        value={module.title}
+                        onChange={(e) => updateModuleTitle(moduleIndex, e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder={`Module ${moduleIndex + 1} title`}
+                      />
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          Lessons
+                        </h4>
+                        <button
+                          type="button"
+                          onClick={() => addLesson(moduleIndex)}
+                          className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                        >
+                          <FiPlus size={14} />
+                          Add Lesson
+                        </button>
+                      </div>
+                      
+                      {module.lessons.map((lesson, lessonIndex) => (
+                        <div key={lessonIndex} className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg">
+                          <input
+                            type="text"
+                            value={lesson.title}
+                            onChange={(e) => updateLessonTitle(moduleIndex, lessonIndex, e.target.value)}
+                            className="flex-1 px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                            placeholder={`Lesson ${lessonIndex + 1} title`}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeLesson(moduleIndex, lessonIndex)}
+                            className="text-red-500 hover:text-red-700 dark:hover:text-red-400 p-1"
+                          >
+                            <FiTrash2 size={14} />
+                          </button>
+                        </div>
+                      ))}
+                      
+                      {module.lessons.length === 0 && (
+                        <div className="text-center py-3 text-sm text-gray-500 dark:text-gray-400">
+                          No lessons added yet
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ))}
+                
+                {modules.length === 0 && (
+                  <div className="text-center py-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+                    <p className="text-gray-500 dark:text-gray-400">
+                      No modules added yet. Click "Add Module" to get started.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -548,9 +639,15 @@ export default function CreateCoursePage() {
             <button
               type="button"
               onClick={handleSubmit}
-              className="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 flex items-center justify-center gap-2"
+              disabled={loading}
+              className="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70"
             >
-              {courseId ? (
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+                  {courseId ? "Updating..." : "Creating..."}
+                </>
+              ) : courseId ? (
                 <>
                   <FiEdit size={18} />
                   Update Course
@@ -567,5 +664,4 @@ export default function CreateCoursePage() {
       </div>
     </div>
   );
-};
-
+}

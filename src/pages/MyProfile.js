@@ -1,6 +1,6 @@
-// src/pages/MyProfile.js
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FiEdit, FiSave, FiX, FiExternalLink, FiUser, FiPhone, FiMail, FiMapPin, FiCalendar, FiGithub, FiLinkedin, FiTwitter, FiInstagram, FiYoutube, FiGlobe } from 'react-icons/fi';
 
 const API = process.env.REACT_APP_API;
 
@@ -56,7 +56,6 @@ export default function MyProfile() {
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     setLoading(true);
 
-    // Map frontend state to backend schema keys
     const payload = {
       id: user.id,
       first_name: details.firstName,
@@ -90,223 +89,358 @@ export default function MyProfile() {
         localStorage.setItem('user', JSON.stringify(data.user));
         setLoading(false);
         setIsEditing(false);
-        alert('Profile updated!');
       })
       .catch(() => setLoading(false));
-    };
+  };
 
-
-  if (loading) return <div>Loading...</div>;
-
-  return (
-    <div style={{
-      maxWidth: 600,
-      margin: '0 auto',
-      padding: 24,
-      background: '#fff',
-      borderRadius: 16,
-      boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-      fontFamily: 'Segoe UI, sans-serif',
-    }}>
-      <h1 style={{ textAlign: 'center', marginBottom: 24, letterSpacing: 1 }}>My Profile</h1>
-      {!isEditing && (
-        <button
-          onClick={() => setIsEditing(true)}
-          style={{
-            marginBottom: 24,
-            float: 'right',
-            background: '#007bff',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 6,
-            padding: '8px 18px',
-            fontWeight: 500,
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(0,123,255,0.08)'
-          }}
-        >
-          Edit Profile
-        </button>
-      )}
-      <form onSubmit={handleSubmit} style={{ clear: 'both' }}>
-        <Section title="Basic Details">
-          {isEditing ? (
-            <>
-              <ProfileInput label="First Name" name="firstName" value={details.firstName} onChange={handleDetailsChange} />
-              <ProfileInput label="Last Name" name="lastName" value={details.lastName} onChange={handleDetailsChange} />
-              <ProfileInput label="Phone Number" name="phoneNumber" value={details.phoneNumber} onChange={handleDetailsChange} />
-              <ProfileInput label="Email" name="email" value={details.email} onChange={handleDetailsChange} />
-              <ProfileInput label="Address" name="address" value={details.address} onChange={handleDetailsChange} />
-              <ProfileInput label="Date of Birth" name="dob" type="date" value={details.dob} onChange={handleDetailsChange} />
-            </>
-          ) : (
-            <div>
-              <ProfileField label="First Name" value={details.firstName} />
-              <ProfileField label="Last Name" value={details.lastName} />
-              <ProfileField label="Phone Number" value={details.phoneNumber} />
-              <ProfileField label="Email" value={details.email} />
-              <ProfileField label="Address" value={details.address} />
-              <ProfileField label="Date of Birth" value={details.dob} />
-            </div>
-          )}
-        </Section>
-
-        <Section title="Social Links">
-          {isEditing ? (
-            <>
-              <ProfileInput label="Facebook" name="facebook" value={social.facebook} onChange={handleSocialChange} />
-              <ProfileInput label="GitHub" name="github" value={social.github} onChange={handleSocialChange} />
-              <ProfileInput label="LinkedIn" name="linkedin" value={social.linkedin} onChange={handleSocialChange} />
-              <ProfileInput label="Medium" name="medium" value={social.medium} onChange={handleSocialChange} />
-              <ProfileInput label="YouTube" name="youtube" value={social.youtube} onChange={handleSocialChange} />
-              <ProfileInput label="Twitter" name="twitter" value={social.twitter} onChange={handleSocialChange} />
-              <ProfileInput label="Instagram" name="instagram" value={social.instagram} onChange={handleSocialChange} />
-              <ProfileInput label="Personal Website" name="personalWebsite" value={social.personalWebsite} onChange={handleSocialChange} />
-            </>
-          ) : (
-            <div>
-              <ProfileField label="Facebook" value={social.facebook} isLink />
-              <ProfileField label="GitHub" value={social.github} isLink />
-              <ProfileField label="LinkedIn" value={social.linkedin} isLink />
-              <ProfileField label="Medium" value={social.medium} isLink />
-              <ProfileField label="YouTube" value={social.youtube} isLink />
-              <ProfileField label="Twitter" value={social.twitter} isLink />
-              <ProfileField label="Instagram" value={social.instagram} isLink />
-              <ProfileField label="Personal Website" value={social.personalWebsite} isLink />
-            </div>
-          )}
-        </Section>
-
-        {isEditing && (
-          <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
-            <button
-              type="button"
-              onClick={() => {
-                // Reset details and social to original user values and exit edit mode
-                setDetails(user.details || {});
-                setSocial(user.social || {});
-                setIsEditing(false);
-              }}
-              style={{
-                flex: 1,
-                background: '#dc3545',
-                color: '#fff',
-                border: 'none',
-                borderRadius: 6,
-                padding: '12px 0',
-                fontWeight: 600,
-                fontSize: 16,
-                cursor: 'pointer',
-                boxShadow: '0 2px 8px rgba(220,53,69,0.08)'
-              }}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              style={{
-                flex: 1,
-                background: '#28a745',
-                color: '#fff',
-                border: 'none',
-                borderRadius: 6,
-                padding: '12px 0',
-                fontWeight: 600,
-                fontSize: 16,
-                cursor: 'pointer',
-                boxShadow: '0 2px 8px rgba(40,167,69,0.08)'
-              }}
-            >
-              Save Changes
-            </button>
-            
-          </div>
-        )}
-      </form>
-    </div>
-  );
-}
-
-// Helper components
-
-function Section({ title, children }) {
-  return (
-    <section style={{ marginBottom: 28 }}>
-      <h2 style={{
-        fontSize: 20,
-        color: '#222',
-        marginBottom: 12,
-        borderBottom: '1px solid #eee',
-        paddingBottom: 6,
-        letterSpacing: 0.5
-      }}>{title}</h2>
-      {children}
-    </section>
-  );
-}
-
-function ProfileInput({ label, name, value, onChange, type = 'text' }) {
-  return (
-    <div style={{ marginBottom: 16 }}>
-      <label style={{ display: 'block', marginBottom: 4, fontWeight: 500 }}>{label}</label>
-      <input
-        type={type}
-        name={name}
-        value={value || ''}
-        onChange={onChange}
-        style={{
-          width: '100%',
-          padding: '10px',
-          border: '1px solid #ccc',
-          borderRadius: 6,
-          backgroundColor: '#fff',
-          fontSize: 15,
-        }}
-      />
-    </div>
-  );
-}
-
-function ProfileField({ label, value, isLink }) {
-  let displayValue = value || '-'; // Show '-' if value is empty
-  let link = value;
-  if (isLink && value && !/^https?:\/\//.test(value)) {
-    link = 'https://' + value;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
   }
+
   return (
-    <div style={{
-      marginBottom: 14,
-      display: 'flex',
-      alignItems: 'center',
-      gap: 12,
-      padding: '8px 0',
-      borderBottom: '1px solid #f1f1f1'
-    }}>
-      <span style={{
-        minWidth: 140,
-        color: '#666',
-        fontWeight: 500,
-        fontSize: 15,
-        letterSpacing: 0.2
-      }}>{label}:</span>
-      {isLink && value ? (
-        <a
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            color: '#007bff',
-            textDecoration: 'underline',
-            fontSize: 15,
-            wordBreak: 'break-all'
-          }}
-        >
-          {displayValue}
-        </a>
-      ) : (
-        <span style={{ color: '#222', fontSize: 15 }}>{displayValue}</span>
-      )}
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300">
+        {/* Profile Header */}
+        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-white relative">
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-2xl font-bold">
+                {details.firstName || 'Your'} {details.lastName || 'Profile'}
+              </h1>
+              <p className="text-blue-100">{details.email || 'user@example.com'}</p>
+            </div>
+            {!isEditing ? (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-all duration-200"
+              >
+                <FiEdit className="w-4 h-4" />
+                Edit Profile
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setDetails(user.details || {});
+                  setSocial(user.social || {});
+                  setIsEditing(false);
+                }}
+                className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-all duration-200"
+              >
+                <FiX className="w-4 h-4" />
+                Cancel
+              </button>
+            )}
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6">
+          {/* Personal Details Section */}
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
+              <FiUser className="w-5 h-5" />
+              Personal Details
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {isEditing ? (
+                <>
+                  <ProfileInput 
+                    label="First Name" 
+                    name="firstName" 
+                    value={details.firstName} 
+                    onChange={handleDetailsChange}
+                    icon={<FiUser />}
+                  />
+                  <ProfileInput 
+                    label="Last Name" 
+                    name="lastName" 
+                    value={details.lastName} 
+                    onChange={handleDetailsChange}
+                    icon={<FiUser />}
+                  />
+                  <ProfileInput 
+                    label="Phone Number" 
+                    name="phoneNumber" 
+                    value={details.phoneNumber} 
+                    onChange={handleDetailsChange}
+                    icon={<FiPhone />}
+                    type="tel"
+                  />
+                  <ProfileInput 
+                    label="Email" 
+                    name="email" 
+                    value={details.email} 
+                    onChange={handleDetailsChange}
+                    icon={<FiMail />}
+                    type="email"
+                  />
+                  <ProfileInput 
+                    label="Address" 
+                    name="address" 
+                    value={details.address} 
+                    onChange={handleDetailsChange}
+                    icon={<FiMapPin />}
+                  />
+                  <ProfileInput 
+                    label="Date of Birth" 
+                    name="dob" 
+                    value={details.dob} 
+                    onChange={handleDetailsChange}
+                    icon={<FiCalendar />}
+                    type="date"
+                  />
+                </>
+              ) : (
+                <>
+                  <ProfileField 
+                    label="First Name" 
+                    value={details.firstName} 
+                    icon={<FiUser className="text-blue-500" />}
+                  />
+                  <ProfileField 
+                    label="Last Name" 
+                    value={details.lastName} 
+                    icon={<FiUser className="text-blue-500" />}
+                  />
+                  <ProfileField 
+                    label="Phone Number" 
+                    value={details.phoneNumber} 
+                    icon={<FiPhone className="text-blue-500" />}
+                  />
+                  <ProfileField 
+                    label="Email" 
+                    value={details.email} 
+                    icon={<FiMail className="text-blue-500" />}
+                    isEmail
+                  />
+                  <ProfileField 
+                    label="Address" 
+                    value={details.address} 
+                    icon={<FiMapPin className="text-blue-500" />}
+                  />
+                  <ProfileField 
+                    label="Date of Birth" 
+                    value={details.dob} 
+                    icon={<FiCalendar className="text-blue-500" />}
+                  />
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Social Links Section */}
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
+              <FiGlobe className="w-5 h-5" />
+              Social Links
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {isEditing ? (
+                <>
+                  <ProfileInput 
+                    label="GitHub" 
+                    name="github" 
+                    value={social.github} 
+                    onChange={handleSocialChange}
+                    icon={<FiGithub />}
+                    placeholder="username"
+                  />
+                  <ProfileInput 
+                    label="LinkedIn" 
+                    name="linkedin" 
+                    value={social.linkedin} 
+                    onChange={handleSocialChange}
+                    icon={<FiLinkedin />}
+                    placeholder="linkedin.com/in/username"
+                  />
+                  <ProfileInput 
+                    label="Twitter" 
+                    name="twitter" 
+                    value={social.twitter} 
+                    onChange={handleSocialChange}
+                    icon={<FiTwitter />}
+                    placeholder="twitter.com/username"
+                  />
+                  <ProfileInput 
+                    label="Instagram" 
+                    name="instagram" 
+                    value={social.instagram} 
+                    onChange={handleSocialChange}
+                    icon={<FiInstagram />}
+                    placeholder="instagram.com/username"
+                  />
+                  <ProfileInput 
+                    label="YouTube" 
+                    name="youtube" 
+                    value={social.youtube} 
+                    onChange={handleSocialChange}
+                    icon={<FiYoutube />}
+                    placeholder="youtube.com/username"
+                  />
+                  <ProfileInput 
+                    label="Personal Website" 
+                    name="personalWebsite" 
+                    value={social.personalWebsite} 
+                    onChange={handleSocialChange}
+                    icon={<FiGlobe />}
+                    placeholder="example.com"
+                  />
+                </>
+              ) : (
+                <>
+                  <ProfileField 
+                    label="GitHub" 
+                    value={social.github} 
+                    icon={<FiGithub className="text-gray-700 dark:text-gray-300" />}
+                    isLink
+                    linkPrefix="https://github.com/"
+                  />
+                  <ProfileField 
+                    label="LinkedIn" 
+                    value={social.linkedin} 
+                    icon={<FiLinkedin className="text-blue-700 dark:text-blue-400" />}
+                    isLink
+                    linkPrefix="https://linkedin.com/in/"
+                  />
+                  <ProfileField 
+                    label="Twitter" 
+                    value={social.twitter} 
+                    icon={<FiTwitter className="text-blue-400" />}
+                    isLink
+                    linkPrefix="https://twitter.com/"
+                  />
+                  <ProfileField 
+                    label="Instagram" 
+                    value={social.instagram} 
+                    icon={<FiInstagram className="text-pink-600" />}
+                    isLink
+                    linkPrefix="https://instagram.com/"
+                  />
+                  <ProfileField 
+                    label="YouTube" 
+                    value={social.youtube} 
+                    icon={<FiYoutube className="text-red-600" />}
+                    isLink
+                    linkPrefix="https://youtube.com/"
+                  />
+                  <ProfileField 
+                    label="Personal Website" 
+                    value={social.personalWebsite} 
+                    icon={<FiGlobe className="text-indigo-500" />}
+                    isLink
+                  />
+                </>
+              )}
+            </div>
+          </div>
+
+          {isEditing && (
+            <div className="flex justify-end gap-4 mt-8">
+              <button
+                type="submit"
+                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200"
+              >
+                <FiSave className="w-4 h-4" />
+                Save Changes
+              </button>
+            </div>
+          )}
+        </form>
+      </div>
     </div>
   );
 }
 
+// Helper Components
+function ProfileInput({ label, name, value, onChange, type = 'text', icon, placeholder }) {
+  return (
+    <div className="relative">
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        {label}
+      </label>
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+          {icon}
+        </div>
+        <input
+          type={type}
+          name={name}
+          value={value || ''}
+          onChange={onChange}
+          placeholder={placeholder}
+          className={`w-full pl-10 pr-4 py-2 border ${value ? 'border-gray-300' : 'border-gray-200'} dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 dark:text-white`}
+        />
+      </div>
+    </div>
+  );
+}
+
+function ProfileField({ label, value, icon, isLink = false, isEmail = false, linkPrefix = '' }) {
+  let displayValue = value || 'Not provided';
+  
+  if (isLink && value) {
+    let link = value;
+    if (linkPrefix && !value.startsWith('http')) {
+      link = linkPrefix + value;
+    } else if (!value.startsWith('http')) {
+      link = 'https://' + value;
+    }
+    
+    return (
+      <div className="flex items-start gap-3">
+        <div className="mt-1">
+          {icon}
+        </div>
+        <div>
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</p>
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+          >
+            {displayValue} <FiExternalLink className="w-3 h-3" />
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  if (isEmail && value) {
+    return (
+      <div className="flex items-start gap-3">
+        <div className="mt-1">
+          {icon}
+        </div>
+        <div>
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</p>
+          <a
+            href={`mailto:${value}`}
+            className="text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            {displayValue}
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-start gap-3">
+      <div className="mt-1">
+        {icon}
+      </div>
+      <div>
+        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</p>
+        <p className={`${value ? 'text-gray-800 dark:text-gray-200' : 'text-gray-400 dark:text-gray-500'}`}>
+          {displayValue}
+        </p>
+      </div>
+    </div>
+  );
+}

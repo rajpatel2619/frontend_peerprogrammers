@@ -30,6 +30,7 @@ import Dsa from "./pages/Dsa";
 import Cp from "./pages/Cp";
 import DsaLeaderboard from "./pages/DsaLeaderboard";
 import CpLeaderboard from "./pages/CpLeaderboard";
+import MentoringBooking from "./pages/MentoringBooking";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
         <Route path="/reset-password" element={<ChangePassword />} />
         <Route path="/courses/:courseId" element={<CourseDetails />} />
         <Route path="/profiles/t/:userId" element={<UserPublicProfile />} />
+
         {/* <Route path="/profiles/teachers/:teacherId" element={TeacherPublicProfile} /> */}
         {/* Authentication routes */}
         <Route path="/login" element={<Login />} />
@@ -77,6 +79,8 @@ function App() {
 
         <Route path="/Contact" element={<Contact/>} />
         <Route path="/training" element={<Training />} />
+
+        <Route path="/mentoring" element={<MentoringBooking />} />
         
 
       </Routes>

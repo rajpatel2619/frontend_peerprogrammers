@@ -7,11 +7,11 @@ const FAQs = () => {
       items: [
         {
           q: "What is Peers Programmars?",
-          a: "Peers Programmars is an educational platform that offers curated programming and development batches for students, freshers, and professionals."
+          a: "Peers Programmars is an educational platform that unite students, freshers, and working professionals to share their knowledge. And provides you best resources to boost your learning journey."
         },
         {
-          q: "Who are the batches for?",
-          a: "Our batches are designed for BTech/BE/MCA/BCA students, aspiring developers, working professionals, and anyone passionate about coding."
+          q: "Who are the courses for?",
+          a: "Our courses are designed for students, aspiring developers, working professionals, and anyone passionate about coding."
         },
         {
           q: "Are your batches beginner-friendly?",
@@ -27,12 +27,12 @@ const FAQs = () => {
           a: "We offer courses in C++, Java, Python, JavaScript, HTML, CSS, React, Node.js, MongoDB, SQL, and more."
         },
         {
-          q: "Do your batches include real-world projects?",
+          q: "Do your courses include real-world projects?",
           a: "Yes! Every batch includes hands-on projects, assignments, and a capstone project."
         },
         {
           q: "How long does each batch run?",
-          a: "Batches typically run between 1.5 to 3 months, with fast-track options available."
+          a: "Batches typically run between 1.5 to 2 months, with fast-track options available."
         }
       ]
     },
@@ -41,7 +41,7 @@ const FAQs = () => {
       items: [
         {
           q: "Are the courses free or paid?",
-          a: "Most premium batches are paid, but we offer free demo classes and webinars."
+          a: "Most premium batches are paid, but we offer free demo sessions and webinars."
         },
         {
           q: "What payment methods are accepted?",
@@ -49,7 +49,7 @@ const FAQs = () => {
         },
         {
           q: "Is there any refund policy?",
-          a: "Yes. A 100% refund is offered within the first 3 days of the course start."
+          a: "Yes. A 100% refund is offered within the first 15 days of the course start."
         }
       ]
     },
@@ -101,7 +101,7 @@ const FAQs = () => {
       items: [
         {
           q: "How can I reach Peers Programmars?",
-          a: "Email: support@peersprogrammars.com, Instagram/YouTube: @PeersProgrammars, WhatsApp: +91-XXXXXXXXXX."
+          a: "Email: peersprogrammars@gmail.com and Instagram/YouTube: @peerprogrammers."
         },
         {
           q: "Can I join the community without enrolling?",
