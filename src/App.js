@@ -28,6 +28,8 @@ import Courses from "./pages/student/Courses";
 import CourseDashboard from "./pages/student/CourseDashboard";
 import Dsa from "./pages/Dsa";
 import Cp from "./pages/Cp";
+import DsaLeaderboard from "./pages/DsaLeaderboard";
+import CpLeaderboard from "./pages/CpLeaderboard";
 
 function App() {
   return (
@@ -40,7 +42,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/dsa" element={<Dsa />} />
+        <Route path="/dsa_leaderboard" element={<DsaLeaderboard/>} />
         <Route path="/cp51" element={<Cp />} />
+        <Route path="/cp51_leaderboard" element={<CpLeaderboard/>} />
         <Route path="/reset-password" element={<ChangePassword />} />
         <Route path="/courses/:courseId" element={<CourseDetails />} />
         <Route path="/profiles/t/:userId" element={<UserPublicProfile />} />

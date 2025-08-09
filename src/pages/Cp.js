@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { FiCheck, FiYoutube, FiGithub, FiStar, FiFilter, FiSearch } from 'react-icons/fi';
-
+import React, { useState } from 'react';
+import { FiCheck, FiYoutube, FiGithub, FiStar, FiFilter, FiSearch, FiAward } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 const CPSheet = () => {
   // Sample data structure with individual ratings
+  const navigate = useNavigate();
   const ratings = [800, 900, 1000, 1100, 1200, 1300, 1400, 1500];
   const [sheets, setSheets] = useState(
     ratings.reduce((acc, rating) => {
@@ -25,9 +26,9 @@ const CPSheet = () => {
   );
 
   const [currentRating, setCurrentRating] = useState(800);
-  const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showRevisited, setShowRevisited] = useState(false);
+  const [currentRank] = useState(42); // Sample rank data
 
   // Calculate progress
   const calculateProgress = (rating) => {
@@ -47,26 +48,7 @@ const CPSheet = () => {
       total: allProblems.length
     };
   };
-const [userRank, setUserRank] = useState(42); // Hardcoded initial rank
-const [totalUsers, setTotalUsers] = useState(1000); // Hardcoded total users
 
-useEffect(() => {
-  // Simulate rank calculation based on solved problems
-  const calculateDummyRank = () => {
-    const solved = overallProgress().solved;
-    
-    // Simple algorithm: more solved = better rank
-    // This is just an example - adjust the formula as needed
-    const newRank = Math.max(1, Math.floor(totalUsers / (solved / 10 + 1)));
-    
-    setUserRank(newRank);
-  };
-
-  calculateDummyRank();
-}, [overallProgress().solved, totalUsers]);
-
-// Calculate percentile
-const userPercentile = Math.round((userRank / totalUsers) * 100);
   // Toggle functions
   const toggleSolved = (rating, id) => {
     setSheets(prev => ({
@@ -116,65 +98,44 @@ const userPercentile = Math.round((userRank / totalUsers) * 100);
         ))}
       </div>
 
-      {/* Progress Bars and Leaderboard */}
-<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-  {/* Current Rating Progress */}
-  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-    <div className="flex justify-between mb-2">
-      <h3 className="font-medium">{currentRating} Rating Progress</h3>
-      <span>{calculateProgress(currentRating).solved}/51</span>
-    </div>
-    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
-      <div
-        className="bg-blue-500 h-4 rounded-full"
-        style={{ 
-          width: `${(calculateProgress(currentRating).solved / 51) * 100}%` 
-        }}
-      ></div>
-    </div>
-  </div>
-  
-  {/* Overall Progress */}
-  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-    <div className="flex justify-between mb-2">
-      <h3 className="font-medium">Overall Progress</h3>
-      <span>{overallProgress().solved}/{overallProgress().total}</span>
-    </div>
-    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
-      <div
-        className="bg-green-500 h-4 rounded-full"
-        style={{ 
-          width: `${(overallProgress().solved / overallProgress().total) * 100}%` 
-        }}
-      ></div>
-    </div>
-  </div>
-  
-  {/* Leaderboard Rank */}
-  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-    <div className="flex justify-between mb-2">
-      <h3 className="font-medium">Your Rank</h3>
-      <span>#{userRank}</span>
-    </div>
-    <div className="flex items-center">
-      <div className="flex-1">
-        <div className="text-sm text-gray-500 dark:text-gray-400">Solved: {overallProgress().solved}</div>
-        <div className="text-sm text-gray-500 dark:text-gray-400">Top {Math.round((userRank / totalUsers) * 100)}%</div>
-      </div>
-      {userRank <= 3 && (
-        <div className="ml-4 text-2xl">
-          {userRank === 1 && <span className="text-yellow-500">🥇</span>}
-          {userRank === 2 && <span className="text-gray-400">🥈</span>}
-          {userRank === 3 && <span className="text-amber-600">🥉</span>}
+      {/* Progress Bars */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {/* Current Rating Progress */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+          <div className="flex justify-between mb-2">
+            <h3 className="font-medium">{currentRating} Rating Progress</h3>
+            <span>{calculateProgress(currentRating).solved}/51</span>
+          </div>
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
+            <div
+              className="bg-blue-500 h-4 rounded-full"
+              style={{ 
+                width: `${(calculateProgress(currentRating).solved / 51) * 100}%` 
+              }}
+            ></div>
+          </div>
         </div>
-      )}
-    </div>
-  </div>
-</div>
+        
+        {/* Overall Progress */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+          <div className="flex justify-between mb-2">
+            <h3 className="font-medium">Overall Progress</h3>
+            <span>{overallProgress().solved}/{overallProgress().total}</span>
+          </div>
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
+            <div
+              className="bg-green-500 h-4 rounded-full"
+              style={{ 
+                width: `${(overallProgress().solved / overallProgress().total) * 100}%` 
+              }}
+            ></div>
+          </div>
+        </div>
+      </div>
 
       {/* Search and Filters */}
       <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
-        <div className="relative flex-1 max-w-md">
+        <div className="relative w-full md:w-auto md:flex-1">
           <input
             type="text"
             placeholder="Search problems..."
@@ -199,23 +160,15 @@ const userPercentile = Math.round((userRank / totalUsers) * 100);
           </button>
           
           <button
-            onClick={() => setShowLeaderboard(!showLeaderboard)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            onClick={() => navigate("/cp51_leaderboard")}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500 text-white"
+            title="View Leaderboard"
           >
-            <FiStar />
-            {showLeaderboard ? 'Hide Leaderboard' : 'Show Leaderboard'}
+            <FiAward />
+            Rank: #{currentRank}
           </button>
         </div>
       </div>
-
-      {/* Leaderboard (conditional render) */}
-      {showLeaderboard && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
-          <h2 className="text-xl font-bold mb-4">Leaderboard</h2>
-          {/* Leaderboard content would go here */}
-          <p>Leaderboard implementation would connect to your backend</p>
-        </div>
-      )}
 
       {/* Problems List */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
