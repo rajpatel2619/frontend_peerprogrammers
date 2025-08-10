@@ -1,76 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  FaBook,
-  FaHome,
-  FaAngleRight,
-  FaAngleLeft,
-} from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+  FiHome,
+  FiBook,
+  FiPlusCircle,
+  // FiChevronDown,
+  // FiChevronUp,
+  // FiUsers,
+  // FiCalendar,
+  // FiMessageSquare,
+  // FiSettings,
+  // FiAward
+} from "react-icons/fi";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const StudentSidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const StudentNavbar = () => {
+  // const [showCreateSubmenu, setShowCreateSubmenu] = useState(false);
+  const [activePath, setActivePath] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const links = [
-    { name: "Dashboard", icon: <FaHome />, path: "/student/dashboard" },
-    { name: "Courses", icon: <FaBook />, path: "/student/courses" },
+  useEffect(() => {
+    setActivePath(location.pathname);
+  }, [location]);
+
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
+  const navItems = [
+    {
+      path: "/student/dashboard",
+      icon: <FiHome className="text-lg" />,
+      label: "Dashboard",
+      color: "text-blue-500"
+    },
+    {
+      path: "/student/courses",
+      icon: <FiBook className="text-lg" />,
+      label: "My Courses",
+      color: "text-green-500"
+    }
   ];
 
   return (
-    <div className="relative">
-      {/* Arrow Button peeking from left */}
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed top-20 left-0 z-50 bg-blue-600 text-white p-2 rounded-r-full shadow transform -translate-x-1/4"
-        >
-          <FaAngleRight className="text-xl" />
-        </button>
-      )}
-
-      {/* Backdrop */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-
-      {/* Sidebar Panel */}
-      <div
-        className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 bg-white dark:bg-black text-gray-800 dark:text-white shadow-lg z-50 transform transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        {/* Close Button (Arrow Left) */}
-        <div className="flex justify-end p-4">
-          <button
-            onClick={() => setIsOpen(false)}
-            className="text-gray-600 dark:text-gray-300 text-2xl"
-          >
-            <FaAngleLeft />
-          </button>
+    <div className="fixed top-15 left-0 right-0 z-40 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-self-center h-16">
+      {/* Scrollable Navigation */}
+      <div className="flex-1 overflow-x-auto scrollbar-hide">
+        <div className="flex items-center space-x-4 min-w-max">
+          {navItems.map((item) => {
+            // Calculate approximate width based on text length
+            const textWidth = `min-w-[${item.label.length * 8 + 40}px]`;
+            
+            return (
+              <button
+                key={item.path}
+                onClick={() => handleNavigate(item.path)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${textWidth} ${
+                  activePath === item.path
+                    ? "bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 font-medium"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
+              >
+                <span className={item.color}>{item.icon}</span>
+                <span className="whitespace-nowrap">{item.label}</span>
+              </button>
+            );
+          })}
         </div>
-
-        {/* Navigation Links */}
-        <nav className="p-4 space-y-2">
-          {links.map((link) => (
-            <button
-              key={link.name}
-              onClick={() => {
-                navigate(link.path);
-                setIsOpen(false);
-              }}
-              className="flex items-center gap-3 w-full px-4 py-2 rounded-md hover:bg-blue-600 hover:text-white transition"
-            >
-              {link.icon}
-              {link.name}
-            </button>
-          ))}
-        </nav>
       </div>
     </div>
+  </div>
+</div>
   );
 };
 
-export default StudentSidebar;
+export default StudentNavbar;

@@ -3,18 +3,12 @@ import {
   FiHome,
   FiBook,
   FiPlusCircle,
-  FiChevronDown,
-  FiChevronUp,
-  FiUsers,
-  FiCalendar,
-  FiMessageSquare,
-  FiSettings,
-  FiAward
+  
 } from "react-icons/fi";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const TeacherNavbar = () => {
-  const [showCreateSubmenu, setShowCreateSubmenu] = useState(false);
+  // const [showCreateSubmenu, setShowCreateSubmenu] = useState(false);
   const [activePath, setActivePath] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,40 +39,7 @@ const TeacherNavbar = () => {
       icon: <FiPlusCircle className="text-orange-500 text-lg" />,
       label: "Create",
       color: "text-green-500"
-    },
-    // {
-    //   path: "/teacher/students",
-    //   icon: <FiUsers className="text-lg" />,
-    //   label: "Students",
-    //   color: "text-purple-500"
-    // },
-    // {
-    //   path: "/teacher/schedule",
-    //   icon: <FiCalendar className="text-lg" />,
-    //   label: "Schedule",
-    //   color: "text-yellow-500"
-    // },
-    // {
-    //   path: "/teacher/messages",
-    //   icon: <FiMessageSquare className="text-lg" />,
-    //   label: "Messages",
-    //   color: "text-pink-500"
-    // }
-  ];
-
-  const createMenuItems = [
-    {
-      path: "/teacher/courses/new/individual",
-      label: "For Individuals"
-    },
-    // {
-    //   path: "/teacher/courses/new/group",
-    //   label: "For Groups"
-    // },
-    // {
-    //   path: "/teacher/courses/new/workshop",
-    //   label: "Workshop"
-    // }
+    }
   ];
 
   return (

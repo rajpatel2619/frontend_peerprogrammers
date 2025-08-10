@@ -100,8 +100,8 @@ useEffect(() => {
   };
 
   const handleView = (courseId) => {
-    // window.open(`/courses/${courseId}`, '_blank');
-    window.open("/courses/101", '_blank');
+    window.open(`/courses/${courseId}`, '_blank');
+    // window.open("/courses/101", '_blank');
   };
 
  const handlePublish = async (userId, courseId, isPublished) => {
