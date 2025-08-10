@@ -31,6 +31,7 @@ import Cp from "./pages/Cp";
 import DsaLeaderboard from "./pages/DsaLeaderboard";
 import CpLeaderboard from "./pages/CpLeaderboard";
 import MentoringBooking from "./pages/MentoringBooking";
+import ModeratorDashboard from "./pages/moderator/ModeratorDashboard";
 
 function App() {
   return (
@@ -68,6 +69,8 @@ function App() {
         <Route path="/teacher/courses/edit/individual/:courseId" element={<CreateCourseIndividual />} />
         <Route path="/otp-verification" element={<OtpVerification />} />
 
+        {/* Moderator routes */}
+        <Route path="/moderator/dashboard" element={<ModeratorDashboard />} />
 
         {/* Home route */}
         <Route path="/CourseTabs" element={<CourseTabs />} />

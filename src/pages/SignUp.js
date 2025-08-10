@@ -10,7 +10,7 @@ export default function SignUp() {
   const [phone_number, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [repassword, setRepassword] = useState('');
-  const [accountType, setAccountType] = useState('');
+  // const [accountType, setAccountType] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -30,10 +30,10 @@ export default function SignUp() {
       return;
     }
 
-    if (!accountType) {
-      setError("Please select an account type.");
-      return;
-    }
+    // if (!accountType) {
+    //   setError("Please select an account type.");
+    //   return;
+    // }
 
     try {
       const response = await fetch(`${API}/temp-signup`, {
@@ -46,7 +46,7 @@ export default function SignUp() {
           phone_number,
           password,
           repassword,
-          accountType
+          // accountType
         }),
       });
 
@@ -116,7 +116,7 @@ export default function SignUp() {
               <input type="password" value={repassword} onChange={(e) => setRepassword(e.target.value)} required className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600" />
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Prefered Account</label>
               <select
                 value={accountType}
@@ -128,7 +128,7 @@ export default function SignUp() {
                 <option value="student">Student</option>
                 <option value="teacher">Mentor</option>
               </select>
-            </div>
+            </div> */}
 
             <button type="submit" className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium shadow">Sign Up</button>
           </form>

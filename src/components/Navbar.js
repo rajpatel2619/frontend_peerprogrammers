@@ -93,48 +93,15 @@ export default function Navbar() {
 
         {/* Right: Desktop Navigation */}
         <div className="hidden md:flex items-center gap-1 ml-auto">
-          <button 
-            onClick={() => navigate("/")} 
-            className={isActive("/") ? activeNavBtn : navBtn}
-          >
-            <HiHome size={18} /> Home
-          </button>
-          <button 
-            onClick={() => navigate("/resources")} 
-            className={isActive("/resources") ? activeNavBtn : navBtn}
-          >
-            <HiBookOpen size={18} /> Resources
-          </button>
-          <button 
-            onClick={() => navigate("/dsa")} 
-            className={isActive("/dsa") ? activeNavBtn : navBtn}
-          >
-            <HiBookOpen size={18} /> DSA
-          </button>
-          <button 
-            onClick={() => navigate("/cp51")} 
-            className={isActive("/cp51") ? activeNavBtn : navBtn}
-          >
-            <HiBookOpen size={18} /> CP
-          </button>
-          <button 
-            onClick={() => navigate("/training")} 
-            className={isActive("/training") ? activeNavBtn : navBtn}
-          >
-            <HiAcademicCap size={18} /> Courses
-          </button>
-          <button 
-            onClick={() => navigate("/contact")} 
-            className={isActive("/contact") ? activeNavBtn : navBtn}
-          >
-            <HiMail size={18} /> Contact
-          </button>
+          <button onClick={() => navigate("/")} className={isActive("/") ? activeNavBtn : navBtn}><HiHome size={18} /> Home</button>
+          <button onClick={() => navigate("/resources")} className={isActive("/resources") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> Resources</button>
+          <button onClick={() => navigate("/dsa")} className={isActive("/dsa") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> DSA</button>
+          <button onClick={() => navigate("/cp51")} className={isActive("/cp51") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> CP</button>
+          <button onClick={() => navigate("/training")} className={isActive("/training") ? activeNavBtn : navBtn}><HiAcademicCap size={18} /> Courses</button>
+          <button onClick={() => navigate("/contact")} className={isActive("/contact") ? activeNavBtn : navBtn}><HiMail size={18} /> Contact</button>
 
           {!token && (
-            <button 
-              onClick={() => navigate("/login")} 
-              className="ml-2 px-4 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-md hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow hover:shadow-md"
-            >
+            <button onClick={() => navigate("/login")} className="ml-2 px-4 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-md hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow hover:shadow-md">
               Login
             </button>
           )}
@@ -146,19 +113,13 @@ export default function Navbar() {
                 className="flex items-center gap-2 rounded-full overflow-hidden focus:outline-none transition-all duration-300 hover:ring-2 hover:ring-blue-500 px-1 py-1 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
               >
                 {user.avatar ? (
-                  <img 
-                    src={user.avatar} 
-                    alt={user.name} 
-                    className="h-8 w-8 rounded-full object-cover border-2 border-blue-500/30" 
-                  />
+                  <img src={user.avatar} alt={user.name} className="h-8 w-8 rounded-full object-cover border-2 border-blue-500/30" />
                 ) : (
                   <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center border-2 border-blue-500/30">
                     <HiOutlineUserCircle size={24} className="text-blue-600 dark:text-blue-400" />
                   </div>
                 )}
-                <span className="hidden lg:inline font-medium">
-                  {user.name || "Account"}
-                </span>
+                <span className="hidden lg:inline font-medium">{user.name || "Account"}</span>
               </button>
               {showDropdown && (
                 <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg z-50 border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -166,31 +127,22 @@ export default function Navbar() {
                     <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email || "No email"}</p>
                   </div>
                   <div className="py-1">
-                    <button 
-                      onClick={() => { setShowDropdown(false); navigate("/student/dashboard"); }} 
-                      className={profileDropdownBtn}
-                    >
-                      <HiOutlineUserGroup size={18} />
-                      Student Dashboard
+                    <button onClick={() => { setShowDropdown(false); navigate("/student/dashboard"); }} className={profileDropdownBtn}>
+                      <HiOutlineUserGroup size={18} /> Student Dashboard
                     </button>
-                    <button 
-                      onClick={() => { setShowDropdown(false); navigate("/teacher/dashboard"); }} 
-                      className={profileDropdownBtn}
-                    >
-                      <HiOutlinePresentationChartLine size={18} />
-                      Teacher Dashboard
+                    <button onClick={() => { setShowDropdown(false); navigate("/teacher/dashboard"); }} className={profileDropdownBtn}>
+                      <HiOutlinePresentationChartLine size={18} /> Teacher Dashboard
                     </button>
+                    {user.userType === "moderator" && (
+                      <button onClick={() => { setShowDropdown(false); navigate("/moderator/dashboard"); }} className={profileDropdownBtn}>
+                        <HiOutlinePresentationChartLine size={18} /> Moderator Dashboard
+                      </button>
+                    )}
                     <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
-                    <button 
-                      onClick={() => { setShowDropdown(false); navigate("/profile"); }} 
-                      className={profileDropdownBtn}
-                    >
+                    <button onClick={() => { setShowDropdown(false); navigate("/profile"); }} className={profileDropdownBtn}>
                       <HiOutlineUser size={18} /> My Profile
                     </button>
-                    <button 
-                      onClick={() => { setShowDropdown(false); handleLogout(); }} 
-                      className={logoutBtn}
-                    >
+                    <button onClick={() => { setShowDropdown(false); handleLogout(); }} className={logoutBtn}>
                       <HiOutlineLogout size={18} /> Sign Out
                     </button>
                   </div>
@@ -202,82 +154,36 @@ export default function Navbar() {
 
         {/* Mobile Hamburger */}
         <div className="md:hidden">
-          <button
-            onClick={() => setMobileMenuOpen(true)}
-            className="text-gray-700 dark:text-gray-300 focus:outline-none hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
-          >
+          <button onClick={() => setMobileMenuOpen(true)} className="text-gray-700 dark:text-gray-300 focus:outline-none hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
             <HiMenu size={26} />
           </button>
         </div>
       </nav>
 
       {/* Mobile Menu */}
-      <div
-        className={`fixed inset-0 z-50 transform transition-all duration-300 ease-in-out ${
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div 
-          className={`absolute inset-0 bg-black/50 dark:bg-black/70 ${mobileMenuOpen ? "opacity-100" : "opacity-0"}`}
-          onClick={() => setMobileMenuOpen(false)}
-        />
+      <div className={`fixed inset-0 z-50 transform transition-all duration-300 ease-in-out ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
+        <div className={`absolute inset-0 bg-black/50 dark:bg-black/70 ${mobileMenuOpen ? "opacity-100" : "opacity-0"}`} onClick={() => setMobileMenuOpen(false)} />
         <div className="absolute top-0 right-0 w-72 h-full bg-white dark:bg-gray-900 shadow-xl flex flex-col">
           <div className="flex justify-between items-center px-4 py-3 border-b border-gray-300 dark:border-gray-700">
             <div className="flex items-center gap-2">
               <img src={logo} alt="Logo" className="h-8 w-8" />
               <span className="font-bold text-lg text-gray-900 dark:text-white">Peer Programmers</span>
             </div>
-            <button 
-              onClick={() => setMobileMenuOpen(false)} 
-              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
-            >
+            <button onClick={() => setMobileMenuOpen(false)} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
               <HiX size={24} />
             </button>
           </div>
 
           <div className="flex flex-col gap-1 p-2 overflow-y-auto flex-grow">
-            <button 
-              onClick={() => { navigate("/"); setMobileMenuOpen(false); }} 
-              className={isActive("/") ? activeNavBtn : navBtn}
-            >
-              <HiHome size={18} /> Home
-            </button>
-            <button 
-              onClick={() => { navigate("/resources"); setMobileMenuOpen(false); }} 
-              className={isActive("/resources") ? activeNavBtn : navBtn}
-            >
-              <HiBookOpen size={18} /> Resources
-            </button>
-            <button 
-              onClick={() => { navigate("/dsa"); setMobileMenuOpen(false); }} 
-              className={isActive("/dsa") ? activeNavBtn : navBtn}
-            >
-              <HiBookOpen size={18} /> DSA
-            </button>
-            <button 
-              onClick={() => { navigate("/cp51"); setMobileMenuOpen(false); }} 
-              className={isActive("/cp51") ? activeNavBtn : navBtn}
-            >
-              <HiBookOpen size={18} /> CP
-            </button>
-            <button 
-              onClick={() => { navigate("/training"); setMobileMenuOpen(false); }} 
-              className={isActive("/training") ? activeNavBtn : navBtn}
-            >
-              <HiAcademicCap size={18} /> Courses
-            </button>
-            <button 
-              onClick={() => { navigate("/contact"); setMobileMenuOpen(false); }} 
-              className={isActive("/contact") ? activeNavBtn : navBtn}
-            >
-              <HiMail size={18} /> Contact
-            </button>
+            <button onClick={() => { navigate("/"); setMobileMenuOpen(false); }} className={isActive("/") ? activeNavBtn : navBtn}><HiHome size={18} /> Home</button>
+            <button onClick={() => { navigate("/resources"); setMobileMenuOpen(false); }} className={isActive("/resources") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> Resources</button>
+            <button onClick={() => { navigate("/dsa"); setMobileMenuOpen(false); }} className={isActive("/dsa") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> DSA</button>
+            <button onClick={() => { navigate("/cp51"); setMobileMenuOpen(false); }} className={isActive("/cp51") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> CP</button>
+            <button onClick={() => { navigate("/training"); setMobileMenuOpen(false); }} className={isActive("/training") ? activeNavBtn : navBtn}><HiAcademicCap size={18} /> Courses</button>
+            <button onClick={() => { navigate("/contact"); setMobileMenuOpen(false); }} className={isActive("/contact") ? activeNavBtn : navBtn}><HiMail size={18} /> Contact</button>
 
             {!token && (
-              <button 
-                onClick={() => { navigate("/login"); setMobileMenuOpen(false); }} 
-                className="mt-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-md hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow hover:shadow-md"
-              >
+              <button onClick={() => { navigate("/login"); setMobileMenuOpen(false); }} className="mt-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-md hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow hover:shadow-md">
                 Login
               </button>
             )}
@@ -287,11 +193,7 @@ export default function Navbar() {
             <div className="border-t border-gray-300 dark:border-gray-700 p-4">
               <div className="flex items-center gap-3 mb-3">
                 {user.avatar ? (
-                  <img 
-                    src={user.avatar} 
-                    alt={user.name} 
-                    className="h-10 w-10 rounded-full object-cover border-2 border-blue-500/30" 
-                  />
+                  <img src={user.avatar} alt={user.name} className="h-10 w-10 rounded-full object-cover border-2 border-blue-500/30" />
                 ) : (
                   <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center border-2 border-blue-500/30">
                     <HiOutlineUserCircle size={26} className="text-blue-600 dark:text-blue-400" />
@@ -303,29 +205,22 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="grid grid-cols-1 gap-1">
-                <button 
-                  onClick={() => { navigate("/student/dashboard"); setMobileMenuOpen(false); }} 
-                  className={profileDropdownBtn}
-                >
+                <button onClick={() => { navigate("/student/dashboard"); setMobileMenuOpen(false); }} className={profileDropdownBtn}>
                   <HiOutlineUserGroup size={18} /> Student Dashboard
                 </button>
-                <button 
-                  onClick={() => { navigate("/teacher/dashboard"); setMobileMenuOpen(false); }} 
-                  className={profileDropdownBtn}
-                >
+                <button onClick={() => { navigate("/teacher/dashboard"); setMobileMenuOpen(false); }} className={profileDropdownBtn}>
                   <HiOutlinePresentationChartLine size={18} /> Teacher Dashboard
                 </button>
+                {user.userType === "moderator" && (
+                  <button onClick={() => { navigate("/moderator/dashboard"); setMobileMenuOpen(false); }} className={profileDropdownBtn}>
+                    <HiOutlinePresentationChartLine size={18} /> Moderator Dashboard
+                  </button>
+                )}
                 <div className="border-t border-gray-300 dark:border-gray-700 my-1"></div>
-                <button 
-                  onClick={() => { navigate("/profile"); setMobileMenuOpen(false); }} 
-                  className={profileDropdownBtn}
-                >
+                <button onClick={() => { navigate("/profile"); setMobileMenuOpen(false); }} className={profileDropdownBtn}>
                   <HiOutlineUser size={18} /> My Profile
                 </button>
-                <button 
-                  onClick={() => { handleLogout(); setMobileMenuOpen(false); }} 
-                  className={logoutBtn}
-                >
+                <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className={logoutBtn}>
                   <HiOutlineLogout size={18} /> Sign Out
                 </button>
               </div>

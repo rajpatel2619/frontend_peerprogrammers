@@ -28,6 +28,7 @@ export default function Login() {
       });
 
       const data = await response.json();
+      console.log(data.user);
 
       if (!response.ok) {
         throw new Error(data.detail || 'Invalid email or password');

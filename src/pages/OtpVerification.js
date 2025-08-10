@@ -59,13 +59,15 @@ export default function OtpVerification() {
       sessionStorage.setItem("preferredAccount", user.preferredAccount);
 
       // Navigate based on preferred account type
-      if (user.preferredAccount == 'teacher') {
-        navigate('/teacher/dashboard');
-      } else if (user.preferredAccount == 'student') {
-        navigate('/student/dashboard');
-      } else {
-        setError("Unknown account type. Contact support.");
-      }
+      // if (user.preferredAccount == 'teacher') {
+      //   navigate('/teacher/dashboard');
+      // } else if (user.preferredAccount == 'student') {
+      //   navigate('/student/dashboard');
+      // } else {
+      //   setError("Unknown account type. Contact support.");
+      // }
+
+      navigate('/student/dashboard');
 
     } catch (err) {
       setError(err.message);
