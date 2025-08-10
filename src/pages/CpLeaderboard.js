@@ -1,25 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 function CpLeaderboard() {
-  // Sample leaderboard data
-  const leaderboardData = [
-    { id: 1, name: "Alice", problemsSolved: 185, rank: 1 },
-    { id: 2, name: "Bob", problemsSolved: 142, rank: 2 },
-    { id: 3, name: "Charlie", problemsSolved: 128, rank: 3 },
-    { id: 4, name: "David", problemsSolved: 95, rank: 4 },
-    { id: 5, name: "Eve", problemsSolved: 78, rank: 5 },
-    { id: 6, name: "Frank", problemsSolved: 65, rank: 6 },
-    { id: 7, name: "Grace", problemsSolved: 52, rank: 7 },
-    { id: 8, name: "Hank", problemsSolved: 38, rank: 8 },
-    { id: 9, name: "Ivy", problemsSolved: 25, rank: 9 },
-    { id: 10, name: "Jack", problemsSolved: 12, rank: 10 },
-  ];
-
-  // Calculate totals
-  const totalUsers = leaderboardData.length;
-  const totalProblems = 51 * 9; // 9 ratings × 51 problems each
-  const totalSolved = leaderboardData.reduce((sum, user) => sum + user.problemsSolved, 0);
-  const averageSolved = Math.round(totalSolved / totalUsers);
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalProblems, setTotalProblems] = useState(0);
+  const [averageSolved, setAverageSolved] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   // Function to determine title with icons
   const getTitle = (solved) => {
@@ -42,6 +28,32 @@ function CpLeaderboard() {
     if (rank <= 50) return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300";
     return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300";
   };
+
+  useEffect(() => {
+    async function fetchLeaderboard() {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API}/ladders/cp51/leaderboard`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        setLeaderboardData(data.leaderboard.map(user => ({
+          id: user.rank,
+          name: user.user,
+          problemsSolved: user.problems_solved,
+          rank: user.rank,
+        })));
+        setTotalUsers(data.total_users);
+        setTotalProblems(data.total_problems);
+        setAverageSolved(data.average_solved);
+      } catch (error) {
+        console.error("Failed to fetch leaderboard:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchLeaderboard();
+  }, []);
+
+  if (loading) return <div className="text-center p-4">Loading leaderboard...</div>;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -130,7 +142,7 @@ function CpLeaderboard() {
       </div>
 
       <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-        Updated: {new Date().toLocaleDateString()} • Total problems solved by all users: {totalSolved}
+        Updated: {new Date().toLocaleDateString()} • Total problems solved by all users: {leaderboardData.reduce((sum, u) => sum + u.problemsSolved, 0)}
       </div>
     </div>
   );
