@@ -31,7 +31,10 @@ import Cp from "./pages/Cp";
 import DsaLeaderboard from "./pages/DsaLeaderboard";
 import CpLeaderboard from "./pages/CpLeaderboard";
 import MentoringBooking from "./pages/MentoringBooking";
-import ModeratorDashboard from "./pages/moderator/ModeratorDashboard";
+import DSAQuestionsPage from "./pages/moderator/ModeratorDsa";
+import ModeratorCp from "./pages/moderator/ModeratorCp";
+import ModeratorResources from "./pages/moderator/ModeratorResources";
+import ModeratorCources from "./pages/moderator/ModeratorCources";
 
 function App() {
   return (
@@ -70,7 +73,10 @@ function App() {
         <Route path="/otp-verification" element={<OtpVerification />} />
 
         {/* Moderator routes */}
-        <Route path="/moderator/dashboard" element={<ModeratorDashboard />} />
+        <Route path="/moderator/dsaquestion" element={<DSAQuestionsPage />} />
+        <Route path="/moderator/cpquestion" element={<ModeratorCp />} />
+        <Route path="/moderator/mod_resources" element={<ModeratorResources />} />
+        <Route path="/moderator/mod_cources" element={<ModeratorCources />} />
 
         {/* Home route */}
         <Route path="/CourseTabs" element={<CourseTabs />} />

@@ -134,7 +134,7 @@ export default function Navbar() {
                       <HiOutlinePresentationChartLine size={18} /> Teacher Dashboard
                     </button>
                     {user.userType === "moderator" && (
-                      <button onClick={() => { setShowDropdown(false); navigate("/moderator/dashboard"); }} className={profileDropdownBtn}>
+                      <button onClick={() => { setShowDropdown(false); navigate("/moderator/dsaquestion"); }} className={profileDropdownBtn}>
                         <HiOutlinePresentationChartLine size={18} /> Moderator Dashboard
                       </button>
                     )}

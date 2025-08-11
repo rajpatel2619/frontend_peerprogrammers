@@ -23,42 +23,42 @@ const ModeratorNavbar = () => {
   };
 
   const navItems = [
+    // {
+    //   path: "/moderator/dashboard",
+    //   icon: <FiHome className="text-lg" />,
+    //   label: "Dashboard",
+    //   color: "text-blue-500"
+    // },
     {
-      path: "/moderator/dashboard",
-      icon: <FiHome className="text-lg" />,
-      label: "Dashboard",
-      color: "text-blue-500"
-    },
-    {
-      path: "/moderator/add-dsa-question",
+      path: "/moderator/dsaquestion",
       icon: <FiCode className="text-lg" />,
       label: "DSA Questions",
       color: "text-purple-500"
     },
     {
-      path: "/moderator/add-cp-question",
+      path: "/moderator/cpquestion",
       icon: <FiCpu className="text-lg" />,
       label: "CP Questions",
       color: "text-yellow-500"
     },
     {
-      path: "/moderator/add-resource",
+      path: "/moderator/mod_resources",
       icon: <FiFileText className="text-lg" />,
       label: "Resources",
       color: "text-red-500"
     },
     {
-      path: "/moderator/add-course",
+      path: "/moderator/mod_cources",
       icon: <FiBookOpen className="text-lg" />,
       label: "Courses",
       color: "text-indigo-500"
     },
-    {
-      path: "/student/courses",
-      icon: <FiBook className="text-lg" />,
-      label: "My Courses",
-      color: "text-green-500"
-    }
+    // {
+    //   path: "/student/courses",
+    //   icon: <FiBook className="text-lg" />,
+    //   label: "My Courses",
+    //   color: "text-green-500"
+    // }
   ];
 
   return (
