@@ -27,12 +27,46 @@ const Contact = () => {
     }
   }, [darkMode]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission here
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API}/contact_us/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: formData.name,
+        email: formData.email,
+        inquiry_type: formData.type, // matches backend field
+        subject: formData.subject,
+        message: formData.message
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || "Failed to send message");
+    }
+
+    // Success
     setIsSubmitted(true);
+    setFormData({
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+      type: "general"
+    });
     setTimeout(() => setIsSubmitted(false), 3000);
-  };
+
+  } catch (error) {
+    console.error("Error submitting contact form:", error);
+    alert("Something went wrong while sending your message. Please try again later.");
+  }
+};
+
 
   const handleChange = (e) => {
     setFormData(prev => ({
