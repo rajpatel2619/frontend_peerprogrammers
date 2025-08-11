@@ -62,7 +62,7 @@ const ModeratorNavbar = () => {
   ];
 
   return (
-    <div className="fixed top-15 left-0 right-0 z-40 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+    <div className="fixed left-0 right-0 z-40 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-self-center h-16">
           {/* Scrollable Navigation */}
