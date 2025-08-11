@@ -198,8 +198,7 @@ export default function CreateCoursePage() {
           creator_ids: creatorIds,
           domain_ids: domainIds,
           syllabus_link: "",
-          syllausContent: "",
-          modules: JSON.stringify(modules)
+          syllausContent: JSON.stringify(modules)
         };
 
         const formData = new FormData();
