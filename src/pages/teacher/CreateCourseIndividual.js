@@ -89,6 +89,7 @@ export default function CreateCoursePage() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
+          console.log(data)
           setCourseData(data.course);
         } else {
           console.error("Failed to load course:", data.detail);
@@ -222,7 +223,6 @@ export default function CreateCoursePage() {
         formData.append("end_date", endDate || "");
         formData.append("description", description || "");
         formData.append("lecture_link", lectureLink || "");
-        formData.append("syllabus_content", "");
         formData.append("price", price || 0);
         formData.append("is_published", true);
         formData.append("is_extra_registration", false);
@@ -231,11 +231,14 @@ export default function CreateCoursePage() {
         formData.append("co_mentor_ids", creatorIds.join(","));
         formData.append("creator_ids", creatorIds.join(","));
         formData.append("domain_ids", domainIds.join(","));
-        formData.append("modules", JSON.stringify(modules));
+        formData.append("syllabus_content", JSON.stringify(modules));
         if (coverPhoto) formData.append("cover_photo", coverPhoto);
         if (syllabusFile) formData.append("syllabus_file", syllabusFile);
 
-        response = await fetch(url, {
+       console.log(Object.fromEntries(formData.entries()));
+
+
+        response = await fetch(url , {
           method,
           headers: {
             Authorization: `Bearer ${token}`,

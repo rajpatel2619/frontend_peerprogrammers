@@ -16,38 +16,66 @@ const CPSheet = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showRevisited, setShowRevisited] = useState(false);
   const [currentRank, setCurrentRank] = useState(null);
+  const [cfHandle, setCFHandle] = useState('');
+  const [totalProgress, setTotalProgress] = useState({ solved: 0, total: 0 });
 
 
-  useEffect(() => {
-    async function fetchLadders() {
-      try {
-        const res = await fetch(`${API_BASE}/ladders/`);
-        const data = await res.json();
-        setLadders(data);
-        setRatings(data.map(l => l.rating_range));
-      } catch (err) {
-        console.error("Failed to fetch ladders:", err);
+  // Connect CF handle
+  const connectCodeforces = async () => {
+    if (!cfHandle.trim()) return alert("Please enter your Codeforces username.");
+
+    try {
+      const form = new FormData();
+      form.append("user_id", USER_ID);
+      form.append("codeforces_handle", cfHandle);
+
+      const res = await fetch(`${API_BASE}/ladders/profile`, { method: "POST", body: form });
+      const result = await res.json();
+
+      if (res.ok) {
+        alert("Codeforces connected successfully!");
+        setCFHandle(cfHandle); // Update UI immediately
+      } else {
+        alert(result.detail || "Failed to connect Codeforces");
       }
+    } catch (err) {
+      console.error("Error connecting to Codeforces:", err);
     }
+  };
+
+  // Fetch CP profile for CF handle
+  useEffect(() => {
+  if (!USER_ID) return;
+  async function fetchCPProfile() {
+    try {
+      const res = await fetch(`${API_BASE}/ladders/profile/${USER_ID}`);
+      if (!res.ok) throw new Error("Failed to fetch CP profile");
+      const data = await res.json();
+      if (data.codeforces_handle) setCFHandle(data.codeforces_handle);
+      setTotalProgress(data.overall_progress); // direct from backend
+    } catch (err) {
+      console.error("Error fetching CP profile:", err);
+    }
+  }
+  fetchCPProfile();
+}, [USER_ID]);
+
+
+  // Fetch ladders & rank
+  useEffect(() => {
     async function fetchLaddersAndRank() {
       try {
-        // Step 1: Fetch ladder list
         const res = await fetch(`${API_BASE}/ladders/`);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         setLadders(data);
         setRatings(data.map(l => l.rating_range));
 
-        // Step 2: Fetch current user's rank
         if (USER_ID) {
-          const rankRes = await fetch(
-            `${API_BASE}/ladders/cp51/leaderboard/user/${USER_ID}/rank`
-          );
+          const rankRes = await fetch(`${API_BASE}/ladders/cp51/leaderboard/user/${USER_ID}/rank`);
           if (rankRes.ok) {
             const rankData = await rankRes.json();
-            setCurrentRank(rankData.rank ?? "—"); // Use "—" if no rank
-          } else {
-            console.warn("Failed to fetch user rank");
+            setCurrentRank(rankData.rank ?? "—");
           }
         }
       } catch (err) {
@@ -55,57 +83,64 @@ const CPSheet = () => {
       }
     }
     fetchLaddersAndRank();
-    fetchLadders();
-  }, []);
+  }, [USER_ID]);
 
+  // Fetch problems for selected ladder
   useEffect(() => {
     if (!currentRating) return;
     const ladderObj = ladders.find(l => l.rating_range === currentRating);
     if (!ladderObj) return;
 
-    fetch(`${API_BASE}/ladders/${ladderObj.id}/problems`)
-      .then(res => res.json())
-      .then(ladderData => {
-        const allProblems = ladderData.problems.map(p => {
+    const fetchData = async () => {
+      try {
+        const ladderRes = await fetch(`${API_BASE}/ladders/${ladderObj.id}/problems`);
+        const ladderData = await ladderRes.json();
+
+        let allProblems = ladderData.problems.map(p => {
           let structuredSolutions = { youtube: { english: '', hindi: '' }, github: '' };
-          if (Array.isArray(p.solutions)) {
-            p.solutions.forEach(s => {
-              if (s.platform.toLowerCase() === 'github') structuredSolutions.github = s.link;
-              if (s.platform.toLowerCase() === 'youtube hindi') structuredSolutions.youtube.hindi = s.link;
-              if (s.platform.toLowerCase() === 'youtube english') structuredSolutions.youtube.english = s.link;
-            });
-          }
-          return { ...p, title: p.problem_name, link: p.problem_url, solved: false, revisited: false, solutions: structuredSolutions };
+          p.solutions?.forEach(s => {
+            if (s?.platform === 'github') structuredSolutions.github = s.link;
+            if (s?.platform === 'youtube hindi') structuredSolutions.youtube.hindi = s.link;
+            if (s?.platform === 'youtube english') structuredSolutions.youtube.english = s.link;
+          });
+
+          return {
+            ...p,
+            title: p.problem_name,
+            link: p.problem_url,
+            solved: false,
+            revisited: false,
+            solutions: structuredSolutions
+          };
         });
+
+        const [solvedRes, revisitRes] = await Promise.all([
+          fetch(`${API_BASE}/ladders/${ladderObj.id}/user/${USER_ID}/completed`),
+          fetch(`${API_BASE}/ladders/${ladderObj.id}/user/${USER_ID}/revisited`)
+        ]);
+
+        const solvedData = await solvedRes.json();
+        const revisitData = await revisitRes.json();
+
+        const solvedSet = new Set((solvedData ?? []).map(p => p.id));
+        const revisitSet = new Set((revisitData ?? []).map(p => p.id));
+
+        allProblems = allProblems.map(p => ({
+          ...p,
+          solved: solvedSet.has(p.id),
+          revisited: revisitSet.has(p.id)
+        }));
+
         setSheets(prev => ({ ...prev, [currentRating]: allProblems }));
+      } catch (e) {
+        console.error("Error loading ladder problems:", e);
+      }
+    };
 
-        fetch(`${API_BASE}/ladders/${ladderObj.id}/user/${USER_ID}/completed`)
-          .then(res => res.json())
-          .then(solvedData => {
-            const solvedSet = new Set(solvedData?.map(p => p.id));
-            setSheets(prev => ({
-              ...prev,
-              [currentRating]: (prev[currentRating] || []).map(p =>
-                solvedSet.has(p.id) ? { ...p, solved: true } : p
-              )
-            }));
-          });
-
-        fetch(`${API_BASE}/ladders/${ladderObj.id}/user/${USER_ID}/revisited`)
-          .then(res => res.json())
-          .then(revisitData => {
-            const revisitSet = new Set(revisitData?.map(p => p.id));
-            setSheets(prev => ({
-              ...prev,
-              [currentRating]: (prev[currentRating] || []).map(p =>
-                revisitSet.has(p.id) ? { ...p, revisited: true } : p
-              )
-            }));
-          });
-      })
-      .catch(e => console.error("Error loading ladder problems:", e));
+    fetchData();
   }, [currentRating, ladders]);
 
+  // Progress calculation
   const calculateProgress = (rating) => {
     const problems = sheets[rating] || [];
     const solved = problems.filter(p => p.solved).length;
@@ -118,24 +153,28 @@ const CPSheet = () => {
     return { solved, total: allProblems.length };
   };
 
-  const toggleSolved = async (rating, id) => {
-    setSheets(prev => ({
-      ...prev,
-      [rating]: prev[rating].map(problem =>
-        problem.id === id ? { ...problem, solved: !problem.solved } : problem
-      )
-    }));
-    const problem = sheets[rating].find(p => p.id === id);
-    try {
-      await fetch(
-        `${API_BASE}/ladders/problems/${problem.id}/status?user_id=${USER_ID}&is_completed=${!problem.solved}`,
-        { method: "POST" }
-      );
-    } catch (err) {
-      console.error("Failed to update problem:", err);
-    }
-  };
+  // // Mark as solved
+  // const toggleSolved = async (rating, id) => {
+  //   setSheets(prev => {
+  //     const updated = prev[rating].map(problem =>
+  //       problem.id === id ? { ...problem, solved: !problem.solved } : problem
+  //     );
+  //     return { ...prev, [rating]: updated };
+  //   });
 
+  //   const problem = sheets[rating]?.find(p => p.id === id);
+  //   const newStatus = !problem?.solved;
+  //   try {
+  //     await fetch(
+  //       `${API_BASE}/ladders/problems/${id}/status?user_id=${USER_ID}&is_completed=${newStatus}`,
+  //       { method: "POST" }
+  //     );
+  //   } catch (err) {
+  //     console.error("Failed to update problem:", err);
+  //   }
+  // };
+
+  // Mark as revisited
   const toggleRevisited = async (rating, id) => {
     setSheets(prev => ({
       ...prev,
@@ -150,16 +189,41 @@ const CPSheet = () => {
     }
   };
 
+  // Search & filters
   const filteredProblems = (sheets[currentRating] || []).filter(problem => {
-    const matchesSearch = problem.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = problem?.title?.toLowerCase()?.includes(searchTerm?.toLowerCase());
     const matchesRevisited = !showRevisited || problem.revisited;
     return matchesSearch && matchesRevisited;
   });
+
+  // Sync with CF
+  const handleSync = async () => {
+    if (!currentRating) return alert("Please select a rating ladder first.");
+    const ladderObj = ladders.find(l => l.rating_range === currentRating);
+    if (!ladderObj) return alert("Invalid ladder selection.");
+
+    try {
+      const res = await fetch(`${API_BASE}/ladders/codeforces/sync`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: USER_ID, ladder_id: ladderObj.id })
+      });
+      if (!res.ok) throw new Error(`Failed to sync: ${res.status}`);
+      console.log("Sync successful");
+      setCurrentRating(currentRating); // Re-trigger load
+    } catch (err) {
+      console.error("Error syncing Codeforces:", err);
+    }
+  };
+
+  const progress = currentRating ? calculateProgress(currentRating) : { solved: 0, total: 0 };
+  // const totalProgress = overallProgress();
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center">Codeforces CP Sheet</h1>
 
+      {/* Ladder Buttons */}
       <div className="flex flex-wrap gap-2 mb-6 justify-center">
         {ratings.map(rating => {
           let displayText = rating.replace(/Codeforces Rating\s*/gi, "").trim();
@@ -180,26 +244,22 @@ const CPSheet = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div>
           <div className="flex justify-between mb-2">
-            <h3>{currentRating} Rating Progress</h3>
-            <span>{calculateProgress(currentRating).solved}/{calculateProgress(currentRating).total}</span>
+            <h3>{currentRating || "Select Ladder"} Rating Progress</h3>
+            <span>{progress.solved}/{progress.total}</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-4">
-            <div
-              className="bg-blue-500 h-4 rounded-full"
-              style={{ width: `${(calculateProgress(currentRating).solved / (calculateProgress(currentRating).total || 1)) * 100}%` }}
-            ></div>
+            <div className="bg-blue-500 h-4 rounded-full"
+              style={{ width: `${(progress.solved / (progress.total || 1)) * 100}%` }} />
           </div>
         </div>
         <div>
           <div className="flex justify-between mb-2">
             <h3>Overall Progress</h3>
-            <span>{overallProgress().solved}/{overallProgress().total}</span>
+            <span>{totalProgress.solved}/{totalProgress.total}</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-4">
-            <div
-              className="bg-green-500 h-4 rounded-full"
-              style={{ width: `${(overallProgress().solved / (overallProgress().total || 1)) * 100}%` }}
-            ></div>
+            <div className="bg-green-500 h-4 rounded-full"
+              style={{ width: `${(totalProgress.solved / (totalProgress.total || 1)) * 100}%` }} />
           </div>
         </div>
       </div>
@@ -216,6 +276,38 @@ const CPSheet = () => {
           />
           <FiSearch className="absolute left-3 top-3 text-gray-400" />
         </div>
+
+        <div className="flex gap-2 items-center justify-center">
+          {cfHandle ? (
+            <span className="px-4 py-2 rounded-lg bg-green-100 text-green-700 font-semibold flex items-center gap-2">
+              Codeforces: {cfHandle}
+              <button
+                onClick={handleSync}
+                className="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+              >
+                Sync
+              </button>
+            </span>
+          ) : (
+            <>
+              <input
+                type="text"
+                placeholder="Enter Codeforces handle"
+                value={cfHandle}
+                onChange={e => setCFHandle(e.target.value)}
+                className="px-4 py-2 rounded-lg border"
+                style={{ minWidth: '220px' }}
+              />
+              <button
+                onClick={connectCodeforces}
+                className="px-4 py-2 rounded-lg bg-blue-600 text-white"
+              >
+                Connect to Codeforces
+              </button>
+            </>
+          )}
+        </div>
+
         <div className="flex gap-4">
           <button
             onClick={() => setShowRevisited(!showRevisited)}
@@ -249,7 +341,8 @@ const CPSheet = () => {
               <tr key={problem.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4">
                   <button
-                    onClick={() => toggleSolved(currentRating, problem.id)}
+                    disabled
+                    // onClick={() => toggleSolved(currentRating, problem.id)}
                     className={`p-2 rounded-full ${problem.solved ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'}`}
                   >
                     <FiCheck />
