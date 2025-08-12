@@ -18,47 +18,100 @@ const CPSheet = () => {
   const [currentRank, setCurrentRank] = useState(null);
   const [cfHandle, setCFHandle] = useState('');
   const [totalProgress, setTotalProgress] = useState({ solved: 0, total: 0 });
+  const [tempHandle, setTempHandle] = useState("");
+  const [verificationProblem, setVerificationProblem] = useState(null);
+  const [syncnow, setSyncNow] = useState(false);
 
-
-  // Connect CF handle
   const connectCodeforces = async () => {
-    if (!cfHandle.trim()) return alert("Please enter your Codeforces username.");
+
+    // if (!cfHandle.trim()) return alert("Please enter your Codeforces username.");
 
     try {
       const form = new FormData();
       form.append("user_id", USER_ID);
-      form.append("codeforces_handle", cfHandle);
+      form.append("codeforces_username", tempHandle); // updated field name
 
-      const res = await fetch(`${API_BASE}/ladders/profile`, { method: "POST", body: form });
+      const res = await fetch(`${API_BASE}/ladders/profile`, {
+        method: "POST",
+        body: form
+      });
+
       const result = await res.json();
 
       if (res.ok) {
-        alert("Codeforces connected successfully!");
-        setCFHandle(cfHandle); // Update UI immediately
+
+        console.log(result)
+        // alert("Verification problem assigned! Solve it to complete linking.");
+        setVerificationProblem(result.problem);
+        setCFHandle(tempHandle); // store returned problem for UI
       } else {
         alert(result.detail || "Failed to connect Codeforces");
       }
     } catch (err) {
       console.error("Error connecting to Codeforces:", err);
+      alert("Something went wrong. Please try again.");
     }
   };
 
+  const handleVerify = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/ladders/verification-wrong/${USER_ID}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(`Verification failed: ${data.detail || "Unknown error"}`);
+
+        return;
+      }
+
+      // if (data.handle_exists && data.wrong_submission) {
+      //   alert("Verification successful!");
+      // } else if (!data.handle_exists) {
+      //   alert("Codeforces handle does not exist.");
+      // } else {
+      //   alert("No wrong submission found for this problem within expiry.");
+      // }
+      if (data.detail === "No pending verification for this user") {
+        setVerificationProblem(null);
+      }
+      if (data.status === true) {
+        setVerificationProblem(null);
+      }
+      // ✅ Log the response
+      console.log("Verification response:", data);
+
+    } catch (err) {
+      console.error(err);
+      alert("Error while verifying. Please try again.");
+    }
+  };
+
+
+
+
   // Fetch CP profile for CF handle
   useEffect(() => {
-  if (!USER_ID) return;
-  async function fetchCPProfile() {
-    try {
-      const res = await fetch(`${API_BASE}/ladders/profile/${USER_ID}`);
-      if (!res.ok) throw new Error("Failed to fetch CP profile");
-      const data = await res.json();
-      if (data.codeforces_handle) setCFHandle(data.codeforces_handle);
-      setTotalProgress(data.overall_progress); // direct from backend
-    } catch (err) {
-      console.error("Error fetching CP profile:", err);
+    if (!USER_ID) return;
+
+    console.log(USER_ID)
+    async function fetchCPProfile() {
+      try {
+        const res = await fetch(`${API_BASE}/ladders/profile/${USER_ID}`);
+        if (!res.ok) throw new Error("Failed to fetch CP profile");
+        const data = await res.json();
+        if (data.codeforces_handle) setCFHandle(data.codeforces_handle);
+        setTotalProgress(data.overall_progress); // direct from backend
+        console.log(data)
+      } catch (err) {
+        console.error("Error fetching CP profile:", err);
+      }
     }
-  }
-  fetchCPProfile();
-}, [USER_ID]);
+    fetchCPProfile();
+  }, [USER_ID]);
 
 
   // Fetch ladders & rank
@@ -75,6 +128,7 @@ const CPSheet = () => {
           const rankRes = await fetch(`${API_BASE}/ladders/cp51/leaderboard/user/${USER_ID}/rank`);
           if (rankRes.ok) {
             const rankData = await rankRes.json();
+            // console.log(rankData) 
             setCurrentRank(rankData.rank ?? "—");
           }
         }
@@ -135,10 +189,11 @@ const CPSheet = () => {
       } catch (e) {
         console.error("Error loading ladder problems:", e);
       }
+      setSyncNow(false);
     };
 
     fetchData();
-  }, [currentRating, ladders]);
+  }, [currentRating, ladders, syncnow]);
 
   // Progress calculation
   const calculateProgress = (rating) => {
@@ -208,13 +263,19 @@ const CPSheet = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: USER_ID, ladder_id: ladderObj.id })
       });
+
       if (!res.ok) throw new Error(`Failed to sync: ${res.status}`);
-      console.log("Sync successful");
-      setCurrentRating(currentRating); // Re-trigger load
+
+      const data = await res.json(); // ✅ await here
+      console.log("Sync result:", data);
+
+      // setCurrentRating(currentRating); // Re-trigger load
+      setSyncNow(true);
     } catch (err) {
       console.error("Error syncing Codeforces:", err);
     }
   };
+
 
   const progress = currentRating ? calculateProgress(currentRating) : { solved: 0, total: 0 };
   // const totalProgress = overallProgress();
@@ -277,36 +338,72 @@ const CPSheet = () => {
           <FiSearch className="absolute left-3 top-3 text-gray-400" />
         </div>
 
-        <div className="flex gap-2 items-center justify-center">
-          {cfHandle ? (
-            <span className="px-4 py-2 rounded-lg bg-green-100 text-green-700 font-semibold flex items-center gap-2">
-              Codeforces: {cfHandle}
-              <button
-                onClick={handleSync}
-                className="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-              >
-                Sync
-              </button>
-            </span>
-          ) : (
-            <>
-              <input
-                type="text"
-                placeholder="Enter Codeforces handle"
-                value={cfHandle}
-                onChange={e => setCFHandle(e.target.value)}
-                className="px-4 py-2 rounded-lg border"
-                style={{ minWidth: '220px' }}
-              />
-              <button
-                onClick={connectCodeforces}
-                className="px-4 py-2 rounded-lg bg-blue-600 text-white"
-              >
-                Connect to Codeforces
-              </button>
-            </>
-          )}
-        </div>
+
+
+        {verificationProblem ? (
+          <div className="p-4 border rounded bg-yellow-50">
+            <h3 className="font-bold text-yellow-800">Verification Step</h3>
+            <h4>{cfHandle}</h4>
+            <p>
+              Please try to solve the problem below within{" "}
+              <strong>
+                {Math.floor(verificationProblem.expires_in_seconds / 60)} minutes
+              </strong>{" "}
+              to verify your Codeforces account.
+            </p>
+            <a
+              href={verificationProblem.problem_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline block mb-4"
+            >
+              {verificationProblem.problem_name}
+            </a>
+
+            <button
+              onClick={handleVerify}
+              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            >
+              Verify
+            </button>
+          </div>
+
+        ) : (
+          <>
+            <div className="flex gap-2 items-center justify-center">
+              {cfHandle ? (
+                <span className="px-4 py-2 rounded-lg bg-green-100 text-green-700 font-semibold flex items-center gap-2">
+                  Codeforces: {cfHandle}
+                  <button
+                    onClick={handleSync}
+                    className="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                  >
+                    Sync
+                  </button>
+                </span>
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    placeholder="Enter Codeforces handle"
+                    value={tempHandle}
+                    onChange={(e) => setTempHandle(e.target.value)}
+                    className="px-4 py-2 rounded-lg border"
+                    style={{ minWidth: '220px' }}
+                  />
+                  <button
+                    type="button"
+                    onClick={connectCodeforces}
+                    className="px-4 py-2 rounded-lg bg-blue-600 text-white"
+                  >
+                    Connect to Codeforces
+                  </button>
+                </>
+              )}
+            </div>
+          </>
+        )}
+
 
         <div className="flex gap-4">
           <button
@@ -383,7 +480,7 @@ const CPSheet = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    </div >
   );
 };
 

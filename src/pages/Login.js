@@ -10,7 +10,7 @@ export default function Login() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useEffect(() => { 
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     if (token) {
       navigate('/student/dashboard');
@@ -28,7 +28,7 @@ export default function Login() {
       });
 
       const data = await response.json();
-      console.log(data.user);
+      console.log(data);
 
       if (!response.ok) {
         throw new Error(data.detail || 'Invalid email or password');
