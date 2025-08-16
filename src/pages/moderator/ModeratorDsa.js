@@ -37,7 +37,8 @@ const DSAQuestionsPage = () => {
     difficulty: "Easy",
     tags: [],
     companies: [],
-    sheet: "",
+    sheets: [],
+    sheetSearch: "",
     solution: "",
     githubLink: "",
     hindiSolutionLink: "",
@@ -52,7 +53,8 @@ const DSAQuestionsPage = () => {
   const allCompanies = Array.from(
     new Set(questions.flatMap((q) => q.companies))
   );
-  const allSheets = Array.from(new Set(questions.map((q) => q.sheet).filter(Boolean))) || [];
+  const allSheets =
+    Array.from(new Set(questions.map((q) => q.sheet).filter(Boolean))) || [];
 
   // Load mock data
   useEffect(() => {
@@ -101,8 +103,12 @@ const DSAQuestionsPage = () => {
               englishSolutionLink: "https://youtube.com/english-solution-lru",
             },
           ]);
-          
-          setSheets(["Leetcode Top 100", "Striver's SDE Sheet", "Neetcode 150"]);
+
+          setSheets([
+            "Leetcode Top 100",
+            "Striver's SDE Sheet",
+            "Neetcode 150",
+          ]);
           setLoading(false);
         }, 1000);
       } catch (error) {
@@ -238,10 +244,10 @@ const DSAQuestionsPage = () => {
   // Add new tag
   const handleAddNewTag = () => {
     if (newTag.trim() && !allTags.includes(newTag.trim())) {
-      setQuestions(prevQuestions => 
-        prevQuestions.map(q => ({
+      setQuestions((prevQuestions) =>
+        prevQuestions.map((q) => ({
           ...q,
-          tags: [...q.tags, newTag.trim()]
+          tags: [...q.tags, newTag.trim()],
         }))
       );
       setNewTag("");
@@ -250,10 +256,10 @@ const DSAQuestionsPage = () => {
 
   // Delete tag
   const handleDeleteTag = (tagToDelete) => {
-    setQuestions(prevQuestions => 
-      prevQuestions.map(q => ({
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((q) => ({
         ...q,
-        tags: q.tags.filter(tag => tag !== tagToDelete)
+        tags: q.tags.filter((tag) => tag !== tagToDelete),
       }))
     );
   };
@@ -261,10 +267,10 @@ const DSAQuestionsPage = () => {
   // Add new company
   const handleAddNewCompany = () => {
     if (newCompany.trim() && !allCompanies.includes(newCompany.trim())) {
-      setQuestions(prevQuestions => 
-        prevQuestions.map(q => ({
+      setQuestions((prevQuestions) =>
+        prevQuestions.map((q) => ({
           ...q,
-          companies: [...q.companies, newCompany.trim()]
+          companies: [...q.companies, newCompany.trim()],
         }))
       );
       setNewCompany("");
@@ -273,31 +279,31 @@ const DSAQuestionsPage = () => {
 
   // Delete company
   const handleDeleteCompany = (companyToDelete) => {
-    setQuestions(prevQuestions => 
-      prevQuestions.map(q => ({
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((q) => ({
         ...q,
-        companies: q.companies.filter(company => company !== companyToDelete)
+        companies: q.companies.filter((company) => company !== companyToDelete),
       }))
     );
   };
 
   // Add new sheet
-  const handleAddNewSheet = () => {
-    if (newSheet.trim() && !sheets.includes(newSheet.trim())) {
-      setSheets([...sheets, newSheet.trim()]);
-      setNewSheet("");
+  const handleAddSheet = (sheet) => {
+    const trimmedSheet = sheet.trim();
+    if (trimmedSheet && !formData.sheets?.includes(trimmedSheet)) {
+      setFormData({
+        ...formData,
+        sheets: [...(formData.sheets || []), trimmedSheet],
+        sheetSearch: "",
+      });
     }
   };
 
-  // Delete sheet
-  const handleDeleteSheet = (sheetToDelete) => {
-    setSheets(sheets.filter(sheet => sheet !== sheetToDelete));
-    setQuestions(prevQuestions => 
-      prevQuestions.map(q => ({
-        ...q,
-        sheet: q.sheet === sheetToDelete ? "" : q.sheet
-      }))
-    );
+  const handleRemoveSheet = (sheetToRemove) => {
+    setFormData({
+      ...formData,
+      sheets: formData.sheets?.filter((sheet) => sheet !== sheetToRemove),
+    });
   };
 
   // Filter questions based on search term
@@ -351,8 +357,13 @@ const DSAQuestionsPage = () => {
             </div>
             <div className="space-y-4">
               {allTags.map((tag) => (
-                <div key={tag} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <span className="text-gray-800 dark:text-gray-200">{tag}</span>
+                <div
+                  key={tag}
+                  className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                >
+                  <span className="text-gray-800 dark:text-gray-200">
+                    {tag}
+                  </span>
                   <button
                     onClick={() => handleDeleteTag(tag)}
                     className="text-red-600 hover:text-red-800 dark:hover:text-red-400"
@@ -389,8 +400,13 @@ const DSAQuestionsPage = () => {
             </div>
             <div className="space-y-4">
               {allCompanies.map((company) => (
-                <div key={company} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <span className="text-gray-800 dark:text-gray-200">{company}</span>
+                <div
+                  key={company}
+                  className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                >
+                  <span className="text-gray-800 dark:text-gray-200">
+                    {company}
+                  </span>
                   <button
                     onClick={() => handleDeleteCompany(company)}
                     className="text-red-600 hover:text-red-800 dark:hover:text-red-400"
@@ -419,7 +435,7 @@ const DSAQuestionsPage = () => {
                 onChange={(e) => setNewSheet(e.target.value)}
               />
               <button
-                onClick={handleAddNewSheet}
+                onClick={handleAddSheet}
                 className="px-4 py-2 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700"
               >
                 Add Sheet
@@ -427,10 +443,15 @@ const DSAQuestionsPage = () => {
             </div>
             <div className="space-y-4">
               {sheets.map((sheet) => (
-                <div key={sheet} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <span className="text-gray-800 dark:text-gray-200">{sheet}</span>
+                <div
+                  key={sheet}
+                  className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                >
+                  <span className="text-gray-800 dark:text-gray-200">
+                    {sheet}
+                  </span>
                   <button
-                    onClick={() => handleDeleteSheet(sheet)}
+                    onClick={() => handleRemoveSheet(sheet)}
                     className="text-red-600 hover:text-red-800 dark:hover:text-red-400"
                   >
                     <FiTrash2 />
@@ -617,7 +638,9 @@ const DSAQuestionsPage = () => {
                   No problems found
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  {searchTerm ? "Try adjusting your search" : "Add your first problem"}
+                  {searchTerm
+                    ? "Try adjusting your search"
+                    : "Add your first problem"}
                 </p>
                 <button
                   onClick={() => setShowForm(true)}
@@ -659,28 +682,44 @@ const DSAQuestionsPage = () => {
           <nav className="-mb-px flex space-x-8">
             <button
               onClick={() => setActiveTab("problems")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${activeTab === "problems" ? "border-blue-500 text-blue-600 dark:text-blue-400" : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"}`}
+              className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${
+                activeTab === "problems"
+                  ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                  : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+              }`}
             >
               <FiCode className="mr-2" />
               Problems
             </button>
             <button
               onClick={() => setActiveTab("tags")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${activeTab === "tags" ? "border-blue-500 text-blue-600 dark:text-blue-400" : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"}`}
+              className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${
+                activeTab === "tags"
+                  ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                  : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+              }`}
             >
               <FiTag className="mr-2" />
               Tags
             </button>
             <button
               onClick={() => setActiveTab("companies")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${activeTab === "companies" ? "border-blue-500 text-blue-600 dark:text-blue-400" : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"}`}
+              className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${
+                activeTab === "companies"
+                  ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                  : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+              }`}
             >
               <FiBriefcase className="mr-2" />
               Companies
             </button>
             <button
               onClick={() => setActiveTab("sheets")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${activeTab === "sheets" ? "border-blue-500 text-blue-600 dark:text-blue-400" : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"}`}
+              className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${
+                activeTab === "sheets"
+                  ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                  : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+              }`}
             >
               <FiFileText className="mr-2" />
               Sheets
@@ -768,21 +807,76 @@ const DSAQuestionsPage = () => {
                     {/* Sheet */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Sheet
+                        Sheets
                       </label>
-                      <select
-                        name="sheet"
-                        value={formData.sheet}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-                      >
-                        <option value="">Select a sheet (optional)</option>
-                        {sheets.map((sheet) => (
-                          <option key={sheet} value={sheet}>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          name="sheetSearch"
+                          value={formData.sheetSearch || ""}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                          placeholder="Search or add sheets"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              if (formData.sheetSearch?.trim()) {
+                                handleAddSheet(formData.sheetSearch);
+                              }
+                            }
+                          }}
+                        />
+                        {formData.sheetSearch && (
+                          <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 shadow-lg rounded-lg max-h-60 overflow-auto">
+                            {sheets
+                              .filter(
+                                (sheet) =>
+                                  sheet
+                                    .toLowerCase()
+                                    .includes(
+                                      formData.sheetSearch.toLowerCase()
+                                    ) && !formData.sheets?.includes(sheet)
+                              )
+                              .map((sheet) => (
+                                <div
+                                  key={sheet}
+                                  className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
+                                  onClick={() => handleAddSheet(sheet)}
+                                >
+                                  {sheet}
+                                </div>
+                              ))}
+                            {formData.sheetSearch.trim() &&
+                              !sheets.includes(formData.sheetSearch.trim()) && (
+                                <div
+                                  className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
+                                  onClick={() =>
+                                    handleAddSheet(formData.sheetSearch)
+                                  }
+                                >
+                                  Add "{formData.sheetSearch}"
+                                </div>
+                              )}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {formData.sheets?.map((sheet, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-sm"
+                          >
                             {sheet}
-                          </option>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveSheet(sheet)}
+                              className="ml-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                            >
+                              &times;
+                            </button>
+                          </span>
                         ))}
-                      </select>
+                      </div>
                     </div>
 
                     {/* Tags */}
@@ -814,8 +908,9 @@ const DSAQuestionsPage = () => {
                                 (tag) =>
                                   tag
                                     .toLowerCase()
-                                    .includes(formData.tagSearch.toLowerCase()) &&
-                                  !formData.tags.includes(tag)
+                                    .includes(
+                                      formData.tagSearch.toLowerCase()
+                                    ) && !formData.tags.includes(tag)
                               )
                               .map((tag) => (
                                 <div
@@ -888,8 +983,9 @@ const DSAQuestionsPage = () => {
                                 (company) =>
                                   company
                                     .toLowerCase()
-                                    .includes(formData.companySearch.toLowerCase()) &&
-                                  !formData.companies.includes(company)
+                                    .includes(
+                                      formData.companySearch.toLowerCase()
+                                    ) && !formData.companies.includes(company)
                               )
                               .map((company) => (
                                 <div
@@ -901,7 +997,9 @@ const DSAQuestionsPage = () => {
                                 </div>
                               ))}
                             {formData.companySearch.trim() &&
-                              !allCompanies.includes(formData.companySearch.trim()) && (
+                              !allCompanies.includes(
+                                formData.companySearch.trim()
+                              ) && (
                                 <div
                                   className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
                                   onClick={() =>
