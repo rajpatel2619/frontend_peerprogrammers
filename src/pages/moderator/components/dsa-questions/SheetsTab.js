@@ -28,50 +28,50 @@ const SheetsTab = () => {
   }, []);
 
   const handleAddSheet = async () => {
-  if (!newSheet) return;
-
-  try {
-    const createdBy = user?.id || 1; // <-- replace with actual logged-in user id
-
-    const response = await fetch(
-      `${API}/problems/create_sheet?title=${encodeURIComponent(newSheet)}&created_by=${createdBy}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        }
+    if (!newSheet) return;
+  
+    try {
+      const createdBy = user?.id || 1; // fallback to 1 if user not found
+  
+      // prepare form data since backend expects Form(...)
+      const formData = new FormData();
+      formData.append("title", newSheet);
+      formData.append("created_by", createdBy);
+  
+      const response = await fetch(`${API}/problems/create_sheet`, {
+        method: "POST",
+        body: formData, // sending formData instead of JSON
+      });
+  
+      const data = await response.json();
+      console.log("API returned:", data);
+  
+      if (!response.ok) {
+        console.error("Error response:", data);
+        return;
       }
-    );
-
-    const data = await response.json();
-    console.log("API returned:", data);
-
-    if (!response.ok) {
-      console.error("Error response:", data);
-      return;
+  
+      if (data.sheet_id) {
+        setSheets((prevSheets) => [
+          ...(prevSheets || []),
+          { id: data.sheet_id, title: data.title },
+        ]);
+      }
+  
+      setNewSheet("");
+    } catch (error) {
+      console.error("Error adding sheet:", error);
     }
-
-    if (data.sheet) {
-      setSheets(prevSheets => [...(prevSheets || []), data.sheet]);
-    }
-
-    setNewSheet('');
-  } catch (error) {
-    console.error('Error adding sheet:', error);
-  }
-};
-
-
-
-
+  };
+  
 
   // Delete sheet
-  const handleDeleteSheet = async (sheetName) => {
+  const handleDeleteSheet = async (id) => {
     try {
-      await fetch(`http://your-api-url.com/api/sheets/${sheetName}`, {
+      await fetch(`${API}/problems/sheets/${id}`, {
         method: 'DELETE',
       });
-      setSheets(sheets.filter(sheet => sheet !== sheetName));
+      setSheets(sheets.filter(sheet => sheet.id !== id));
     } catch (error) {
       console.error('Error deleting sheet:', error);
     }
@@ -104,7 +104,7 @@ const SheetsTab = () => {
             <div key={sheet.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
               <span>{sheet.title}</span>
               <button
-                onClick={() => handleDeleteSheet(sheet)}
+                onClick={() => handleDeleteSheet(sheet.id)}
                 className="text-red-600 hover:text-red-800"
               >
                 <FiTrash2 />
