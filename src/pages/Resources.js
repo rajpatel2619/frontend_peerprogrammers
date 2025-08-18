@@ -8,7 +8,7 @@ import {
   FiThumbsDown,
 } from "react-icons/fi";
 
-const BASE_URL = "http://localhost:8281/resources";
+const BASE_URL = process.env.REACT_APP_API + '/resources';
 
 async function http(path, { method = "GET", body, headers } = {}) {
   const res = await fetch(`${BASE_URL}${path}`, {
