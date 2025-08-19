@@ -17,6 +17,8 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+        funnel: ["'Funnel Display'", "sans-serif"],
+        lexend: ["'Lexend Deca'", "sans-serif"],
       },
     },
   },

@@ -37,7 +37,13 @@ const TeacherNavbar = () => {
     {
       path: "/teacher/courses/new/individual",
       icon: <FiPlusCircle className="text-orange-500 text-lg" />,
-      label: "Create",
+      label: "Courses",
+      color: "text-green-500"
+    },
+    {
+      path: "/teacher/new/resources",
+      icon: <FiPlusCircle className="text-yellow-500 text-lg" />,
+      label: "Resources",
       color: "text-green-500"
     }
   ];

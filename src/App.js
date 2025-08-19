@@ -35,6 +35,7 @@ import DSAQuestionsPage from "./pages/moderator/ModeratorDsa";
 import ModeratorCp from "./pages/moderator/ModeratorCp";
 import ModeratorResources from "./pages/moderator/ModeratorResources";
 import ModeratorCources from "./pages/moderator/ModeratorCources";
+import CreateResources from "./pages/teacher/CreateResources";
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
         {/* Teacher routes */}
         <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
         <Route path="/teacher/courses" element={<TeachingCourses />} />
+        <Route path="/teacher/new/resources" element={<CreateResources />} />
         <Route path="/teacher/courses/new/individual" element={<CreateCourseIndividual />} />
         <Route path="/teacher/courses/edit/individual/:courseId" element={<CreateCourseIndividual />} />
         <Route path="/otp-verification" element={<OtpVerification />} />
