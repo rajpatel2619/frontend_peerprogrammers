@@ -71,10 +71,10 @@ const Training = () => {
   };
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-900">
+    <section className="py-6 bg-gray-50 dark:bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4 font-funnel">
             Learning Resources & Downloads
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
@@ -84,7 +84,7 @@ const Training = () => {
         </div>
 
         {/* Search Bar */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 mb-8 border border-gray-100 dark:border-gray-700">
+        <div className="bg-white dark:bg-black rounded-2xl shadow-sm p-6 mb-8 border border-gray-100 dark:border-gray-700">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
@@ -92,7 +92,7 @@ const Training = () => {
               placeholder="Search Courses"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-600 bg-white dark:bg-zinc-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
           </div>
         </div>
@@ -103,11 +103,11 @@ const Training = () => {
             {Array.from({ length: 6 }).map((_, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-gray-800 p-4 rounded shadow animate-pulse"
+                className="bg-white dark:bg-zinc-800 p-4 rounded shadow animate-pulse"
               >
-                <div className="h-40 bg-gray-300 dark:bg-gray-700 rounded mb-4"></div>
-                <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-3/4 mb-2"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                <div className="h-40 bg-gray-300 dark:bg-zinc-700 rounded mb-4"></div>
+                <div className="h-4 bg-gray-300 dark:bg-zinc-600 rounded w-3/4 mb-2"></div>
+                <div className="h-4 bg-gray-200 dark:bg-zinc-700 rounded w-1/2"></div>
               </div>
             ))}
           </div>
@@ -116,26 +116,31 @@ const Training = () => {
             {filteredResources.map((resource) => (
               <div
                 key={resource.id}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100 dark:border-gray-700"
+                className="bg-white dark:bg-zinc-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100 dark:border-gray-700"
               >
                 <div
-                  className="relative h-48 overflow-hidden cursor-pointer"
-                  onClick={() => handleNavigate(resource.id)}
-                >
-                  <img
-                    src={resource.image}
-                    alt={resource.title}
-                    className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 left-4 bg-white dark:bg-gray-900 bg-opacity-90 px-3 py-1 rounded-lg">
-                    {/* <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{resource.category}</span> */}
-                  </div>
-                  {resource.featured && (
-                    <div className="absolute top-4 right-4 bg-gradient-to-r from-blue-600 to-teal-600 text-white px-3 py-1 rounded-lg text-sm font-medium">
-                      Featured
-                    </div>
-                  )}
-                </div>
+  className="relative h-48 overflow-hidden cursor-pointer flex items-center justify-center bg-gray-200 dark:bg-zinc-700"
+  onClick={() => handleNavigate(resource.id)}
+>
+  {resource.image ? (
+    <img
+      src={resource.image}
+      alt={resource.title}
+      className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+    />
+  ) : (
+    <div className="flex items-center justify-center w-full h-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-lg p-4 text-center">
+      {resource.title}
+    </div>
+  )}
+
+  {resource.featured && (
+    <div className="absolute top-4 right-4 bg-gradient-to-r from-blue-600 to-teal-600 text-white px-3 py-1 rounded-lg text-sm font-medium">
+      Featured
+    </div>
+  )}
+</div>
+
                 <div className="p-6">
                   <h3
                     onClick={() => handleNavigate(resource.id)}
@@ -156,7 +161,7 @@ const Training = () => {
                   <div className="flex space-x-3">
                     <button
                       onClick={() => handleNavigate(resource.id)}
-                      className="flex-1 bg-gradient-to-r from-blue-600 to-teal-600 text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+                      className="flex-1 text-white bg-black dark:text-black dark:bg-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
                     >
                       <span>Explore Course</span>
                     {/* <ExternalLink className="w-4 h-4" /> */}
@@ -173,28 +178,6 @@ const Training = () => {
             ))}
           </div>
         )}
-
-        {/* Stats Section */}
-        {/* <div className="mt-16 bg-gradient-to-r from-blue-600 to-teal-600 rounded-2xl p-8 text-white">
-          <div className="grid md:grid-cols-4 gap-6 text-center">
-            <div>
-              <div className="text-3xl font-bold mb-2">200+</div>
-              <div className="text-blue-100">Resources</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold mb-2">500K+</div>
-              <div className="text-blue-100">Downloads</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold mb-2">50+</div>
-              <div className="text-blue-100">Technologies</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold mb-2">Weekly</div>
-              <div className="text-blue-100">New Additions</div>
-            </div>
-          </div>
-        </div> */}
       </div>
     </section>
   );
