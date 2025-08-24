@@ -278,9 +278,9 @@ const ProblemsTab = () => {
                 <tr>
                   <th className="px-6 py-2 text-left text-xs font-medium text-gray-500">Title</th>
                   <th className="px-6 py-2 text-left text-xs font-medium text-gray-500">Difficulty</th>
-                  <th className="px-6 py-2 text-left text-xs font-medium text-gray-500">Tags</th>
+                  {/* <th className="px-6 py-2 text-left text-xs font-medium text-gray-500">Tags</th>
                   <th className="px-6 py-2 text-left text-xs font-medium text-gray-500">Companies</th>
-                  <th className="px-6 py-2 text-left text-xs font-medium text-gray-500">Sheets</th>
+                  <th className="px-6 py-2 text-left text-xs font-medium text-gray-500">Sheets</th> */}
                   <th className="px-6 py-2 text-left text-xs font-medium text-gray-500">Solutions</th>
                   <th className="px-6 py-2 text-left text-xs font-medium text-gray-500">Premium</th>
                   <th className="px-6 py-2 text-left text-xs font-medium text-gray-500">Actions</th>
@@ -293,9 +293,9 @@ const ProblemsTab = () => {
                       <a href={q.link} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{q.title}</a>
                     </td>
                     <td><Badge label={q.difficulty} color={difficultyColors[q.difficulty] || "bg-gray-100"} /></td>
-                    <td>{q.tags?.map((t, i) => <Badge key={i} label={t.name || t} color="bg-gray-100 text-gray-800" />)}</td>
+                    {/* <td>{q.tags?.map((t, i) => <Badge key={i} label={t.name || t} color="bg-gray-100 text-gray-800" />)}</td>
                     <td>{q.companies?.map((c, i) => <Badge key={i} label={c.name || c} color="bg-purple-100 text-purple-800" />)}</td>
-                    <td>{q.sheets?.map((s, i) => <Badge key={i} label={s.title || s} color="bg-indigo-100 text-indigo-800" />)}</td>
+                    <td>{q.sheets?.map((s, i) => <Badge key={i} label={s.title || s} color="bg-indigo-100 text-indigo-800" />)}</td> */}
                     <td className="px-6 py-4">
                       <div className="flex flex-col space-y-1">
                         {q.gitHubLink && (
