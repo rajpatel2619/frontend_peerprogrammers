@@ -554,6 +554,10 @@ export const ResourceManager = ({ api }) => {
       return { ...prev, [name]: value };
     });
   };
+  const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
+  const user = stored ? JSON.parse(stored) : null;
+  const userId = user?.id;
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -563,7 +567,8 @@ export const ResourceManager = ({ api }) => {
         description: formData.description,
         link: formData.link,
         domain_id: parseInt(formData.domainId),
-        subdomain_id: parseInt(formData.subdomainId)
+        subdomain_id: parseInt(formData.subdomainId),
+        added_by_id: userId
       };
 
       if (editMode && currentResource) {

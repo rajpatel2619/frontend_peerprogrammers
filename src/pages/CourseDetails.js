@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown, ChevronUp, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const API = process.env.REACT_APP_API;
@@ -13,67 +15,116 @@ const CourseDetails = () => {
   const [user, setUser] = useState(null);
   const [activeModule, setActiveModule] = useState(null);
   const [expandedFaq, setExpandedFaq] = useState(null);
+  const [modules, setModules] = useState([]);
+  const [activeModuleIndex, setActiveModuleIndex] = useState(null);
+
+  const toggleModule = (index) => {
+    setActiveModule(activeModule === index ? null : index);
+  };
 
   // Colorful icons for different sections
   const icons = {
     overview: (
-      <svg className="w-6 h-6 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
+      <svg
+        className="w-6 h-6 text-purple-500"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
         <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" />
       </svg>
     ),
     curriculum: (
-      <svg className="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+      <svg
+        className="w-6 h-6 text-blue-500"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
         <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" />
       </svg>
     ),
     faq: (
-      <svg className="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+      <svg
+        className="w-6 h-6 text-green-500"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
         <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" />
       </svg>
     ),
     instructor: (
-      <svg className="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+      <svg
+        className="w-6 h-6 text-yellow-500"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
         <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" />
       </svg>
     ),
     details: (
-      <svg className="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+      <svg
+        className="w-6 h-6 text-red-500"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
         <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" />
       </svg>
     ),
     resources: (
-      <svg className="w-6 h-6 text-indigo-500" fill="currentColor" viewBox="0 0 20 20">
+      <svg
+        className="w-6 h-6 text-indigo-500"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
         <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" />
       </svg>
     ),
     module: (color = "text-blue-500") => (
-      <svg className={`w-5 h-5 ${color}`} fill="currentColor" viewBox="0 0 20 20">
-        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clipRule="evenodd" />
+      <svg
+        className={`w-5 h-5 ${color}`}
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z"
+          clipRule="evenodd"
+        />
       </svg>
     ),
     lesson: (color = "text-green-500") => (
-      <svg className={`w-4 h-4 ${color}`} fill="currentColor" viewBox="0 0 20 20">
-        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd" />
+      <svg
+        className={`w-4 h-4 ${color}`}
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+          clipRule="evenodd"
+        />
       </svg>
-    )
+    ),
   };
 
   // Sample FAQ data - replace with your actual data
   const faqs = [
     {
       question: "What are the prerequisites for this course?",
-      answer: "Basic programming knowledge is recommended but not required. We'll cover everything you need to know from the ground up.",
-      icon: icons.module("text-purple-500")
+      answer:
+        "Basic programming knowledge is recommended but not required. We'll cover everything you need to know from the ground up.",
+      icon: icons.module("text-purple-500"),
     },
     {
       question: "How long will I have access to the course materials?",
-      answer: "You'll have lifetime access to all course materials, including future updates.",
-      icon: icons.module("text-blue-500")
+      answer:
+        "You'll have lifetime access to all course materials, including future updates.",
+      icon: icons.module("text-blue-500"),
     },
     {
       question: "Will I receive a certificate upon completion?",
-      answer: "Yes, you'll receive a verifiable certificate of completion after finishing all modules and assignments.",
-      icon: icons.module("text-green-500")
+      answer:
+        "Yes, you'll receive a verifiable certificate of completion after finishing all modules and assignments.",
+      icon: icons.module("text-green-500"),
     },
   ];
 
@@ -84,18 +135,28 @@ const CourseDetails = () => {
     }
     console.log(storedUser);
   }, []);
-
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
         const res = await fetch(`${API}/courses/${courseId}`);
         const data = await res.json();
-        if (!data?.id) throw new Error("Course not found.");
-        setCourse(data);
         console.log(data);
-        if (data.modules && data.modules.length > 0) {
-          setActiveModule(data.modules[0]);
+        console.log(data.syllausContent);
+if (!data?.id) throw new Error("Course not found.");
+
+if (!data?.syllausContent) throw new Error("Syllabus not found.");
+
+const syllabus = JSON.parse(data.syllausContent);
+
+    
+        console.log(syllabus);
+
+        
+        setCourse({ ...data, syllabus });
+        if (syllabus.length > 0) {
+          setActiveModule(syllabus[0]);
         }
+        
       } catch (err) {
         console.error("Failed to fetch course details:", err);
       } finally {
@@ -105,21 +166,16 @@ const CourseDetails = () => {
 
     fetchCourseDetails();
   }, [courseId]);
-
+  
+  // ✅ Fetch user role in this course
   useEffect(() => {
     const fetchUserRole = async () => {
       if (!user?.id || !courseId) return;
       try {
-        const query = new URLSearchParams({
-          user_id: String(user.id),
-          course_id: String(courseId),
-        }).toString();
-        console.log(query);
-        const res = await fetch(`${API}/registrations/role-in-course/?user_id=${user.id}&course_id=${courseId}`);
-        
-
+        const res = await fetch(
+          `${API}/registrations/role-in-course/?user_id=${user.id}&course_id=${courseId}`
+        );
         const data = await res.json();
-        console.log(data);
         setUserRole(data.role || "none");
       } catch (err) {
         console.error("Failed to fetch user role:", err);
@@ -326,96 +382,82 @@ const CourseDetails = () => {
             </section>
 
             {/* Curriculum / Modules */}
-            <section className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center p-8 pb-0">
-                <div className="mr-3 p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                  {icons.curriculum}
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  Curriculum
-                </h2>
-              </div>
-              <div className="p-8 pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  {course.modules?.map((module, index) => (
-                    <div
-                      key={index}
-                      onClick={() => setActiveModule(module)}
-                      className={`p-6 rounded-lg cursor-pointer transition ${
-                        activeModule === module
-                          ? "bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-800"
-                          : "bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600"
-                      }`}
-                    >
-                      <div className="flex items-center">
-                        <div
-                          className={`flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center mr-4 ${
-                            activeModule === module
-                              ? "bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-800 dark:to-indigo-800 text-blue-600 dark:text-blue-300"
-                              : "bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300"
-                          }`}
-                        >
-                          <span className="font-medium">{index + 1}</span>
-                        </div>
-                        <h3 className="font-medium text-gray-900 dark:text-white">
-                          {module}
-                        </h3>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+            <section className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="mr-3 p-3 bg-blue-100 dark:bg-blue-900/40 rounded-lg">
+          <BookOpen className="text-blue-600 dark:text-blue-400" size={24} />
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          Curriculum
+        </h2>
+      </div>
 
-                {activeModule && (
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                      {activeModule}
-                    </h3>
-                    <div className="space-y-4">
-                      {/* Sample lesson content - replace with your actual data */}
-                      <div className="flex items-start">
-                        <div className="flex-shrink-0 mt-1">
-                          <div className="h-3 w-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500"></div>
-                        </div>
-                        <div className="ml-3">
-                          <p className="text-gray-900 dark:text-white">
-                            Introduction to {activeModule}
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Video · 15 min
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="flex-shrink-0 mt-1">
-                          <div className="h-3 w-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500"></div>
-                        </div>
-                        <div className="ml-3">
-                          <p className="text-gray-900 dark:text-white">
-                            {activeModule} Core Concepts
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Video · 22 min
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="flex-shrink-0 mt-1">
-                          <div className="h-3 w-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500"></div>
-                        </div>
-                        <div className="ml-3">
-                          <p className="text-gray-900 dark:text-white">
-                            {activeModule} Practical Exercise
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Assignment · 45 min
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+      {/* Modules */}
+      <div className="divide-y divide-gray-200 dark:divide-gray-700">
+        {course.syllabus && course.syllabus.length > 0 ? (
+          course.syllabus.map((module, index) => (
+            <div
+              key={index}
+              className="transition hover:bg-gray-50 dark:hover:bg-gray-700/40"
+            >
+              {/* Module Header */}
+              <button
+                onClick={() => toggleModule(index)}
+                className="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
+              >
+                <div className="flex items-center">
+                  <span className="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-semibold mr-4">
+                    {index + 1}
+                  </span>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                    {module.title}
+                  </h3>
+                </div>
+                {activeModule === index ? (
+                  <ChevronUp className="text-gray-500" />
+                ) : (
+                  <ChevronDown className="text-gray-500" />
                 )}
-              </div>
-            </section>
+              </button>
+
+              {/* Lessons Dropdown with Animation */}
+              <AnimatePresence>
+                {activeModule === index && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="px-10 pb-4 space-y-2"
+                  >
+                    {module.lessons.length > 0 ? (
+                      module.lessons.map((lesson, lessonIndex) => (
+                        <div
+                          key={lessonIndex}
+                          className="flex items-center gap-3 py-2 text-gray-700 dark:text-gray-300"
+                        >
+                          <span className="h-2 w-2 bg-blue-500 rounded-full"></span>
+                          {lesson.title}
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-gray-500 dark:text-gray-400">
+                        No lessons available.
+                      </p>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))
+        ) : (
+          <p className="p-6 text-gray-500 dark:text-gray-400">
+            No curriculum data available.
+          </p>
+        )}
+      </div>
+    </section>
 
             {/* FAQ Section */}
             <section className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
@@ -437,9 +479,7 @@ const CourseDetails = () => {
                       className="flex justify-between items-center w-full text-left"
                     >
                       <div className="flex items-center">
-                        <div className="mr-3">
-                          {faq.icon}
-                        </div>
+                        <div className="mr-3">{faq.icon}</div>
                         <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                           {faq.question}
                         </h3>
@@ -657,7 +697,7 @@ const CourseDetails = () => {
                 )}
               </div>
             </div>
-            
+
             {/* Register Button */}
             <div className="sticky top-6">
               <button
@@ -671,8 +711,18 @@ const CourseDetails = () => {
               >
                 <div className="flex items-center justify-center">
                   {!isRegisterDisabled() && (
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    <svg
+                      className="w-5 h-5 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      ></path>
                     </svg>
                   )}
                   {getRegisterButtonText()}
