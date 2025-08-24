@@ -221,12 +221,23 @@ export default function DomainFilterPage() {
       setLoading(false);
     }
   }, [selectedDomain, selectedSubdomain, sortByUpvotes]);
-
+const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
+  const user = stored ? JSON.parse(stored) : null;
+  const userId = user?.id;
   // Handle upvote/downvote
   const handleVote = useCallback(
     async (id, type) => {
       try {
-        await http(`/${id}/${type}`, { method: "POST" });
+        const upvoteResponse = await fetch(`${BASE_URL}/${id}/${type}`, { method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user_id: userId }),
+        });
+
+        const upvoteData = await upvoteResponse.json();
+        console.log(`${type} response:`, upvoteData);
+
         // Refresh list after voting
         if (selectedDomain || selectedSubdomain) {
           await applyFilter();
