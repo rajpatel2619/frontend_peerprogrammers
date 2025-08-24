@@ -135,6 +135,8 @@ const ProblemsTab = () => {
           fetch(`${API}/problems/list`).then(res => res.json())
         ]);
 
+        console.log(problems)
+
         setQuestions(Array.isArray(problems) ? problems : []);
         setTags(Array.isArray(tags) ? tags : []);
         setSheets(Array.isArray(sheets) ? sheets : []);
@@ -189,6 +191,12 @@ const ProblemsTab = () => {
 
       const res = await fetch(url, { method, body: form });
       if (!res.ok) throw new Error("Failed to save problem");
+
+      const result = await res.json();
+      console.log("API response:", result);
+      if (!res.ok) throw new Error(result.detail || "Something went wrong");
+
+    
       setShowForm(false);
       setEditingId(null);
     } catch (err) {
@@ -208,9 +216,15 @@ const ProblemsTab = () => {
       hindiSolution: problem.hindiSolution || "",
       englishSolution: problem.englishSolution || "",
       is_premium: problem.is_premium || false,
-      tag_ids: problem.tags?.map(t => t.id) || [],
-      company_ids: problem.companies?.map(c => c.id) || [],
-      sheet_ids: problem.sheets?.map(s => s.id) || [],
+      tag_ids: problem.tags
+        ?.map(t => (tags.find(tag => tag.name === (t.name || t)))?.id)
+        .filter(id => id != null) || [],
+      company_ids: problem.companies
+        ?.map(c => (companies.find(company => company.name === (c.name || c)))?.id)
+        .filter(id => id != null) || [],
+      sheet_ids: problem.sheets
+        ?.map(s => (sheets.find(sheet => sheet.title === (s.title || s)))?.id)
+        .filter(id => id != null) || [],
     });
     setShowForm(true);
   };

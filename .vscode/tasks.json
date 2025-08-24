@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Web Server",
+      "type": "shell",
+      "command": " git stash && git pull origin develop && git stash list | grep -q . && git stash apply || echo \"No stash to apply\" && npm install && BROWSER=none npm start",
+      "presentation": {
+        "group": "devGroup",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Start Development Environment",
+      "dependsOn": [
+        "Start Web Server",
+      ],
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
