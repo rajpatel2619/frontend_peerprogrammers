@@ -158,8 +158,8 @@ const TeacherDashboardLayout = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium">Mode</th>
                   <th className="px-6 py-3 text-left text-xs font-medium">Seats</th>
                   <th className="px-6 py-3 text-left text-xs font-medium">Price</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium">Published</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium">Current Status</th>
+                  {/* <th className="px-6 py-3 text-left text-xs font-medium">Actions</th> */}
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -172,17 +172,27 @@ const TeacherDashboardLayout = () => {
                 ) : (
                   courses.map(course => (
                     <tr key={course.id}>
-                      <td className="px-6 py-4 whitespace-nowrap font-medium">{course.title}</td>
+                      <td className="px-6 py-4 whitespace-nowrap font-medium">
+  <a
+    href={`/courses/${course.id}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-blue-600 hover:underline dark:text-blue-400"
+  >
+    {course.title}
+  </a>
+</td>
+
                       <td className="px-6 py-4 whitespace-nowrap">{course.mode}</td>
                       <td className="px-6 py-4 whitespace-nowrap">{course.seats ?? "—"}</td>
                       <td className="px-6 py-4 whitespace-nowrap">{course.price ? `₹${course.price}` : "Free"}</td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {course.is_published ? "Published" : "Unpublished"}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      {/* <td className="px-6 py-4 whitespace-nowrap">
                         <button className="text-blue-600 dark:text-blue-400 mr-3">View</button>
                         <button className="text-gray-600 dark:text-gray-400">Edit</button>
-                      </td>
+                      </td> */}
                     </tr>
                   ))
                 )}

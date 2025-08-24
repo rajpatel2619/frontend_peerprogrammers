@@ -17,6 +17,8 @@ export const useResourcesApi = () => {
       const error = await res.json().catch(() => ({}));
       throw new Error(error.detail || `HTTP ${res.status} ${res.statusText}`);
     }
+    // const data = await res.json();
+    // console.log(data)
     return res.json();
   };
 
@@ -156,6 +158,7 @@ export const DomainManager = ({ api }) => {
         <div className="text-center py-8">Loading domains...</div>
       ) : (
         <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
@@ -202,6 +205,8 @@ export const DomainManager = ({ api }) => {
               )}
             </tbody>
           </table>
+          </div>
+         
         </div>
       )}
 
@@ -662,6 +667,7 @@ export const ResourceManager = ({ api }) => {
         <div className="text-center py-8">Loading resources...</div>
       ) : (
         <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
@@ -669,6 +675,10 @@ export const ResourceManager = ({ api }) => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Description</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Domain/Subdomain</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Link</th>
+
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Is Verified</th>
+
+                
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
@@ -701,6 +711,10 @@ export const ResourceManager = ({ api }) => {
                         <FiExternalLink className="mr-1" /> Open
                       </a>
                     </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      <div className="font-medium">{resource.is_verified?"verified":"unverified"}</div>
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
                         <button
@@ -728,6 +742,8 @@ export const ResourceManager = ({ api }) => {
               )}
             </tbody>
           </table>
+          </div>
+          
         </div>
       )}
 

@@ -6,6 +6,7 @@ import {
   SubdomainManager,
   ResourceManager,
 } from "./resources_page/ResourceManagers";
+import ModeratorResourceVerify from "./resources_page/ModeratorResourceVerify";
 
 const ModeratorResources = () => {
   const [activeTab, setActiveTab] = useState("resources");
@@ -56,7 +57,7 @@ const ModeratorResources = () => {
         </div>
 
         {/* Content */}
-        {activeTab === "resources" && <ResourceManager api={api} />}
+        {activeTab === "resources" && <ModeratorResourceVerify />}
         {activeTab === "domains" && <DomainManager api={api} />}
         {activeTab === "subdomains" && <SubdomainManager api={api} />}
       </div>
