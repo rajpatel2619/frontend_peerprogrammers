@@ -66,11 +66,9 @@ const ModeratorCourses = () => {
       <div className="max-w-7xl mx-auto pt-20 px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-            Course Management
+            Pending Courses for Verification
           </h1>
-          <button className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
-            Welcome
-          </button>
+          
         </div>
 
         {/* Search Bar */}
@@ -127,13 +125,16 @@ const ModeratorCourses = () => {
                       className="hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <Link
-                          to={`/courses/${course.id}`}
-                          className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
-                        >
-                          {course.title}
-                        </Link>
-                      </td>
+  <a
+    href={`/courses/${course.id}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+  >
+    {course.title}
+  </a>
+</td>
+
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                         {course.creator?.name || 'N/A'}
                       </td>
