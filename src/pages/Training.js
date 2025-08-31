@@ -119,27 +119,27 @@ const Training = () => {
                 className="bg-white dark:bg-zinc-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100 dark:border-gray-700"
               >
                 <div
-  className="relative h-48 overflow-hidden cursor-pointer flex items-center justify-center bg-gray-200 dark:bg-zinc-700"
-  onClick={() => handleNavigate(resource.id)}
->
-  {resource.image ? (
-    <img
-      src={resource.image}
-      alt={resource.title}
-      className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
-    />
-  ) : (
-    <div className="flex items-center justify-center w-full h-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-lg p-4 text-center">
-      {resource.title}
-    </div>
-  )}
+                  className="relative h-48 overflow-hidden cursor-pointer flex items-center justify-center bg-gray-200 dark:bg-zinc-700"
+                  onClick={() => handleNavigate(resource.id)}
+                >
+                  {resource.image ? (
+                    <img
+                      src={resource.image}
+                      alt={resource.title}
+                      className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center w-full h-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-lg p-4 text-center">
+                      {resource.title}
+                    </div>
+                  )}
 
-  {resource.featured && (
-    <div className="absolute top-4 right-4 bg-gradient-to-r from-blue-600 to-teal-600 text-white px-3 py-1 rounded-lg text-sm font-medium">
-      Featured
-    </div>
-  )}
-</div>
+                  {resource.featured && (
+                    <div className="absolute top-4 right-4 bg-gradient-to-r from-blue-600 to-teal-600 text-white px-3 py-1 rounded-lg text-sm font-medium">
+                      Featured
+                    </div>
+                  )}
+                </div>
 
                 <div className="p-6">
                   <h3
@@ -164,14 +164,14 @@ const Training = () => {
                       className="flex-1 text-white bg-black dark:text-black dark:bg-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
                     >
                       <span>Explore Course</span>
-                    {/* <ExternalLink className="w-4 h-4" /> */}
+                      <ExternalLink className="w-4 h-4" />
                     </button>
-                    <button
+                    {/* <button
                       onClick={() => handleDownload(resource.syllabus_link)}
                       className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg font-medium hover:border-blue-600 hover:text-blue-600 transition-all duration-200 flex items-center justify-center"
                     >
                       <Download className="w-4 h-4" />
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>

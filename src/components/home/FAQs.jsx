@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 const FAQs = () => {
   const faqData = [
@@ -119,32 +120,46 @@ const FAQs = () => {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-4xl font-bold mb-10 text-center text-indigo-700">Frequently Asked Questions (FAQs)</h1>
-      {faqData.map((section, secIdx) => (
-        <div key={secIdx} className="mb-10">
-          <h2 className="text-2xl font-semibold mb-6 text-indigo-600 border-b pb-2">{section.category}</h2>
-          <div className="space-y-4">
-            {section.items.map((item, idx) => (
-              <div
-                key={idx}
-                onClick={() => toggleFAQ(`${secIdx}-${idx}`)}
-                className="cursor-pointer rounded-xl border shadow-sm transition-all duration-200 hover:shadow-md bg-white"
+  <h1 className="text-4xl font-bold mb-10 text-center text-black dark:text-white">
+    Frequently Asked Questions (FAQs)
+  </h1>
+  {faqData.map((section, secIdx) => (
+    <div key={secIdx} className="mb-10">
+      <h2 className="text-2xl font-semibold mb-6 text-black dark:text-white border-b border-indigo-200 dark:border-indigo-700/50 pb-2">
+        {section.category}
+      </h2>
+      <div className="space-y-4">
+        {section.items.map((item, idx) => (
+          <div
+            key={idx}
+            onClick={() => toggleFAQ(`${secIdx}-${idx}`)}
+            className="cursor-pointer rounded-xl border border-neutral-200 dark:border-neutral-800 shadow-sm transition-all duration-200 hover:shadow-md bg-white dark:bg-neutral-950 hover:bg-neutral-50 dark:hover:bg-neutral-900"
+          >
+            <div className="px-6 py-4 flex justify-between items-center">
+              <p className="font-medium text-lg text-neutral-900 dark:text-neutral-100">
+                {item.q}
+              </p>
+              <span className="text-xl text-indigo-500 dark:text-indigo-400 font-semibold">
+                {openIndex === `${secIdx}-${idx}` ? "−" : "+"}
+              </span>
+            </div>
+            {openIndex === `${secIdx}-${idx}` && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="px-6 pb-4 text-neutral-700 dark:text-neutral-300 border-t border-neutral-100 dark:border-neutral-800"
               >
-                <div className="px-6 py-4 flex justify-between items-center">
-                  <p className="font-medium text-lg text-gray-900">{item.q}</p>
-                  <span className="text-xl text-indigo-500">{openIndex === `${secIdx}-${idx}` ? "-" : "+"}</span>
-                </div>
-                {openIndex === `${secIdx}-${idx}` && (
-                  <div className="px-6 pb-4 text-gray-700 border-t">
-                    {item.a}
-                  </div>
-                )}
-              </div>
-            ))}
+                {item.a}
+              </motion.div>
+            )}
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
+  ))}
+</div>
   );
 };
 

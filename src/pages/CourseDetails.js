@@ -142,21 +142,18 @@ const CourseDetails = () => {
         const data = await res.json();
         console.log(data);
         console.log(data.syllausContent);
-if (!data?.id) throw new Error("Course not found.");
+        if (!data?.id) throw new Error("Course not found.");
 
-if (!data?.syllausContent) throw new Error("Syllabus not found.");
+        if (!data?.syllausContent) throw new Error("Syllabus not found.");
 
-const syllabus = JSON.parse(data.syllausContent);
+        const syllabus = JSON.parse(data.syllausContent);
 
-    
         console.log(syllabus);
 
-        
         setCourse({ ...data, syllabus });
         if (syllabus.length > 0) {
           setActiveModule(syllabus[0]);
         }
-        
       } catch (err) {
         console.error("Failed to fetch course details:", err);
       } finally {
@@ -166,7 +163,7 @@ const syllabus = JSON.parse(data.syllausContent);
 
     fetchCourseDetails();
   }, [courseId]);
-  
+
   // ✅ Fetch user role in this course
   useEffect(() => {
     const fetchUserRole = async () => {
@@ -278,30 +275,96 @@ const syllabus = JSON.parse(data.syllausContent);
 
   // Skeleton Loading Component
   const SkeletonLoader = () => (
-    <div className="w-full">
+    <div className="w-full bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-950 dark:to-neutral-900">
       {/* Cover Photo Skeleton */}
-      <div className="w-full h-96 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 animate-pulse"></div>
+      <div className="w-full h-96 bg-gradient-to-r from-neutral-200 via-neutral-300 to-neutral-200 dark:from-neutral-800 dark:via-neutral-700 dark:to-neutral-800 animate-pulse"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Left Column - Main Content Skeleton */}
           <div className="lg:col-span-3 space-y-8">
-            <div className="h-12 w-1/2 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded animate-pulse"></div>
-            <div className="space-y-4">
-              {[...Array(3)].map((_, i) => (
-                <div
-                  key={i}
-                  className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded animate-pulse w-full"
-                ></div>
-              ))}
+            {/* Course Overview Skeleton */}
+            <div className="bg-white dark:bg-neutral-950 rounded-xl p-8 shadow-lg border border-neutral-100 dark:border-neutral-800 animate-pulse">
+              <div className="flex items-center mb-6">
+                <div className="mr-3 w-10 h-10 bg-neutral-200 dark:bg-neutral-800 rounded-lg"></div>
+                <div className="h-8 w-48 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+              </div>
+              <div className="space-y-3">
+                <div className="h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-full"></div>
+                <div className="h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-5/6"></div>
+                <div className="h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-4/5"></div>
+                <div className="h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-3/4"></div>
+              </div>
+            </div>
+
+            {/* Curriculum Skeleton */}
+            <div className="bg-white dark:bg-neutral-950 rounded-2xl shadow-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden animate-pulse">
+              <div className="flex items-center p-6 border-b border-neutral-200 dark:border-neutral-800">
+                <div className="mr-3 w-10 h-10 bg-neutral-200 dark:bg-neutral-800 rounded-lg"></div>
+                <div className="h-8 w-32 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+              </div>
+
+              <div className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="p-6">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 bg-neutral-200 dark:bg-neutral-800 rounded-full mr-4"></div>
+                        <div className="h-6 w-56 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+                      </div>
+                      <div className="w-5 h-5 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* FAQ Skeleton */}
+            <div className="bg-white dark:bg-neutral-950 rounded-xl shadow-lg overflow-hidden border border-neutral-100 dark:border-neutral-800 animate-pulse">
+              <div className="flex items-center p-8">
+                <div className="mr-3 w-10 h-10 bg-neutral-200 dark:bg-neutral-800 rounded-lg"></div>
+                <div className="h-8 w-48 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+              </div>
+
+              <div className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="p-6">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center">
+                        <div className="mr-3 w-6 h-6 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+                        <div className="h-6 w-64 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+                      </div>
+                      <div className="w-5 h-5 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+
+          {/* Right Column - Sidebar Skeleton */}
           <div className="space-y-6">
-            {[...Array(2)].map((_, i) => (
-              <div
-                key={i}
-                className="p-6 h-48 bg-white dark:bg-gray-800 rounded-xl shadow-sm animate-pulse"
-              ></div>
-            ))}
+            {/* Course Details Skeleton */}
+            <div className="bg-white dark:bg-neutral-950 rounded-xl p-6 shadow-lg border border-neutral-100 dark:border-neutral-800 animate-pulse">
+              <div className="flex items-center mb-4">
+                <div className="mr-3 w-10 h-10 bg-neutral-200 dark:bg-neutral-800 rounded-lg"></div>
+                <div className="h-7 w-36 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+              </div>
+
+              <div className="space-y-4">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i}>
+                    <div className="h-4 w-20 bg-neutral-200 dark:bg-neutral-800 rounded mb-2"></div>
+                    <div className="h-5 w-32 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Register Button Skeleton */}
+            <div className="sticky top-6">
+              <div className="w-full h-16 bg-neutral-200 dark:bg-neutral-800 rounded-xl animate-pulse"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -317,7 +380,7 @@ const syllabus = JSON.parse(data.syllausContent);
     );
 
   return (
-    <div className="w-full bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="w-full bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-950 dark:to-neutral-900">
       {/* Hero Section */}
       <div className="relative w-full h-96 overflow-hidden">
         <img
@@ -325,7 +388,7 @@ const syllabus = JSON.parse(data.syllausContent);
           alt=""
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end pb-12">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-end pb-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
               <div>
@@ -336,7 +399,7 @@ const syllabus = JSON.parse(data.syllausContent);
                   {course.domain_tags?.map((tag) => (
                     <span
                       key={tag.id}
-                      className="px-3 py-1 bg-white/20 text-white rounded-full text-sm font-medium backdrop-blur-sm"
+                      className="px-3 py-1 bg-black/40 text-white rounded-full text-sm font-medium backdrop-blur-sm border border-white/10"
                     >
                       {tag.name}
                     </span>
@@ -349,8 +412,8 @@ const syllabus = JSON.parse(data.syllausContent);
                   onClick={handleRegister}
                   className={`px-8 py-3 rounded-xl font-medium text-lg transition-all duration-300 transform ${
                     isRegisterDisabled()
-                      ? "bg-gray-300 dark:bg-gray-700 cursor-not-allowed text-gray-500 dark:text-gray-400"
-                      : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+                      ? "bg-neutral-800 cursor-not-allowed text-neutral-500 border border-neutral-700"
+                      : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 border border-blue-500/30"
                   }`}
                 >
                   {getRegisterButtonText()}
@@ -367,109 +430,112 @@ const syllabus = JSON.parse(data.syllausContent);
           {/* Left Column - Main Content */}
           <div className="lg:col-span-3 space-y-12">
             {/* Course Description */}
-            <section className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-100 dark:border-gray-700">
+            <section className="bg-white dark:bg-neutral-950 rounded-xl p-8 shadow-lg border border-neutral-100 dark:border-neutral-800">
               <div className="flex items-center mb-6">
-                <div className="mr-3 p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <div className="mr-3 p-2 bg-purple-100 dark:bg-purple-900/50 rounded-lg">
                   {icons.overview}
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">
                   Course Overview
                 </h2>
               </div>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed">
                 {course.description}
               </p>
             </section>
 
             {/* Curriculum / Modules */}
-            <section className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-      {/* Header */}
-      <div className="flex items-center p-6 border-b border-gray-200 dark:border-gray-700">
-        <div className="mr-3 p-3 bg-blue-100 dark:bg-blue-900/40 rounded-lg">
-          <BookOpen className="text-blue-600 dark:text-blue-400" size={24} />
-        </div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Curriculum
-        </h2>
-      </div>
-
-      {/* Modules */}
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        {course.syllabus && course.syllabus.length > 0 ? (
-          course.syllabus.map((module, index) => (
-            <div
-              key={index}
-              className="transition hover:bg-gray-50 dark:hover:bg-gray-700/40"
-            >
-              {/* Module Header */}
-              <button
-                onClick={() => toggleModule(index)}
-                className="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
-              >
-                <div className="flex items-center">
-                  <span className="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-semibold mr-4">
-                    {index + 1}
-                  </span>
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                    {module.title}
-                  </h3>
+            <section className="bg-white dark:bg-neutral-950 rounded-2xl shadow-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+              {/* Header */}
+              <div className="flex items-center p-6 border-b border-neutral-200 dark:border-neutral-800">
+                <div className="mr-3 p-3 bg-blue-100 dark:bg-blue-900/50 rounded-lg">
+                  <BookOpen
+                    className="text-blue-600 dark:text-blue-400"
+                    size={24}
+                  />
                 </div>
-                {activeModule === index ? (
-                  <ChevronUp className="text-gray-500" />
-                ) : (
-                  <ChevronDown className="text-gray-500" />
-                )}
-              </button>
+                <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">
+                  Curriculum
+                </h2>
+              </div>
 
-              {/* Lessons Dropdown with Animation */}
-              <AnimatePresence>
-                {activeModule === index && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="px-10 pb-4 space-y-2"
-                  >
-                    {module.lessons.length > 0 ? (
-                      module.lessons.map((lesson, lessonIndex) => (
-                        <div
-                          key={lessonIndex}
-                          className="flex items-center gap-3 py-2 text-gray-700 dark:text-gray-300"
-                        >
-                          <span className="h-2 w-2 bg-blue-500 rounded-full"></span>
-                          {lesson.title}
+              {/* Modules */}
+              <div className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                {course.syllabus && course.syllabus.length > 0 ? (
+                  course.syllabus.map((module, index) => (
+                    <div
+                      key={index}
+                      className="transition hover:bg-neutral-50 dark:hover:bg-neutral-900"
+                    >
+                      {/* Module Header */}
+                      <button
+                        onClick={() => toggleModule(index)}
+                        className="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
+                      >
+                        <div className="flex items-center">
+                          <span className="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 font-semibold mr-4">
+                            {index + 1}
+                          </span>
+                          <h3 className="text-lg font-medium text-neutral-900 dark:text-white">
+                            {module.title}
+                          </h3>
                         </div>
-                      ))
-                    ) : (
-                      <p className="text-gray-500 dark:text-gray-400">
-                        No lessons available.
-                      </p>
-                    )}
-                  </motion.div>
+                        {activeModule === index ? (
+                          <ChevronUp className="text-neutral-500 dark:text-neutral-400" />
+                        ) : (
+                          <ChevronDown className="text-neutral-500 dark:text-neutral-400" />
+                        )}
+                      </button>
+
+                      {/* Lessons Dropdown with Animation */}
+                      <AnimatePresence>
+                        {activeModule === index && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="px-10 pb-4 space-y-2"
+                          >
+                            {module.lessons.length > 0 ? (
+                              module.lessons.map((lesson, lessonIndex) => (
+                                <div
+                                  key={lessonIndex}
+                                  className="flex items-center gap-3 py-2 text-neutral-700 dark:text-neutral-300"
+                                >
+                                  <span className="h-2 w-2 bg-blue-500 rounded-full"></span>
+                                  {lesson.title}
+                                </div>
+                              ))
+                            ) : (
+                              <p className="text-neutral-500 dark:text-neutral-400">
+                                No lessons available.
+                              </p>
+                            )}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ))
+                ) : (
+                  <p className="p-6 text-neutral-500 dark:text-neutral-400">
+                    No curriculum data available.
+                  </p>
                 )}
-              </AnimatePresence>
-            </div>
-          ))
-        ) : (
-          <p className="p-6 text-gray-500 dark:text-gray-400">
-            No curriculum data available.
-          </p>
-        )}
-      </div>
-    </section>
+              </div>
+            </section>
 
             {/* FAQ Section */}
-            <section className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
+            <section className="bg-white dark:bg-neutral-950 rounded-xl shadow-lg overflow-hidden border border-neutral-100 dark:border-neutral-800">
               <div className="flex items-center p-8">
-                <div className="mr-3 p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                <div className="mr-3 p-2 bg-green-100 dark:bg-green-900/50 rounded-lg">
                   {icons.faq}
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">
                   Frequently Asked Questions
                 </h2>
               </div>
-              <div className="divide-y divide-gray-200 dark:divide-gray-700">
+              <div className="divide-y divide-neutral-200 dark:divide-neutral-800">
                 {faqs.map((faq, index) => (
                   <div key={index} className="p-6">
                     <button
@@ -480,12 +546,12 @@ const syllabus = JSON.parse(data.syllausContent);
                     >
                       <div className="flex items-center">
                         <div className="mr-3">{faq.icon}</div>
-                        <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                        <h3 className="text-lg font-medium text-neutral-900 dark:text-white">
                           {faq.question}
                         </h3>
                       </div>
                       <svg
-                        className={`w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform ${
+                        className={`w-5 h-5 text-neutral-500 dark:text-neutral-400 transform transition-transform ${
                           expandedFaq === index ? "rotate-180" : ""
                         }`}
                         fill="none"
@@ -501,7 +567,7 @@ const syllabus = JSON.parse(data.syllausContent);
                       </svg>
                     </button>
                     {expandedFaq === index && (
-                      <div className="mt-4 ml-9 text-gray-600 dark:text-gray-300">
+                      <div className="mt-4 ml-9 text-neutral-600 dark:text-neutral-300">
                         {faq.answer}
                       </div>
                     )}
@@ -513,188 +579,49 @@ const syllabus = JSON.parse(data.syllausContent);
 
           {/* Right Column - Sidebar */}
           <div className="space-y-6">
-            {/* Instructors */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center mb-4">
-                <div className="mr-3 p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
-                  {icons.instructor}
-                </div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Instructors
-                </h2>
-              </div>
-              <div className="space-y-4">
-                {course.mentors?.length > 0 ? (
-                  course.mentors.map((mentor, index) => (
-                    <div key={index} className="flex items-center space-x-4">
-                      <div className="flex-shrink-0 h-12 w-12 rounded-full bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/30 dark:to-yellow-800/30 overflow-hidden">
-                        {mentor.avatar ? (
-                          <img
-                            src={mentor.avatar}
-                            alt={mentor.name}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <div className="h-full w-full flex items-center justify-center text-yellow-500">
-                            <svg
-                              className="w-6 h-6"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                clipRule="evenodd"
-                              ></path>
-                            </svg>
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <Link
-                          to={`/profiles/t/${mentor.user_id}`}
-                          className="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
-                        >
-                          {mentor.name || `Mentor ${mentor.user_id}`}
-                        </Link>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {mentor.email || "No email provided"}
-                        </p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500 dark:text-gray-400">
-                    No instructors listed
-                  </p>
-                )}
-              </div>
-            </div>
-
             {/* Course Details */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
+            <div className="bg-white dark:bg-neutral-950 rounded-xl p-6 shadow-lg border border-neutral-100 dark:border-neutral-800">
               <div className="flex items-center mb-4">
-                <div className="mr-3 p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
+                <div className="mr-3 p-2 bg-red-100 dark:bg-red-900/50 rounded-lg">
                   {icons.details}
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                <h2 className="text-xl font-bold text-neutral-900 dark:text-white">
                   Course Details
                 </h2>
               </div>
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  <h3 className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
                     Mode
                   </h3>
-                  <p className="text-gray-900 dark:text-white">{course.mode}</p>
+                  <p className="text-neutral-900 dark:text-white">
+                    {course.mode}
+                  </p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  <h3 className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
                     Duration
                   </h3>
-                  <p className="text-gray-900 dark:text-white">
+                  <p className="text-neutral-900 dark:text-white">
                     {course.start_date} to {course.end_date}
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  <h3 className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
                     Seats Available
                   </h3>
-                  <p className="text-gray-900 dark:text-white">
+                  <p className="text-neutral-900 dark:text-white">
                     {course.seats}
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  <h3 className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
                     Price
                   </h3>
                   <p className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400">
                     ₹{course.price}
                   </p>
                 </div>
-              </div>
-            </div>
-
-            {/* Resources */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center mb-4">
-                <div className="mr-3 p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                  {icons.resources}
-                </div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Resources
-                </h2>
-              </div>
-              <div className="space-y-3">
-                {course.syllabus_link && (
-                  <a
-                    href={course.syllabus_link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center text-blue-600 dark:text-blue-400 hover:underline group"
-                  >
-                    <div className="mr-2 p-1 bg-blue-100 dark:bg-blue-900/30 rounded-lg group-hover:bg-blue-200 dark:group-hover:bg-blue-800/30 transition">
-                      <svg
-                        className="w-5 h-5 text-blue-500 dark:text-blue-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        ></path>
-                      </svg>
-                    </div>
-                    Download Syllabus
-                  </a>
-                )}
-                {course.chatLink && (
-                  <a
-                    href={course.chatLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center text-green-600 dark:text-green-400 hover:underline group"
-                  >
-                    <div className="mr-2 p-1 bg-green-100 dark:bg-green-900/30 rounded-lg group-hover:bg-green-200 dark:group-hover:bg-green-800/30 transition">
-                      <svg
-                        className="w-5 h-5 text-green-500 dark:text-green-400"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"></path>
-                      </svg>
-                    </div>
-                    Join Course Group
-                  </a>
-                )}
-                {course.lectureLink && (
-                  <a
-                    href={course.lectureLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center text-red-600 dark:text-red-400 hover:underline group"
-                  >
-                    <div className="mr-2 p-1 bg-red-100 dark:bg-red-900/30 rounded-lg group-hover:bg-red-200 dark:group-hover:bg-red-800/30 transition">
-                      <svg
-                        className="w-5 h-5 text-red-500 dark:text-red-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                        ></path>
-                      </svg>
-                    </div>
-                    Join Live Lectures
-                  </a>
-                )}
               </div>
             </div>
 
@@ -705,8 +632,8 @@ const syllabus = JSON.parse(data.syllausContent);
                 onClick={handleRegister}
                 className={`w-full px-8 py-4 rounded-xl font-medium text-lg transition-all duration-300 transform ${
                   isRegisterDisabled()
-                    ? "bg-gray-300 dark:bg-gray-700 cursor-not-allowed text-gray-500 dark:text-gray-400"
-                    : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+                    ? "bg-neutral-800 cursor-not-allowed text-neutral-500 border border-neutral-700"
+                    : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 border border-blue-500/30"
                 }`}
               >
                 <div className="flex items-center justify-center">

@@ -202,7 +202,7 @@ export default function DomainFilterPage() {
         setResources(sortByUpvotes(normalized));
       } else if (selectedDomain) {
         // Fallback: filter client-side by domain if server lacks endpoint for domain-only
-        const all = await http("/all-resources");
+        const all = await http(`/all-resources/user_id=${userId}`);
         const normalized = (Array.isArray(all) ? all : [])
           .map(normalizeResource)
           .filter(Boolean)
@@ -450,14 +450,14 @@ const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
                         View Resource
                         <FiExternalLink className="ml-2 text-lg" />
                       </a>
-                      <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                      {/* <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
                         <FiShare2 className="mr-2 text-lg" />
                         Shared
-                      </span>
+                      </span> */}
                     </div>
 
                     {/* Vote Buttons */}
-                    <div className="flex justify-between items-center">
+                    {/* <div className="flex justify-between items-center">
                       <motion.button
                         whileTap={{ scale: 0.92 }}
                         onClick={() => handleVote(res.id, "upvote")}
@@ -473,7 +473,7 @@ const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
                         <FiThumbsDown className="mr-2 text-lg" />{" "}
                         {res?.downvotes}
                       </motion.button>
-                    </div>
+                    </div> */}
                   </div>
                 </motion.div>
               ))}

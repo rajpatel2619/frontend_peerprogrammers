@@ -36,6 +36,7 @@ import ModeratorCp from "./pages/moderator/ModeratorCp";
 import ModeratorResources from "./pages/moderator/ModeratorResources";
 import ModeratorCources from "./pages/moderator/ModeratorCources";
 import CreateResources from "./pages/teacher/CreateResources";
+import Mentors from "./pages/Mentors";
 
 function App() {
   return (
@@ -57,8 +58,8 @@ function App() {
 
         {/* <Route path="/profiles/teachers/:teacherId" element={TeacherPublicProfile} /> */}
         {/* Authentication routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/loginyathartha" element={<Login />} />
+        {/* <Route path="/signup" element={<Signup />} /> */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/profile" element={<MyProfile />} />
         {/* Student routes */}
@@ -90,7 +91,7 @@ function App() {
 
         <Route path="/Contact" element={<Contact/>} />
         <Route path="/training" element={<Training />} />
-
+        <Route path="/mentors" element={<Mentors />} />
         <Route path="/mentoring" element={<MentoringBooking />} />
         
 

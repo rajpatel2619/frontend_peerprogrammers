@@ -322,83 +322,83 @@ const DSASheetPage = () => {
     );
   };
 
-  const PaginationControls = () => {
-    const totalPages = Math.ceil(totalProblems / 10);
-    const maxVisiblePages = 5;
-    const halfVisible = Math.floor(maxVisiblePages / 2);
+  // const PaginationControls = () => {
+  //   const totalPages = Math.ceil(totalProblems / 10);
+  //   const maxVisiblePages = 5;
+  //   const halfVisible = Math.floor(maxVisiblePages / 2);
     
-    let startPage = Math.max(1, pagination.page - halfVisible);
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+  //   let startPage = Math.max(1, pagination.page - halfVisible);
+  //   let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
     
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
+  //   if (endPage - startPage + 1 < maxVisiblePages) {
+  //     startPage = Math.max(1, endPage - maxVisiblePages + 1);
+  //   }
     
-    const pageNumbers = [];
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
-    }
+  //   const pageNumbers = [];
+  //   for (let i = startPage; i <= endPage; i++) {
+  //     pageNumbers.push(i);
+  //   }
 
-    return (
-      <div className="flex justify-between items-center mt-6">
-        <div className="text-sm text-gray-600 dark:text-gray-400">
-          Showing {(pagination.page - 1) * 10 + 1}-{Math.min(pagination.page * 10, totalProblems)} of {totalProblems}
-        </div>
+  //   return (
+  //     <div className="flex justify-between items-center mt-6">
+  //       <div className="text-sm text-gray-600 dark:text-gray-400">
+  //         Showing {(pagination.page - 1) * 10 + 1}-{Math.min(pagination.page * 10, totalProblems)} of {totalProblems}
+  //       </div>
         
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => setPagination(prev => ({ ...prev, page: Math.max(1, prev.page - 1) }))}
-            disabled={pagination.page === 1}
-            className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <FiChevronLeft />
-          </button>
+  //       <div className="flex items-center gap-1">
+  //         <button
+  //           onClick={() => setPagination(prev => ({ ...prev, page: Math.max(1, prev.page - 1) }))}
+  //           disabled={pagination.page === 1}
+  //           className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+  //         >
+  //           <FiChevronLeft />
+  //         </button>
           
-          {startPage > 1 && (
-            <>
-              <button
-                onClick={() => setPagination(prev => ({ ...prev, page: 1 }))}
-                className={`px-3 py-1 rounded-lg ${1 === pagination.page ? 'bg-blue-500 text-white' : 'border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
-              >
-                1
-              </button>
-              {startPage > 2 && <span className="px-2">...</span>}
-            </>
-          )}
+  //         {startPage > 1 && (
+  //           <>
+  //             <button
+  //               onClick={() => setPagination(prev => ({ ...prev, page: 1 }))}
+  //               className={`px-3 py-1 rounded-lg ${1 === pagination.page ? 'bg-blue-500 text-white' : 'border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+  //             >
+  //               1
+  //             </button>
+  //             {startPage > 2 && <span className="px-2">...</span>}
+  //           </>
+  //         )}
           
-          {pageNumbers.map(number => (
-            <button
-              key={number}
-              onClick={() => setPagination(prev => ({ ...prev, page: number }))}
-              className={`px-3 py-1 rounded-lg ${number === pagination.page ? 'bg-blue-500 text-white' : 'border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
-            >
-              {number}
-            </button>
-          ))}
+  //         {pageNumbers.map(number => (
+  //           <button
+  //             key={number}
+  //             onClick={() => setPagination(prev => ({ ...prev, page: number }))}
+  //             className={`px-3 py-1 rounded-lg ${number === pagination.page ? 'bg-blue-500 text-white' : 'border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+  //           >
+  //             {number}
+  //           </button>
+  //         ))}
           
-          {endPage < totalPages && (
-            <>
-              {endPage < totalPages - 1 && <span className="px-2">...</span>}
-              <button
-                onClick={() => setPagination(prev => ({ ...prev, page: totalPages }))}
-                className={`px-3 py-1 rounded-lg ${totalPages === pagination.page ? 'bg-blue-500 text-white' : 'border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
-              >
-                {totalPages}
-              </button>
-            </>
-          )}
+  //         {endPage < totalPages && (
+  //           <>
+  //             {endPage < totalPages - 1 && <span className="px-2">...</span>}
+  //             <button
+  //               onClick={() => setPagination(prev => ({ ...prev, page: totalPages }))}
+  //               className={`px-3 py-1 rounded-lg ${totalPages === pagination.page ? 'bg-blue-500 text-white' : 'border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+  //             >
+  //               {totalPages}
+  //             </button>
+  //           </>
+  //         )}
           
-          <button
-            onClick={() => setPagination(prev => ({ ...prev, page: Math.min(totalPages, prev.page + 1) }))}
-            disabled={pagination.page === totalPages}
-            className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <FiChevronRight />
-          </button>
-        </div>
-      </div>
-    );
-  };
+  //         <button
+  //           onClick={() => setPagination(prev => ({ ...prev, page: Math.min(totalPages, prev.page + 1) }))}
+  //           disabled={pagination.page === totalPages}
+  //           className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+  //         >
+  //           <FiChevronRight />
+  //         </button>
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -409,7 +409,7 @@ const DSASheetPage = () => {
         Start Solving Now - Consistency is the key of success!
       </p>
 
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
+      <div className="bg-white dark:bg-black border border-gray-200 dark:border-gray-700  rounded-lg shadow-md p-4 mb-6">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="relative flex-grow">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -418,7 +418,7 @@ const DSASheetPage = () => {
             <input
               type="text"
               placeholder="Search problems..."
-              className="pl-10 pr-4 py-2 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className="pl-10 pr-4 py-2 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:bg-zinc-800 dark:text-white"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -447,12 +447,12 @@ const DSASheetPage = () => {
               nameKey="title"
             />
             
-            <MultiSelectDropdown
+            {/* <MultiSelectDropdown
               options={companies}
               selected={filters.company}
               onToggle={(value) => toggleFilter('company', value)}
               placeholder="Company"
-            />
+            /> */}
             
             {/* {isLoggedIn && (
               <button
@@ -467,7 +467,7 @@ const DSASheetPage = () => {
                 <span>Favorites</span>
               </button>
             )} */}
-            <button
+            {/* <button
                 onClick={() => {
                   if (!isLoggedIn) return; // do nothing if not logged in
                   setFilters({ ...filters, favorite: !filters.favorite });
@@ -481,14 +481,14 @@ const DSASheetPage = () => {
               >
                 <FiStar className={filters.favorite ? "fill-current" : ""} />
                 <span>Favorites</span>
-              </button>
+              </button> */}
           </div>
         </div>
         
         <FilterChips />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
         <div className="md:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 animate-fade-in">
           <div className="flex justify-between items-center mb-2">
             <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
@@ -552,166 +552,151 @@ const DSASheetPage = () => {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      ) : (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-700">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Problem
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Difficulty
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Company
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Solutions
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Favorite
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              {problems?.map((problem) => (
-                <tr
-                  key={problem.id}
-                  className="hover:bg-gray-50 dark:hover:bg-gray-600"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => toggleSolved(problem.id)}
-                        className={`p-2 rounded-full ${
-                          problem.solved
-                            ? "bg-green-100 text-green-600"
-                            : "bg-gray-100 text-gray-400"
-                        } dark:${
-                          problem.solved
-                            ? "bg-green-900/20 text-green-400"
-                            : "bg-gray-700 text-gray-500"
-                        }`}
-                      >
-                        <FiCheck />
-                      </button>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <a
-                      href={problem.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 dark:text-blue-400 hover:underline"
-                    >
-                      {problem.title}
-                    </a>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 py-1 text-xs rounded-full ${
-                        problem.difficulty === "Easy"
-                          ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                          : problem.difficulty === "Medium"
-                          ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                          : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                      }`}
-                    >
-                      {problem.difficulty}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex flex-wrap gap-1">
-                      {problem.tags?.slice(0, 2).map((tag, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full dark:bg-blue-900/30 dark:text-blue-400"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                      {problem.tags?.length > 2 && (
-                        <div className="relative">
-                          <button
-                            className="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded-full dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-                            title={problem.tags.join(", ")}
-                          >
-                            +{problem.tags.length - 2} more
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex space-x-2">
-                      {problem.solutions.github && (
-                        <a
-                          href={problem.solutions.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-                          title="Code Solution"
-                        >
-                          <FiGithub />
-                        </a>
-                      )}
-                      {problem.solutions.youtube.hindi && (
-                        <a
-                          href={problem.solutions.youtube.hindi}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30"
-                          title="Hindi Solution"
-                        >
-                          <FiYoutube />
-                        </a>
-                      )}
-                      {problem.solutions.youtube.english && (
-                        <a
-                          href={problem.solutions.youtube.english}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30"
-                          title="English Solution"
-                        >
-                          <FiYoutube />
-                        </a>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+    {loading ? (
+  <div className="bg-white dark:bg-neutral-800/70 rounded-lg shadow-md overflow-hidden border border-neutral-200 dark:border-neutral-700/50">
+    <table className="min-w-full divide-y divide-neutral-200 dark:divide-neutral-700/50">
+      <thead className="bg-neutral-50 dark:bg-neutral-800/70">
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-300 uppercase tracking-wider">
+            Problem
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-300 uppercase tracking-wider">
+            Difficulty
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-300 uppercase tracking-wider">
+            Tags
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-300 uppercase tracking-wider">
+            Company
+          </th>
+        </tr>
+      </thead>
+      <tbody className="bg-white dark:bg-neutral-800/40 divide-y divide-neutral-200 dark:divide-neutral-700/50">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <tr key={index} className="animate-pulse">
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="h-4 bg-neutral-200 dark:bg-neutral-700/50 rounded w-3/4"></div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="h-6 bg-neutral-200 dark:bg-neutral-700/50 rounded-full w-16"></div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="flex flex-wrap gap-1">
+                <div className="h-6 bg-neutral-200 dark:bg-neutral-700/50 rounded-full w-16"></div>
+                <div className="h-6 bg-neutral-200 dark:bg-neutral-700/50 rounded-full w-20"></div>
+              </div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="flex flex-wrap gap-1">
+                <div className="h-6 bg-neutral-200 dark:bg-neutral-700/50 rounded-full w-16"></div>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+) : (
+  <div className="bg-white dark:bg-neutral-800/70 rounded-lg shadow-md overflow-hidden border border-neutral-200 dark:border-neutral-700/50">
+    <table className="min-w-full divide-y divide-neutral-200 dark:divide-neutral-700/50">
+      <thead className="bg-neutral-50 dark:bg-neutral-800/70">
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-300 uppercase tracking-wider">
+            Problem
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-300 uppercase tracking-wider">
+            Difficulty
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-300 uppercase tracking-wider">
+            Tags
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-300 uppercase tracking-wider">
+            Company
+          </th>
+        </tr>
+      </thead>
+      <tbody className="bg-white dark:bg-neutral-800/40 divide-y divide-neutral-200 dark:divide-neutral-700/50">
+        {problems?.map((problem) => (
+          <tr
+            key={problem.id}
+            className="hover:bg-neutral-50 dark:hover:bg-neutral-700/30 transition-colors duration-150"
+          >
+            <td className="px-6 py-4 whitespace-nowrap">
+              <a
+                href={problem.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+              >
+                {problem.title}
+              </a>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <span
+                className={`px-2 py-1 text-xs rounded-full font-medium ${
+                  problem.difficulty === "Easy"
+                    ? "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300"
+                    : problem.difficulty === "Medium"
+                    ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300"
+                    : "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300"
+                }`}
+              >
+                {problem.difficulty}
+              </span>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="flex flex-wrap gap-1">
+                {problem.tags?.slice(0, 2).map((tag, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full dark:bg-blue-900/40 dark:text-blue-300 font-medium"
+                  >
+                    {tag}
+                  </span>
+                ))}
+                {problem.tags?.length > 2 && (
+                  <div className="relative">
                     <button
-                      onClick={() => toggleFavorite(problem.id)}
-                      className={`p-2 rounded-full ${
-                        problem.favorite
-                          ? "bg-yellow-100 text-yellow-600"
-                          : "bg-gray-100 text-gray-400"
-                      } dark:${
-                        problem.favorite
-                          ? "bg-yellow-900/20 text-yellow-400"
-                          : "bg-gray-700 text-gray-500"
-                      }`}
+                      className="px-2 py-1 text-xs bg-neutral-100 text-neutral-800 rounded-full dark:bg-neutral-700/60 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700/80 transition-colors duration-150 font-medium"
+                      title={problem.tags.join(", ")}
                     >
-                      <FiStar className={problem.favorite ? "fill-current" : ""} />
+                      +{problem.tags.length - 2} more
                     </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <PaginationControls />
-        </div>
-      )}
+                  </div>
+                )}
+              </div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="flex flex-wrap gap-1">
+                {problem.companies?.slice(0, 2).map((tag, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded-full dark:bg-purple-900/40 dark:text-purple-300 font-medium"
+                  >
+                    {tag}
+                  </span>
+                ))}
+                {problem.companies?.length > 2 && (
+                  <div className="relative">
+                    <button
+                      className="px-2 py-1 text-xs bg-neutral-100 text-neutral-800 rounded-full dark:bg-neutral-700/60 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700/80 transition-colors duration-150 font-medium"
+                      title={problem.companies.join(", ")}
+                    >
+                      +{problem.companies.length - 2} more
+                    </button>
+                  </div>
+                )}
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    {/* <PaginationControls /> */}
+  </div>
+)}
     </div>
   );
 };

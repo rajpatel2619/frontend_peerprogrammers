@@ -95,17 +95,17 @@ export default function Navbar() {
         {/* Right: Desktop Navigation */}
         <div className="hidden md:flex items-center gap-1 ml-auto">
           <button onClick={() => navigate("/")} className={isActive("/") ? activeNavBtn : navBtn}>Home</button>
+          <button onClick={() => navigate("/training")} className={isActive("/training") ? activeNavBtn : navBtn}>Courses</button>
           <button onClick={() => navigate("/resources")} className={isActive("/resources") ? activeNavBtn : navBtn}> Resources</button>
           <button onClick={() => navigate("/dsa")} className={isActive("/dsa") ? activeNavBtn : navBtn}>DSA</button>
-          <button onClick={() => navigate("/cp51")} className={isActive("/cp51") ? activeNavBtn : navBtn}>CP</button>
-          <button onClick={() => navigate("/training")} className={isActive("/training") ? activeNavBtn : navBtn}>Courses</button>
+          <button onClick={() => navigate("/mentors")} className={isActive("/mentors") ? activeNavBtn : navBtn}>Mentors</button>
           <button onClick={() => navigate("/contact")} className={isActive("/contact") ? activeNavBtn : navBtn}>Contact</button>
 
-          {!token && (
+          {/* {!token && (
             <button onClick={() => navigate("/login")} className="ml-2 px-4 py-1.5 bg-black dark:bg-white text-white dark:text-black font-medium  rounded-md hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow hover:shadow-md">
               Login
             </button>
-          )}
+          )} */}
 
           {token && (
             <div className="relative ml-2" ref={dropdownRef}>
@@ -178,8 +178,8 @@ export default function Navbar() {
             <button onClick={() => { navigate("/"); setMobileMenuOpen(false); }} className={isActive("/") ? activeNavBtn : navBtn}><HiHome size={18} /> Home</button>
             <button onClick={() => { navigate("/resources"); setMobileMenuOpen(false); }} className={isActive("/resources") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> Resources</button>
             <button onClick={() => { navigate("/dsa"); setMobileMenuOpen(false); }} className={isActive("/dsa") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> DSA</button>
-            <button onClick={() => { navigate("/cp51"); setMobileMenuOpen(false); }} className={isActive("/cp51") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> CP</button>
             <button onClick={() => { navigate("/training"); setMobileMenuOpen(false); }} className={isActive("/training") ? activeNavBtn : navBtn}><HiAcademicCap size={18} /> Courses</button>
+            <button onClick={() => { navigate("/mentors"); setMobileMenuOpen(false); }} className={isActive("/mentors") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> Our Mentors</button>
             <button onClick={() => { navigate("/contact"); setMobileMenuOpen(false); }} className={isActive("/contact") ? activeNavBtn : navBtn}><HiMail size={18} /> Contact</button>
 
             {!token && (
