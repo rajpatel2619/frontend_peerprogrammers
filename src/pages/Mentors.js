@@ -3,7 +3,9 @@ import { FiExternalLink } from 'react-icons/fi';
 import rajImage from '../assets/raj.webp';
 import muzammilImage from '../assets/mak.jpg';
 import arpitImage from '../assets/arpit.jpg';
+
 import yatiImage from '../assets/yati.jpeg';
+
 
 const Mentors = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -68,6 +70,7 @@ const Mentors = () => {
             twitter: "#"
           }
         },
+
         {
           id: 10,
           name: "Yatindra Deo",
