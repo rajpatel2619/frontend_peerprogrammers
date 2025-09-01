@@ -37,6 +37,7 @@ import ModeratorResources from "./pages/moderator/ModeratorResources";
 import ModeratorCources from "./pages/moderator/ModeratorCources";
 import CreateResources from "./pages/teacher/CreateResources";
 import Mentors from "./pages/Mentors";
+import CampusTrainingProgram from "./pages/CampusTraining";
 
 function App() {
   return (
@@ -93,7 +94,9 @@ function App() {
         <Route path="/training" element={<Training />} />
         <Route path="/mentors" element={<Mentors />} />
         <Route path="/mentoring" element={<MentoringBooking />} />
-        
+
+        {/* campus training */}
+        <Route path="/campus_training" element={<CampusTrainingProgram />} />
 
       </Routes>
       <Footer />

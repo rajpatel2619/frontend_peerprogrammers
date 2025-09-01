@@ -18,7 +18,7 @@ export default function Footer() {
               alt="Logo"
               className="h-10 w-10 transition-transform duration-300"
             />
-            <span className="hidden md:inline font-medium text-xl dark:text-neutral-300 text-gray-900 select-none bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-lexend">
+            <span className="hidden md:inline font-medium text-xl dark:text-neutral-300 text-gray-900 select-none font-lexend">
               Peer Programmers
             </span>
           </div>
