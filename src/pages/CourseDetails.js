@@ -193,11 +193,11 @@ const CourseDetails = () => {
   };
 
   const handleRegister = async () => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
-    if (userRole !== "none") return;
+    // if (!user) {
+    //   navigate("/login");
+    //   return;
+    // }
+    // if (userRole !== "none") return;
 
     const loaded = await loadRazorpayScript();
     if (!loaded) {
@@ -207,7 +207,7 @@ const CourseDetails = () => {
 
     try {
       const query = new URLSearchParams({
-        user_id: user.id,
+        user_id: 2,
         course_id: courseId,
         amount: course.price,
       }).toString();
@@ -225,16 +225,21 @@ const CourseDetails = () => {
         name: course.title,
         description: "Course Enrollment",
         order_id: data.order_id,
+        prefill: {
+          name: "",
+          email: "",
+          contact: ""
+        },
         handler: async function (response) {
           const verifyQuery = new URLSearchParams({
-            user_id: user.id,
+            user_id: 2,
             course_id: courseId,
             transaction_id: response.razorpay_payment_id,
             order_id: response.razorpay_order_id,
             signature: response.razorpay_signature,
             fee: course.price,
-            email: user.email || "",
-            contact: user.phone || "",
+            // email: user?.email || "",
+            // contact: user?.phone || "",
             payment_method: "razorpay",
           }).toString();
 
@@ -247,10 +252,6 @@ const CourseDetails = () => {
           const verifyData = await verifyRes.json();
           setUserRole("student");
         },
-        prefill: {
-          name: user.name || "Student",
-          email: user.email || "student@example.com",
-        },
         theme: { color: "#2563eb" },
       };
 
@@ -262,15 +263,15 @@ const CourseDetails = () => {
   };
 
   const getRegisterButtonText = () => {
-    if (!user) return "Login to Register";
-    if (userRole === "creator") return "You're the Creator";
-    if (userRole === "mentor") return "You're a Mentor";
-    if (userRole === "student") return "Enrolled ✓";
+    // if (!user) return "Login to Register";
+    // if (userRole === "creator") return "You're the Creator";
+    // if (userRole === "mentor") return "You're a Mentor";
+    // if (userRole === "student") return "Enrolled ✓";
     return "Enroll Now";
   };
 
   const isRegisterDisabled = () => {
-    return !user || userRole !== "none";
+    // return !user || userRole !== "none";
   };
 
   // Skeleton Loading Component

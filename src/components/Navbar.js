@@ -182,11 +182,11 @@ export default function Navbar() {
             <button onClick={() => { navigate("/mentors"); setMobileMenuOpen(false); }} className={isActive("/mentors") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> Our Mentors</button>
             <button onClick={() => { navigate("/contact"); setMobileMenuOpen(false); }} className={isActive("/contact") ? activeNavBtn : navBtn}><HiMail size={18} /> Contact</button>
 
-            {!token && (
+            {/* {!token && (
               <button onClick={() => { navigate("/login"); setMobileMenuOpen(false); }} className="mt-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-md hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow hover:shadow-md">
                 Login
               </button>
-            )}
+            )} */}
           </div>
 
           {token && (
