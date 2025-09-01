@@ -1,9 +1,7 @@
-
-
-
 import React, { useState, useEffect } from 'react';
-import { Users, Code, Zap, Award, MessageCircle, Globe } from 'lucide-react';
+import { Users, Code, Zap, Award, MessageCircle, Globe, Building, Users2, Target, BarChart3, Clock, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 const Features = () => {
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("theme") === "dark");
@@ -58,6 +56,25 @@ const Features = () => {
     }
   ];
 
+  const orgFeatures = [
+    {
+      icon: <Target className="w-6 h-6" />,
+      text: "Customized curriculum for your business needs"
+    },
+    {
+      icon: <Users2 className="w-6 h-6" />,
+      text: "Team-based learning environment"
+    },
+    {
+      icon: <BarChart3 className="w-6 h-6" />,
+      text: "Progress tracking & performance analytics"
+    },
+    {
+      icon: <Shield className="w-6 h-6" />,
+      text: "Enterprise-grade security & privacy"
+    }
+  ];
+
   const getColorClasses = (color) => {
     const colors = {
       blue: "bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white",
@@ -79,7 +96,7 @@ const Features = () => {
             Why Choose Peer Programmers?
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Experience a revolutionary approach to learning programming through collaboration, 
+            Experience a revolutionary approach to learning programming through collaboration,
             practical projects, and continuous peer support.
           </p>
         </div>
@@ -114,6 +131,29 @@ const Features = () => {
           ))}
         </div>
 
+        {/* Organization Training Banner */}
+        <div className="bg-black dark:bg-neutral-700/25  text-white border border-gray-800 rounded-2xl mt-20">
+          <div className="max-w-4xl mx-auto text-center py-24 px-4 sm:px-6 lg:px-8">
+            <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+              Unlock Your Team's Potential.
+            </h2>
+            <p className="mt-4 text-xl text-gray-300">
+              If you are an organization seeking custom training, contact us to design a plan for your team.
+            </p>
+            <div className="mt-8">
+              <a
+                href={"/"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-black bg-white hover:bg-gray-200 transition-colors"
+              >
+                Start Your Transformation
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* Bottom CTA */}
         <div className="text-center mt-16">
           <div className="bg-gradient-to-r from-blue-600 to-teal-600 rounded-2xl p-8 text-white">
@@ -121,16 +161,11 @@ const Features = () => {
             <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
               Join thousands of developers who have transformed their careers through our peer learning platform.
             </p>
-            <button onClick={()=>navigate("/training")} className="bg-white text-blue-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors">
+            <button onClick={() => navigate("/training")} className="bg-white text-blue-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors">
               Explore Courses
             </button>
           </div>
         </div>
-
-        {/* Dark Mode Toggle Button */}
-        {/* <div className="fixed bottom-4 right-4 bg-blue-600 dark:bg-gray-800 p-4 rounded-full shadow-lg cursor-pointer" onClick={() => setDarkMode(!darkMode)}>
-          <span className="text-white text-xl">{darkMode ? "🌙" : "☀️"}</span>
-        </div> */}
       </div>
     </section>
   );
