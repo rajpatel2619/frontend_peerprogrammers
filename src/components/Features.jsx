@@ -204,12 +204,19 @@ const Features = () => {
           <div className="max-w-4xl mx-auto text-center py-24 px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">Empower Your Students for the Future.</h2>
             <p className="mt-4 text-xl text-gray-300 leading-relaxed">Partner with us to bring industry-leading workshops and career-focused training directly to your campus.</p>
-            <div className="mt-8">
+
+            <div className="mt-8 gap-2 md:grid-cols-2 sm:grid-cols-1 flex justify-center">
               <button onClick={handleOpenModal} className="group inline-flex items-center justify-center px-8 py-4 overflow-hidden text-base font-medium rounded-md text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl shadow-blue-500/30 relative">
                 <span className="relative z-10">Become a Campus Partner</span>
                 <School className="ml-2 h-5 w-5 relative z-10 transition-transform duration-300 group-hover:scale-110" />
               </button>
+
+              <a href="/campus_training" className="group inline-flex items-center justify-center px-8 py-4 overflow-hidden text-base font-medium rounded-md text-black bg-white transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl shadow-blue-500/30 relative">
+                <span className="relative z-10">Learn more</span>
+              </a>
+
             </div>
+            
           </div>
         </div>
 

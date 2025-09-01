@@ -64,16 +64,16 @@ const CampusTrainingProgram = () => {
             Empower your students with industry-relevant coding skills and prepare them for successful tech careers
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up">
-            <button 
-              onClick={handleOpenModal}
+            <a
+              href={`https://wa.me/918543832619?text=Hello%2C%20I'm%20interested%20in%20campus%20program`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-white text-blue-700 hover:bg-blue-50 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:-translate-y-1 shadow-lg flex items-center justify-center space-x-2 group"
             >
-              <span>Request a Demo</span>
+              <span>Contact Us</span>
               <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button className={`bg-transparent border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${darkMode ? 'hover:bg-white/20' : ''}`}>
-              Learn More
-            </button>
+            </a>
+            
           </div>
         </div>
       </section>
@@ -191,26 +191,6 @@ const CampusTrainingProgram = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className={`py-16 ${darkMode ? 'bg-gradient-to-r from-indigo-900 to-purple-900' : 'bg-blue-600'} text-white`}>
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[
-              { value: "150+", label: "Partner Colleges", icon: <FaUniversity className="text-3xl mx-auto mb-2 opacity-80" /> },
-              { value: "10K+", label: "Students Trained", icon: <FaUsers className="text-3xl mx-auto mb-2 opacity-80" /> },
-              { value: "85%", label: "Placement Rate", icon: <FaRocket className="text-3xl mx-auto mb-2 opacity-80" /> },
-              { value: "200+", label: "Hiring Partners", icon: <FaCode className="text-3xl mx-auto mb-2 opacity-80" /> }
-            ].map((stat, index) => (
-              <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                {stat.icon}
-                <div className="text-4xl md:text-5xl font-bold mb-2">{stat.value}</div>
-                <div className={`${darkMode ? 'text-indigo-200' : 'text-blue-100'}`}>{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className={`py-24 rounded-2xl mt-20 transition-opacity duration-300 mx-4 ${isModalOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'} ${darkMode ? 'bg-gradient-to-br from-gray-800 via-gray-900 to-black border border-gray-800' : 'bg-gradient-to-br from-gray-900 to-black border border-gray-800'}`}>
         <div className="max-w-4xl mx-auto text-center py-24 px-4 sm:px-6 lg:px-8">
@@ -224,13 +204,15 @@ const CampusTrainingProgram = () => {
             Partner with us to bring industry-leading workshops and career-focused training directly to your campus.
           </p>
           <div className="mt-8">
-            <button
-              onClick={handleOpenModal}
+            <a
+              href={`https://wa.me/918543832619?text=Hello%2C%20I'm%20interested%20in%20campus%20program`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-black bg-white hover:bg-gray-200 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl group"
             >
               Become a Campus Partner
               <FaGraduationCap className="ml-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-            </button>
+            </a>
           </div>
         </div>
       </section>

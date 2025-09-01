@@ -4,6 +4,9 @@ import rajImage from '../assets/raj.webp';
 import muzammilImage from '../assets/mak.jpg';
 import arpitImage from '../assets/arpit.jpg';
 
+import yatiImage from '../assets/yati.jpeg';
+
+
 const Mentors = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [mentors, setMentors] = useState([]);
@@ -63,6 +66,24 @@ const Mentors = () => {
           image: arpitImage,
           socialLinks: {
             linkedin: "https://www.linkedin.com/in/arpit-anand-b3656b1aa/",
+            codeforces: "#",
+            twitter: "#"
+          }
+        },
+
+        {
+          id: 10,
+          name: "Yatindra Deo",
+          institution: "IIT Patna",
+          codeforcesRank: "TBD",
+          achievements: [
+            "Competitive Programmer",
+            "Top 10% in Leetcode"
+          ],
+          profileLink: "#",
+          image: yatiImage,
+          socialLinks: {
+            linkedin: "https://www.linkedin.com/in/yatindra-deo-0b383a202/",
             codeforces: "#",
             twitter: "#"
           }

@@ -99,6 +99,7 @@ export default function Navbar() {
           <button onClick={() => navigate("/resources")} className={isActive("/resources") ? activeNavBtn : navBtn}> Resources</button>
           <button onClick={() => navigate("/dsa")} className={isActive("/dsa") ? activeNavBtn : navBtn}>DSA</button>
           <button onClick={() => navigate("/mentors")} className={isActive("/mentors") ? activeNavBtn : navBtn}>Mentors</button>
+          <button onClick={() => navigate("/campus_training")} className={isActive("/campus_training") ? activeNavBtn : navBtn}>Campus Program</button>
           <button onClick={() => navigate("/contact")} className={isActive("/contact") ? activeNavBtn : navBtn}>Contact</button>
 
           {/* {!token && (
@@ -179,7 +180,8 @@ export default function Navbar() {
             <button onClick={() => { navigate("/resources"); setMobileMenuOpen(false); }} className={isActive("/resources") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> Resources</button>
             <button onClick={() => { navigate("/dsa"); setMobileMenuOpen(false); }} className={isActive("/dsa") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> DSA</button>
             <button onClick={() => { navigate("/training"); setMobileMenuOpen(false); }} className={isActive("/training") ? activeNavBtn : navBtn}><HiAcademicCap size={18} /> Courses</button>
-            <button onClick={() => { navigate("/mentors"); setMobileMenuOpen(false); }} className={isActive("/mentors") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> Our Mentors</button>
+            <button onClick={() => { navigate("/mentors"); setMobileMenuOpen(false); }} className={isActive("/mentors") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> Mentors</button>
+            <button onClick={() => { navigate("/campus_training"); setMobileMenuOpen(false); }} className={isActive("/campus_training") ? activeNavBtn : navBtn}><HiBookOpen size={18} /> Campus Program</button>
             <button onClick={() => { navigate("/contact"); setMobileMenuOpen(false); }} className={isActive("/contact") ? activeNavBtn : navBtn}><HiMail size={18} /> Contact</button>
 
             {/* {!token && (
