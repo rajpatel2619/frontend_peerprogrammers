@@ -148,67 +148,89 @@ const Features = () => {
     return colors[color] || colors.blue;
   };
 
-  const renderModal = () => {
-    if (!isModalOpen) return null;
-
+  const renderInquiryView = () => {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4 transition-opacity duration-300" onClick={handleCloseModal}>
-        <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 relative transform transition-all duration-300 scale-95 animate-scale-in" onClick={(e) => e.stopPropagation()}>
-          <button
-            onClick={handleCloseModal}
-            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
-          >
-            <X className="w-6 h-6" />
-          </button>
-          
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Corporate Training Inquiry</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">Please fill out the form below, and we'll contact you to discuss a customized training plan.</p>
+      <div className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ease-in-out ${isModalOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        {/* Backdrop */}
+        <div className="absolute inset-0 bg-black bg-opacity-70" onClick={handleCloseModal}></div>
 
-          {submitStatus.message ? (
-            <div className={`text-center p-4 rounded-lg ${submitStatus.success ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200'}`}>
-              {submitStatus.message}
+        {/* Main container for the two panes */}
+        <div className="relative flex w-full max-w-6xl h-[90vh] max-h-[800px] mx-auto" onClick={(e) => e.stopPropagation()}>
+          {/* Left Pane (Banner) */}
+          <div className={`w-2/5 bg-black rounded-l-2xl p-12 flex flex-col justify-center text-white transform transition-transform duration-500 ease-out ${isModalOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
+              Unlock Your Team's Potential.
+            </h2>
+            <p className="mt-4 text-lg text-gray-300">
+              Provide your details, and we'll design a custom training plan that aligns with your organization's goals.
+            </p>
+            <div className="mt-10 space-y-4 border-t border-gray-700 pt-6">
+              {orgFeatures.map((feature, index) => (
+                <div key={index} className="flex items-start space-x-4 text-gray-300">
+                  <div className="flex-shrink-0 bg-gray-700 p-2 rounded-full text-white">
+                    {feature.icon}
+                  </div>
+                  <span className="pt-1">{feature.text}</span>
+                </div>
+              ))}
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Organization Name</label>
-                <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white" />
+          </div>
+
+          {/* Right Pane (Form) */}
+          <div className={`w-3/5 bg-white dark:bg-neutral-900 rounded-r-2xl shadow-2xl p-8 overflow-y-auto relative transform transition-transform duration-500 ease-out ${isModalOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <button onClick={handleCloseModal} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+              <X className="w-6 h-6" />
+            </button>
+            
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Corporate Training Inquiry</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">Please fill out the form below, and we'll contact you to discuss a customized training plan.</p>
+
+            {submitStatus.message ? (
+              <div className={`text-center p-4 rounded-lg ${submitStatus.success ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200'}`}>
+                {submitStatus.message}
               </div>
-              <div className="grid md:grid-cols-2 gap-4">
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="poc_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Point of Contact Name</label>
-                  <input type="text" name="poc_name" id="poc_name" value={formData.poc_name} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white" />
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Organization Name</label>
+                  <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white" />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="poc_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Point of Contact Name</label>
+                    <input type="text" name="poc_name" id="poc_name" value={formData.poc_name} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white" />
+                  </div>
+                  <div>
+                    <label htmlFor="poc_email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">POC Email</label>
+                    <input type="email" name="poc_email" id="poc_email" value={formData.poc_email} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white" />
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="poc_contact_number" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">POC Contact Number</label>
+                    <input type="tel" name="poc_contact_number" id="poc_contact_number" value={formData.poc_contact_number} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white" />
+                  </div>
+                  <div>
+                    <label htmlFor="expected_participants" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Expected Number of Participants (Optional)</label>
+                    <input type="number" name="expected_participants" id="expected_participants" value={formData.expected_participants} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white" />
+                  </div>
                 </div>
                 <div>
-                  <label htmlFor="poc_email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">POC Email</label>
-                  <input type="email" name="poc_email" id="poc_email" value={formData.poc_email} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white" />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="poc_contact_number" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">POC Contact Number</label>
-                  <input type="tel" name="poc_contact_number" id="poc_contact_number" value={formData.poc_contact_number} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white" />
+                  <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Organization Address</label>
+                  <textarea name="address" id="address" value={formData.address} onChange={handleChange} required rows="3" className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white resize-vertical"></textarea>
                 </div>
                 <div>
-                  <label htmlFor="expected_participants" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Expected Number of Participants (Optional)</label>
-                  <input type="number" name="expected_participants" id="expected_participants" value={formData.expected_participants} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white" />
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message (Optional)</label>
+                  <textarea name="message" id="message" value={formData.message} onChange={handleChange} rows="3" className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white resize-vertical"></textarea>
                 </div>
-              </div>
-              <div>
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Organization Address</label>
-                <textarea name="address" id="address" value={formData.address} onChange={handleChange} required rows="3" className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white resize-vertical"></textarea>
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message (Optional)</label>
-                <textarea name="message" id="message" value={formData.message} onChange={handleChange} rows="3" className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white resize-vertical"></textarea>
-              </div>
-              <div className="pt-4">
-                <button type="submit" disabled={isSubmitting} className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed">
-                  {isSubmitting ? 'Submitting...' : 'Submit Request'}
-                </button>
-              </div>
-            </form>
-          )}
+                <div className="pt-4">
+                  <button type="submit" disabled={isSubmitting} className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed">
+                    {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -259,7 +281,7 @@ const Features = () => {
         </div>
 
         {/* Organization Training Banner */}
-        <div className="bg-black dark:bg-neutral-700/25  text-white border border-gray-800 rounded-2xl mt-20">
+        <div className={`bg-black dark:bg-neutral-700/25 text-white border border-gray-800 rounded-2xl mt-20 transition-opacity duration-300 ${isModalOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
           <div className="max-w-4xl mx-auto text-center py-24 px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
               Unlock Your Team's Potential.
@@ -292,7 +314,7 @@ const Features = () => {
           </div>
         </div>
       </div>
-      {renderModal()}
+      {renderInquiryView()}
     </section>
   );
 };
