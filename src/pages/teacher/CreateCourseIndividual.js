@@ -17,10 +17,9 @@ import {
   FiTrash2
 } from "react-icons/fi";
 
-
 const API = process.env.REACT_APP_API;
 
-export default function CreateCoursePage() {
+export default function useCreateCourseLogic() {
   const navigate = useNavigate();
   const { courseId } = useParams();
 
@@ -265,7 +264,7 @@ export default function CreateCoursePage() {
     }
   };
 
-  
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -670,5 +669,4 @@ export default function CreateCoursePage() {
       </div>
     </div>
   );
-
 }
