@@ -96,6 +96,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-1 ml-auto">
           <button onClick={() => navigate("/")} className={isActive("/") ? activeNavBtn : navBtn}>Home</button>
           <button onClick={() => navigate("/training")} className={isActive("/training") ? activeNavBtn : navBtn}>Courses</button>
+          <button onClick={() => navigate("/campus_training")} className={isActive("/campus_training") ? activeNavBtn : navBtn}>Campus Program</button>
           <button onClick={() => navigate("/resources")} className={isActive("/resources") ? activeNavBtn : navBtn}> Resources</button>
           <button onClick={() => navigate("/dsa")} className={isActive("/dsa") ? activeNavBtn : navBtn}>DSA</button>
           <button onClick={() => navigate("/mentors")} className={isActive("/mentors") ? activeNavBtn : navBtn}>Mentors</button>
