@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TeacherSidebar from "./components/TeacherSidebar";
 import Select from "react-select";
-import { 
-  FiBook, 
-  FiCalendar, 
-  FiFileText, 
-  FiDollarSign, 
-  FiUsers, 
+import {
+  FiBook,
+  FiCalendar,
+  FiFileText,
+  FiDollarSign,
+  FiUsers,
   FiTag,
   FiLink,
   FiImage,
@@ -113,24 +113,24 @@ export default function CreateCoursePage() {
     setPrice(courseData.price || "");
 
     if (courseData.co_mentors) {
-      const coMentorIds = courseData.co_mentors
-        .split(",")
-        .map((id) => parseInt(id));
+      const coMentorIds = courseData.co_mentors.split(",").map((id) => parseInt(id, 10));
       setSelectedCoMentors(
         coMentorOptions.filter((opt) => coMentorIds.includes(opt.value))
       );
     }
 
-    if (courseData.domains) {
+    if (courseData.domain_ids) {
+      const domainIds = courseData.domain_ids.map((id) => parseInt(id, 10));
       setSelectedDomains(
-        domainOptions.filter((opt) => courseData.domain_ids.includes(opt.value))
+        domainOptions.filter((opt) => domainIds.includes(opt.value))
       );
     }
 
-    if (courseData.modules && courseData.modules.length > 0) {
+    if (courseData.modules?.length > 0) {
       setModules(courseData.modules);
     }
   }, [courseData, coMentorOptions, domainOptions]);
+
 
   // Module management functions
   const addModule = () => {
@@ -234,10 +234,10 @@ export default function CreateCoursePage() {
         if (coverPhoto) formData.append("cover_photo", coverPhoto);
         if (syllabusFile) formData.append("syllabus_file", syllabusFile);
 
-       console.log(Object.fromEntries(formData.entries()));
+        console.log(Object.fromEntries(formData.entries()));
 
 
-        response = await fetch(url , {
+        response = await fetch(url, {
           method,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -272,7 +272,7 @@ export default function CreateCoursePage() {
 
   return (
     <div className="w-full  bg-white dark:bg-gray-900 min-h-screen">
-        <TeacherSidebar onNavigate={(path) => navigate(path)} />
+      <TeacherSidebar onNavigate={(path) => navigate(path)} />
       <div className="max-w-7xl mx-auto pt-20">
 
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
@@ -389,7 +389,7 @@ export default function CreateCoursePage() {
                 Course Structure
               </h2>
             </div>
-            
+
             <div className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
@@ -404,7 +404,7 @@ export default function CreateCoursePage() {
                     placeholder="https://meet.google.com/..."
                   />
                 </div>
-                
+
                 <div className="flex items-end">
                   <button
                     type="button"
@@ -433,7 +433,7 @@ export default function CreateCoursePage() {
                         <FiTrash2 size={16} />
                       </button>
                     </div>
-                    
+
                     <div className="mb-4">
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Module Title
@@ -446,7 +446,7 @@ export default function CreateCoursePage() {
                         placeholder={`Module ${moduleIndex + 1} title`}
                       />
                     </div>
-                    
+
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -461,7 +461,7 @@ export default function CreateCoursePage() {
                           Add Lesson
                         </button>
                       </div>
-                      
+
                       {module.lessons.map((lesson, lessonIndex) => (
                         <div key={lessonIndex} className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg">
                           <input
@@ -480,7 +480,7 @@ export default function CreateCoursePage() {
                           </button>
                         </div>
                       ))}
-                      
+
                       {module.lessons.length === 0 && (
                         <div className="text-center py-3 text-sm text-gray-500 dark:text-gray-400">
                           No lessons added yet
@@ -489,7 +489,7 @@ export default function CreateCoursePage() {
                     </div>
                   </div>
                 ))}
-                
+
                 {modules.length === 0 && (
                   <div className="text-center py-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
                     <p className="text-gray-500 dark:text-gray-400">
