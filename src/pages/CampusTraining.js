@@ -96,11 +96,14 @@ const CampusTrainingProgram = () => {
               href={`https://wa.me/918543832619?text=Hello%2C%20I'm%20interested%20in%20campus%20program`}
               target="_blank"
               rel="noopener noreferrer"
+
               className="bg-white text-neutral-800 hover:bg-neutral-200 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:-translate-y-1 shadow-lg flex items-center justify-center space-x-2 group"
+
             >
               <span>Contact Us</span>
               <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
             </a>
+
           </div>
         </div>
       </section>
@@ -235,7 +238,9 @@ const CampusTrainingProgram = () => {
               href={`https://wa.me/918543832619?text=Hello%2C%20I'm%20interested%20in%20campus%20program`}
               target="_blank"
               rel="noopener noreferrer"
+
               className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-black bg-white hover:bg-neutral-200 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl group"
+
             >
               Become a Campus Partner
               <FaGraduationCap className="ml-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
