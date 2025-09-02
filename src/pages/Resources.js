@@ -221,14 +221,15 @@ export default function DomainFilterPage() {
       setLoading(false);
     }
   }, [selectedDomain, selectedSubdomain, sortByUpvotes]);
-const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
+  const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
   const user = stored ? JSON.parse(stored) : null;
   const userId = user?.id;
   // Handle upvote/downvote
   const handleVote = useCallback(
     async (id, type) => {
       try {
-        const upvoteResponse = await fetch(`${BASE_URL}/${id}/${type}`, { method: "POST",
+        const upvoteResponse = await fetch(`${BASE_URL}/${id}/${type}`, {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -267,11 +268,12 @@ const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-black p-4 sm:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+          {/* MOBILE-FRIENDLY: Responsive text size */}
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-2">
             Resource Explorer 🚀
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
@@ -280,13 +282,14 @@ const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
         </div>
 
         {/* Filter Section */}
+        {/* MOBILE-FRIENDLY: Sticky only on medium+ screens, responsive padding/gap, backdrop-blur for modern feel */}
         <div
-          className="sticky top-20 bg-white dark:bg-black rounded-xl shadow-lg p-6 mb-8 border border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row gap-6 z-10"
+          className="md:sticky md:top-6 bg-gray-50/80 dark:bg-black/80 backdrop-blur-sm rounded-xl shadow-lg p-4 sm:p-6 mb-8 border border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row gap-4 sm:gap-6 z-10"
           ref={dropdownRef}
         >
           {/* Domain dropdown */}
           <div className="flex-1">
-            <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Domain
             </label>
             {initialLoading ? (
@@ -319,7 +322,7 @@ const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
           {/* Subdomain dropdown */}
           {selectedDomain && (
             <div className="flex-1 relative">
-              <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Subdomain
               </label>
               {initialLoading ? (
@@ -338,7 +341,7 @@ const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
                     />
                   </button>
                   {showSubdomainDropdown && (
-                    <div className="absolute z-10 mt-1 w-full border rounded-lg shadow-lg overflow-hidden bg-gray-200 dark:bg-zinc-800">
+                    <div className="absolute z-20 mt-1 w-full border rounded-lg shadow-lg overflow-hidden bg-gray-200 dark:bg-zinc-800">
                       <div className="max-h-60 overflow-y-auto">
                         {subdomains.map((sub) => (
                           <div
@@ -357,7 +360,7 @@ const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
                           </div>
                         ))}
                         {subdomains.length === 0 && (
-                          <div className="px-4 py-2 text-sm">
+                          <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">
                             No subdomains found
                           </div>
                         )}
@@ -372,12 +375,13 @@ const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
           {/* Apply filter */}
           <div className="flex items-end">
             {initialLoading ? (
-              <div className="h-12 w-32 bg-gray-300 dark:bg-zinc-700 rounded-lg animate-pulse"></div>
+              <div className="h-12 w-full sm:w-32 bg-gray-300 dark:bg-zinc-700 rounded-lg animate-pulse"></div>
             ) : (
+              // MOBILE-FRIENDLY: Full width on mobile, auto width on larger screens
               <button
                 onClick={applyFilter}
                 disabled={loading}
-                className="flex items-center justify-center px-6 py-3  disabled:opacity-60 text-white dark:text-black bg-black dark:bg-white font-medium rounded-lg shadow-sm transition-all duration-200"
+                className="w-full sm:w-auto flex items-center justify-center px-6 py-3 disabled:opacity-60 text-white dark:text-black bg-black dark:bg-white font-medium rounded-lg shadow-sm transition-all duration-200"
               >
                 <FiFilter className="mr-2" />
                 {loading ? "Loading..." : "Apply Filters"}
@@ -389,7 +393,8 @@ const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
         {/* Results */}
         <div>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+            {/* MOBILE-FRIENDLY: Responsive text size */}
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">
               {initialLoading || loading
                 ? "Loading resources..."
                 : resources.length > 0
@@ -418,6 +423,7 @@ const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
               </p>
             </div>
           ) : (
+            // MOBILE-FRIENDLY: Stacks to single column on mobile by default
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {resources.map((res) => (
                 <motion.div
@@ -426,21 +432,21 @@ const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
                   animate={{ opacity: 1, y: 0 }}
                   whileHover={{ scale: 1.03 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-white dark:bg-neutral-800/70 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl overflow-hidden"
+                  className="bg-white dark:bg-neutral-800/70 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl overflow-hidden flex flex-col"
                 >
-                  <div className="p-7">
-                    {/* Title */}
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2">
+                  <div className="p-7 flex flex-col flex-grow">
+                    {/* Title - MOBILE-FRIENDLY: Responsive text size */}
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2">
                       {res.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-gray-600 dark:text-gray-300 text-base leading-relaxed mb-5 line-clamp-3">
+                    <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base leading-relaxed mb-5 line-clamp-3 flex-grow">
                       {res.description}
                     </p>
 
                     {/* Link + Shared */}
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center justify-between mt-auto mb-6">
                       <a
                         href={res.link}
                         target="_blank"
@@ -450,30 +456,7 @@ const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
                         View Resource
                         <FiExternalLink className="ml-2 text-lg" />
                       </a>
-                      {/* <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                        <FiShare2 className="mr-2 text-lg" />
-                        Shared
-                      </span> */}
                     </div>
-
-                    {/* Vote Buttons */}
-                    {/* <div className="flex justify-between items-center">
-                      <motion.button
-                        whileTap={{ scale: 0.92 }}
-                        onClick={() => handleVote(res.id, "upvote")}
-                        className="flex items-center px-4 py-2 text-sm font-medium rounded-xl bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900 dark:text-green-300 transition"
-                      >
-                        <FiThumbsUp className="mr-2 text-lg" /> {res?.upvotes}
-                      </motion.button>
-                      <motion.button
-                        whileTap={{ scale: 0.92 }}
-                        onClick={() => handleVote(res.id, "downvote")}
-                        className="flex items-center px-4 py-2 text-sm font-medium rounded-xl bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900 dark:text-red-300 transition"
-                      >
-                        <FiThumbsDown className="mr-2 text-lg" />{" "}
-                        {res?.downvotes}
-                      </motion.button>
-                    </div> */}
                   </div>
                 </motion.div>
               ))}

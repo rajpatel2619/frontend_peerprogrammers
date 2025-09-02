@@ -38,6 +38,7 @@ import ModeratorCources from "./pages/moderator/ModeratorCources";
 import CreateResources from "./pages/teacher/CreateResources";
 import Mentors from "./pages/Mentors";
 import CampusTrainingProgram from "./pages/CampusTraining";
+import { PrivacyPolicy, RefundPolicy, TermsAndConditions } from "./pages/Policies";
 
 function App() {
   return (
@@ -97,6 +98,11 @@ function App() {
 
         {/* campus training */}
         <Route path="/campus_training" element={<CampusTrainingProgram />} />
+
+        {/* policies */}
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsAndConditions />} />
+        <Route path="/refund-policy" element={<RefundPolicy />} />
 
       </Routes>
       <Footer />

@@ -201,38 +201,75 @@ const Features = () => {
 
         {/* College Partner Banner */}
         <div className="bg-gradient-to-br from-black via-gray-900 to-black text-white border border-gray-700 rounded-2xl mt-20 shadow-2xl shadow-blue-500/10 hover:shadow-blue-500/20">
+<<<<<<< Updated upstream
           <div className="max-w-4xl mx-auto text-center py-24 px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">Empower Your Students for the Future.</h2>
             <p className="mt-4 text-xl text-gray-300 leading-relaxed">Partner with us to bring industry-leading workshops and career-focused training directly to your campus.</p>
 
             <div className="mt-8 gap-2 md:grid-cols-2 sm:grid-cols-1 flex justify-center">
               <button onClick={handleOpenModal} className="group inline-flex items-center justify-center px-8 py-4 overflow-hidden text-base font-medium rounded-md text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl shadow-blue-500/30 relative">
+=======
+          <div className="max-w-4xl mx-auto text-center py-16 px-4 sm:px-6 lg:px-8">
+            {/* Headline */}
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
+              Empower Your Students for the Future.
+            </h2>
+
+            {/* Paragraph */}
+            <p className="mt-4 text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
+              Partner with us to bring industry-leading workshops and career-focused training directly to your campus.
+            </p>
+
+            {/* Buttons */}
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={handleOpenModal}
+                className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-medium rounded-md text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl shadow-blue-500/30 relative"
+              >
+>>>>>>> Stashed changes
                 <span className="relative z-10">Become a Campus Partner</span>
                 <School className="ml-2 h-5 w-5 relative z-10 transition-transform duration-300 group-hover:scale-110" />
               </button>
 
+<<<<<<< Updated upstream
               <a href="/campus_training" className="group inline-flex items-center justify-center px-8 py-4 overflow-hidden text-base font-medium rounded-md text-black bg-white transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl shadow-blue-500/30 relative">
+=======
+              <a
+                href="/campus_training"
+                className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-medium rounded-md text-black bg-white transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl shadow-blue-500/30 relative"
+              >
+>>>>>>> Stashed changes
                 <span className="relative z-10">Learn more</span>
               </a>
 
             </div>
-            
           </div>
         </div>
 
+
         {/* Organization Training Banner (Simplified) */}
-        <div className="mt-20 bg-black rounded-2xl p-12 text-center text-white border border-gray-800">
-          <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Unlock Your Team's Potential.</h2>
-          <p className="mt-4 text-xl text-gray-300 max-w-3xl mx-auto">If you are an organization seeking custom training, contact us to design a plan for your team.</p>
-          <div className="mt-8">
-            <button onClick={handleOpenModal} className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-black bg-white hover:bg-gray-200 transition-colors">
+        <div className="mt-20 bg-black rounded-2xl p-8 sm:p-12 text-center text-white border border-gray-800">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
+            Unlock Your Team&apos;s Potential.
+          </h2>
+
+          <p className="mt-4 text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl sm:max-w-3xl mx-auto leading-relaxed">
+            If you are an organization seeking custom training, contact us to design a plan for your team.
+          </p>
+
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={handleOpenModal}
+              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 text-sm sm:text-base font-medium rounded-md text-black bg-white hover:bg-gray-200 transition-colors"
+            >
               Start Your Transformation
               <ArrowRight className="ml-2 h-5 w-5" />
             </button>
           </div>
         </div>
+
       </div>
-      
+
       {/* Render the single, unified modal for inquiries */}
       {renderInquiryModal()}
     </section>

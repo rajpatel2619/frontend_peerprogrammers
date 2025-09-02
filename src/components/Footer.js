@@ -80,6 +80,19 @@ export default function Footer() {
                 Contact Us
               </Link>
             </li>
+            <li>
+              <Link to="/privacy-policy" className="hover:text-gray-400">
+                Privacy Policy
+              </Link>
+            </li><li>
+              <Link to="/refund-policy" className="hover:text-gray-400">
+                Refund Policy
+              </Link>
+            </li><li>
+              <Link to="/terms" className="hover:text-gray-400">
+                Terms
+              </Link>
+            </li>
             {/* <li>
               <Link to="https://chat.whatsapp.com/JjllfudxuUnCAhGk754toQ
 " className="hover:text-blue-600">WhatsApp community</Link>
