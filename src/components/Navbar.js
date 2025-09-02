@@ -100,6 +100,7 @@ export default function Navbar() {
           <button onClick={() => navigate("/resources")} className={isActive("/resources") ? activeNavBtn : navBtn}> Resources</button>
           <button onClick={() => navigate("/dsa")} className={isActive("/dsa") ? activeNavBtn : navBtn}>DSA</button>
           <button onClick={() => navigate("/mentors")} className={isActive("/mentors") ? activeNavBtn : navBtn}>Mentors</button>
+          <button onClick={() => navigate("/campus_training")} className={isActive("/campus_training") ? activeNavBtn : navBtn}>Campus Program</button>
           <button onClick={() => navigate("/contact")} className={isActive("/contact") ? activeNavBtn : navBtn}>Contact</button>
 
           {/* {!token && (
