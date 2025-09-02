@@ -91,7 +91,7 @@ export default function Navbar() {
             Peer Programmers
           </span>
         </div>
-
+{/*  */}
         {/* Right: Desktop Navigation */}
         <div className="hidden md:flex items-center gap-1 ml-auto">
           <button onClick={() => navigate("/")} className={isActive("/") ? activeNavBtn : navBtn}>Home</button>
