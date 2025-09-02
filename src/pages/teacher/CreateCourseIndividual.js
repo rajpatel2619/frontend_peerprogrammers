@@ -14,9 +14,7 @@ import {
   FiFile,
   FiPlus,
   FiEdit,
-  FiTrash2,
-  FiChevronDown,
-  FiChevronUp
+  FiTrash2
 } from "react-icons/fi";
 
 const API = process.env.REACT_APP_API;
@@ -47,16 +45,17 @@ export default function CreateCoursePage() {
   const stored = localStorage.getItem("user") || sessionStorage.getItem("user");
   const user = stored ? JSON.parse(stored) : null;
   const userId = user?.id;
-  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+  const token =
+    localStorage.getItem("token") || sessionStorage.getItem("token");
 
-  // Load user options
+  // Load co-mentor options
   useEffect(() => {
     fetch(`${API}/all_users`)
       .then((res) => res.json())
       .then((data) => {
         const options = data.users.map((user) => ({
           value: user.id,
-          label: user.name || user.username,
+          label: user.name || user.username
         }));
         setCoMentorOptions(options);
       })
@@ -70,26 +69,26 @@ export default function CreateCoursePage() {
       .then((data) => {
         const options = data.tags.map((tag) => ({
           value: tag.id,
-          label: tag.name,
+          label: tag.name
         }));
         setDomainOptions(options);
       })
       .catch((err) => console.error("Failed to fetch domains:", err));
   }, []);
 
-  // Load course data in edit mode
+  // Load course data for edit mode
   useEffect(() => {
     if (!courseId || !userId) return;
 
     fetch(`${API}/course-detail/${userId}/${courseId}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
-      },
+        Authorization: `Bearer ${token}`
+      }
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          console.log(data)
+          console.log("Fetched Course Data:", data);
           setCourseData(data.course);
         } else {
           console.error("Failed to load course:", data.detail);
@@ -98,9 +97,10 @@ export default function CreateCoursePage() {
       .catch((err) => console.error("Failed to fetch course detail:", err));
   }, [courseId, userId, token]);
 
-  // Apply course data after options are available
+  // Apply fetched data to form
   useEffect(() => {
-    if (!courseData || coMentorOptions.length === 0 || domainOptions.length === 0) return;
+    if (!courseData || coMentorOptions.length === 0 || domainOptions.length === 0)
+      return;
 
     setTitle(courseData.title || "");
     setDescription(courseData.description || "");
@@ -113,7 +113,9 @@ export default function CreateCoursePage() {
     setPrice(courseData.price || "");
 
     if (courseData.co_mentors) {
-      const coMentorIds = courseData.co_mentors.split(",").map((id) => parseInt(id, 10));
+      const coMentorIds = courseData.co_mentors
+        .split(",")
+        .map((id) => parseInt(id, 10));
       setSelectedCoMentors(
         coMentorOptions.filter((opt) => coMentorIds.includes(opt.value))
       );
@@ -126,21 +128,27 @@ export default function CreateCoursePage() {
       );
     }
 
-    if (courseData.modules?.length > 0) {
-      setModules(courseData.modules);
+    // Fix: Parse syllabus_content JSON safely
+    if (courseData.syllabus_content) {
+      try {
+        const parsedModules = JSON.parse(courseData.syllabus_content);
+        setModules(Array.isArray(parsedModules) ? parsedModules : []);
+      } catch (error) {
+        console.error("Error parsing syllabus_content:", error);
+        setModules([]);
+      }
+    } else {
+      setModules([]);
     }
   }, [courseData, coMentorOptions, domainOptions]);
 
-
-  // Module management functions
-  const addModule = () => {
-    setModules([...modules, { title: "", lessons: [] }]);
-  };
+  // Module management
+  const addModule = () => setModules([...modules, { title: "", lessons: [] }]);
 
   const removeModule = (index) => {
-    const updatedModules = [...modules];
-    updatedModules.splice(index, 1);
-    setModules(updatedModules);
+    const updated = [...modules];
+    updated.splice(index, 1);
+    setModules(updated);
   };
 
   const updateModuleTitle = (index, title) => {
@@ -167,8 +175,10 @@ export default function CreateCoursePage() {
     setModules(updated);
   };
 
+  // Submit handler
   const handleSubmit = async () => {
     if (!userId) return alert("User not logged in");
+    setLoading(true);
 
     const creatorIds = selectedCoMentors.map((c) => c.value);
     const domainIds = selectedDomains.map((d) => d.value);
@@ -198,7 +208,7 @@ export default function CreateCoursePage() {
           creator_ids: creatorIds,
           domain_ids: domainIds,
           syllabus_link: "",
-          syllausContent: JSON.stringify(modules)
+          syllabus_content: JSON.stringify(modules)
         };
 
         const formData = new FormData();
@@ -208,10 +218,8 @@ export default function CreateCoursePage() {
 
         response = await fetch(url, {
           method,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData
         });
       } else {
         const formData = new FormData();
@@ -234,15 +242,10 @@ export default function CreateCoursePage() {
         if (coverPhoto) formData.append("cover_photo", coverPhoto);
         if (syllabusFile) formData.append("syllabus_file", syllabusFile);
 
-        console.log(Object.fromEntries(formData.entries()));
-
-
         response = await fetch(url, {
           method,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData
         });
       }
 
@@ -261,6 +264,7 @@ export default function CreateCoursePage() {
       setLoading(false);
     }
   };
+
 
   if (loading) {
     return (
