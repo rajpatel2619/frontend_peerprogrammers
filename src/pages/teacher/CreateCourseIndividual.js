@@ -17,12 +17,14 @@ import {
   FiTrash2
 } from "react-icons/fi";
 
+
 const API = process.env.REACT_APP_API;
 
 export default function CreateCoursePage() {
   const navigate = useNavigate();
   const { courseId } = useParams();
 
+  // State variables
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -48,47 +50,46 @@ export default function CreateCoursePage() {
   const token =
     localStorage.getItem("token") || sessionStorage.getItem("token");
 
-  // Load co-mentor options
+  // Fetch co-mentor options
   useEffect(() => {
     fetch(`${API}/all_users`)
       .then((res) => res.json())
       .then((data) => {
         const options = data.users.map((user) => ({
           value: user.id,
-          label: user.name || user.username
+          label: user.name || user.username,
         }));
         setCoMentorOptions(options);
       })
       .catch((err) => console.error("Failed to fetch users:", err));
   }, []);
 
-  // Load domain options
+  // Fetch domain options
   useEffect(() => {
     fetch(`${API}/all-domain-tags`)
       .then((res) => res.json())
       .then((data) => {
         const options = data.tags.map((tag) => ({
           value: tag.id,
-          label: tag.name
+          label: tag.name,
         }));
         setDomainOptions(options);
       })
       .catch((err) => console.error("Failed to fetch domains:", err));
   }, []);
 
-  // Load course data for edit mode
+  // Fetch course data if editing
   useEffect(() => {
     if (!courseId || !userId) return;
 
     fetch(`${API}/course-detail/${userId}/${courseId}`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          console.log("Fetched Course Data:", data);
           setCourseData(data.course);
         } else {
           console.error("Failed to load course:", data.detail);
@@ -97,7 +98,7 @@ export default function CreateCoursePage() {
       .catch((err) => console.error("Failed to fetch course detail:", err));
   }, [courseId, userId, token]);
 
-  // Apply fetched data to form
+  // Populate form fields when courseData arrives
   useEffect(() => {
     if (!courseData || coMentorOptions.length === 0 || domainOptions.length === 0)
       return;
@@ -128,7 +129,6 @@ export default function CreateCoursePage() {
       );
     }
 
-    // Fix: Parse syllabus_content JSON safely
     if (courseData.syllabus_content) {
       try {
         const parsedModules = JSON.parse(courseData.syllabus_content);
@@ -142,7 +142,7 @@ export default function CreateCoursePage() {
     }
   }, [courseData, coMentorOptions, domainOptions]);
 
-  // Module management
+  // Module operations
   const addModule = () => setModules([...modules, { title: "", lessons: [] }]);
 
   const removeModule = (index) => {
@@ -208,7 +208,7 @@ export default function CreateCoursePage() {
           creator_ids: creatorIds,
           domain_ids: domainIds,
           syllabus_link: "",
-          syllabus_content: JSON.stringify(modules)
+          syllabus_content: JSON.stringify(modules),
         };
 
         const formData = new FormData();
@@ -219,7 +219,7 @@ export default function CreateCoursePage() {
         response = await fetch(url, {
           method,
           headers: { Authorization: `Bearer ${token}` },
-          body: formData
+          body: formData,
         });
       } else {
         const formData = new FormData();
@@ -245,7 +245,7 @@ export default function CreateCoursePage() {
         response = await fetch(url, {
           method,
           headers: { Authorization: `Bearer ${token}` },
-          body: formData
+          body: formData,
         });
       }
 
@@ -265,7 +265,7 @@ export default function CreateCoursePage() {
     }
   };
 
-
+  
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -670,4 +670,5 @@ export default function CreateCoursePage() {
       </div>
     </div>
   );
+
 }
