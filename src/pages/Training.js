@@ -73,13 +73,12 @@ const Training = () => {
   return (
     <section className="py-6 bg-gray-50 dark:bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4 font-funnel">
-            Learning Resources & Downloads
-          </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Access our comprehensive collection of tutorials, documentation,
-            code samples, and templates to accelerate your learning journey.
+        <div className="text-left mb-8">
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            Courses 
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300">
+            Access our comprehensive collection of courses.
           </p>
         </div>
 
