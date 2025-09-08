@@ -3,8 +3,11 @@ import { FiExternalLink } from 'react-icons/fi';
 import rajImage from '../assets/raj.webp';
 import muzammilImage from '../assets/mak.jpg';
 import arpitImage from '../assets/arpit.jpg';
-
+import logo from '../assets/logo_black.png';
+import amitphoto from '../assets/amit.jpeg';
 import yatiImage from '../assets/yati.jpeg';
+import shivaphoto from '../assets/shiva.jpeg';
+import tanmayphoto from '../assets/tanmay.jpeg';
 
 
 const Mentors = () => {
@@ -38,7 +41,7 @@ const Mentors = () => {
         },
         {
           id: 8,
-          name: "Muzammil Ahmed Karimi" ,
+          name: "Muzammil Ahmad Karimi" ,
           institution: "IIT Patna",
           codeforcesRank: "TBD",
           achievements: [
@@ -70,7 +73,23 @@ const Mentors = () => {
             twitter: "#"
           }
         },
-
+{
+          id: 12,
+          name: "Amit kumar yadav",
+          institution: "IIT Guwahati",
+          codeforcesRank: "TBD",
+          achievements: [
+            "Engineer at Micron",
+            "M.Tech from IIT Guwahati"
+          ],
+          profileLink: "#",
+          image: amitphoto,
+          socialLinks: {
+            linkedin: "https://www.linkedin.com/in/amit-kumar-yadav-1b417b189/",
+            codeforces: "#",
+            twitter: "#"
+          }
+        },
         {
           id: 10,
           name: "Yatindra Deo",
@@ -84,6 +103,41 @@ const Mentors = () => {
           image: yatiImage,
           socialLinks: {
             linkedin: "https://www.linkedin.com/in/yatindra-deo-0b383a202/",
+            codeforces: "#",
+            twitter: "#"
+          }
+        },
+        {
+          id: 11,
+          name: "Tanmay Pawar",
+          institution: "IIT Patna",
+          codeforcesRank: "TBD",
+          achievements: [
+            "ML Engineer at Warner Bros",
+            "Ex SDE at Volkswagen Group"
+          ],
+          profileLink: "#",
+          image: tanmayphoto,
+          socialLinks: {
+            linkedin: "https://www.linkedin.com/in/tanmay-pawar0/",
+            codeforces: "#",
+            twitter: "#"
+          }
+        },
+        
+        {
+          id: 13,
+          name: "Shiva Gupta",
+          institution: "IIT Patna",
+          codeforcesRank: "TBD",
+          achievements: [
+            "Computer Scientist at BEL",
+            "M.Tech from IIT Patna"
+          ],
+          profileLink: "#",
+          image: shivaphoto,
+          socialLinks: {
+            linkedin: "https://www.linkedin.com/in/shiva-gupta-03234817a/",
             codeforces: "#",
             twitter: "#"
           }
@@ -107,6 +161,7 @@ const Mentors = () => {
           <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl sm:tracking-tight lg:text-6xl mb-6">
             Our Mentors
           </h1>
+          <hr className="w-40 border-t-2  border-black dark:border-white mx-auto" />
 
         </div>
 

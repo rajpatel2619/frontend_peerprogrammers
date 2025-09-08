@@ -5,12 +5,16 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Lexend Deca', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   @apply bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-lexend;
+  }
 }
 
 @keyframes scroll-news {
