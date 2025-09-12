@@ -70,11 +70,11 @@ export default function Footer() {
                 Resources
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/training" className="hover:text-gray-400">
                 Courses
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/contact" className="hover:text-gray-400">
                 Contact Us

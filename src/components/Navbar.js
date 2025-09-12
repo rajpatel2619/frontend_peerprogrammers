@@ -112,7 +112,7 @@ export default function Navbar() {
         {/* Right: Desktop Navigation */}
         <div className="hidden md:flex items-center gap-1 ml-auto">
           <button onClick={() => navigate("/")} className={isActive("/") ? activeNavBtn : navBtn}>Home</button>
-          <button onClick={() => navigate("/training")} className={isActive("/training") ? activeNavBtn : navBtn}>Courses</button>
+          {/* <button onClick={() => navigate("/training")} className={isActive("/training") ? activeNavBtn : navBtn}>Courses</button> */}
           <button onClick={() => navigate("/campus_training")} className={isActive("/campus_training") ? activeNavBtn : navBtn}>Campus Program</button>
           
           {/* === ADDED: Placement Prep Dropdown === */}
@@ -261,7 +261,7 @@ export default function Navbar() {
 
           <div className="flex flex-col gap-1 p-2 overflow-y-auto flex-grow">
             <button onClick={() => navigate("/")} className={isActive("/") ? activeNavBtn : navBtn}>Home</button>
-            <button onClick={() => navigate("/training")} className={isActive("/training") ? activeNavBtn : navBtn}>Courses</button>
+            {/* <button onClick={() => navigate("/training")} className={isActive("/training") ? activeNavBtn : navBtn}>Courses</button> */}
             <button onClick={() => navigate("/campus_training")} className={isActive("/campus_training") ? activeNavBtn : navBtn}>Campus Program</button>
             
             {/* === ADDED: Mobile Placement Prep Accordion === */}
