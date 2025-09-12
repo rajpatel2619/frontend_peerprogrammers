@@ -108,24 +108,6 @@ const Mentors = () => {
           }
         },
         {
-          id: 11,
-          name: "Tanmay Pawar",
-          institution: "IIT Patna",
-          codeforcesRank: "TBD",
-          achievements: [
-            "ML Engineer at Warner Bros",
-            "Ex SDE at Volkswagen Group"
-          ],
-          profileLink: "#",
-          image: tanmayphoto,
-          socialLinks: {
-            linkedin: "https://www.linkedin.com/in/tanmay-pawar0/",
-            codeforces: "#",
-            twitter: "#"
-          }
-        },
-        
-        {
           id: 13,
           name: "Shiva Gupta",
           institution: "IIT Patna",
