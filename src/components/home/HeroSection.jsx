@@ -216,7 +216,9 @@ const Hero = () => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
+
               onClick={() => navigate("/")}
+
               className="relative overflow-hidden bg-black text-white dark:bg-white dark:text-black px-8 py-4 rounded-xl font-semibold flex items-center justify-center hover:shadow-xl transition-all duration-300 transform hover:scale-105 group"
             >
               <span className="relative z-10 flex items-center">
