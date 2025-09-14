@@ -113,7 +113,9 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-1 ml-auto">
           <button onClick={() => navigate("/")} className={isActive("/") ? activeNavBtn : navBtn}>Home</button>
           {/* <button onClick={() => navigate("/training")} className={isActive("/training") ? activeNavBtn : navBtn}>Courses</button> */}
+
           {/* <button onClick={() => navigate("/campus_training")} className={isActive("/campus_training") ? activeNavBtn : navBtn}>Campus Program</button> */}
+
           
           {/* === ADDED: Placement Prep Dropdown === */}
           <div className="relative" ref={placementDropdownRef}>
@@ -239,7 +241,9 @@ export default function Navbar() {
 
             {/* <button onClick={() => navigate("/training")} className={isActive("/training") ? activeNavBtn : navBtn}>Courses</button> */}
 
+
             {/* <button onClick={() => navigate("/campus_training")} className={isActive("/campus_training") ? activeNavBtn : navBtn}>Campus Program</button> */}
+
             
             {/* === ADDED: Mobile Placement Prep Accordion === */}
             <div>

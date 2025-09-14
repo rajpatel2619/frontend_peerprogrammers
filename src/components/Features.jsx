@@ -195,7 +195,6 @@ const Features = () => {
           <div className="bg-gradient-to-r from-blue-600 to-teal-600 rounded-2xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-4">Ready to Start Your Coding Journey?</h3>
             <p className="text-blue-100 mb-6 max-w-2xl mx-auto">Join thousands of developers who have transformed their careers through our peer learning platform.</p>
-           
           </div>
         </div>
 
