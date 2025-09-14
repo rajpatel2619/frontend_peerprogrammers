@@ -113,7 +113,9 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-1 ml-auto">
           <button onClick={() => navigate("/")} className={isActive("/") ? activeNavBtn : navBtn}>Home</button>
           {/* <button onClick={() => navigate("/training")} className={isActive("/training") ? activeNavBtn : navBtn}>Courses</button> */}
-          <button onClick={() => navigate("/campus_training")} className={isActive("/campus_training") ? activeNavBtn : navBtn}>Campus Program</button>
+
+          {/* <button onClick={() => navigate("/campus_training")} className={isActive("/campus_training") ? activeNavBtn : navBtn}>Campus Program</button> */}
+
           
           {/* === ADDED: Placement Prep Dropdown === */}
           <div className="relative" ref={placementDropdownRef}>
@@ -147,32 +149,7 @@ export default function Navbar() {
                       Soon
                     </span>
                   </button>
-                  <button
-                    onClick={() => {
-                      setPlacementDropdownOpen(
-                        false
-                      ); /* navigate("/ai-interview"); */
-                    }}
-                    className={`${profileDropdownBtn} flex justify-between items-center opacity-70 cursor-not-allowed`}
-                    disabled
-                  >Internships
-                    <span className="text-xs font-medium bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100 px-2 py-0.5 rounded-full">
-                      Soon
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setPlacementDropdownOpen(
-                        false
-                      ); /* navigate("/ai-interview"); */
-                    }}
-                    className={`${profileDropdownBtn} flex justify-between items-center opacity-70 cursor-not-allowed`}
-                    disabled
-                  >Jobs
-                    <span className="text-xs font-medium bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100 px-2 py-0.5 rounded-full">
-                      Soon
-                    </span>
-                  </button>
+                 
                 </div>
               </div>
             )}
@@ -264,7 +241,9 @@ export default function Navbar() {
 
             {/* <button onClick={() => navigate("/training")} className={isActive("/training") ? activeNavBtn : navBtn}>Courses</button> */}
 
-            <button onClick={() => navigate("/campus_training")} className={isActive("/campus_training") ? activeNavBtn : navBtn}>Campus Program</button>
+
+            {/* <button onClick={() => navigate("/campus_training")} className={isActive("/campus_training") ? activeNavBtn : navBtn}>Campus Program</button> */}
+
             
             {/* === ADDED: Mobile Placement Prep Accordion === */}
             <div>
@@ -296,32 +275,7 @@ export default function Navbar() {
                       Soon
                     </span>
                   </button>
-                  <button
-                    onClick={() => {
-                      setPlacementDropdownOpen(
-                        false
-                      ); /* navigate("/ai-interview"); */
-                    }}
-                    className={`${profileDropdownBtn} flex justify-between items-center opacity-70 cursor-not-allowed`}
-                    disabled
-                  >Internships
-                    <span className="text-xs font-medium bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100 px-2 py-0.5 rounded-full">
-                      Soon
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setPlacementDropdownOpen(
-                        false
-                      ); /* navigate("/ai-interview"); */
-                    }}
-                    className={`${profileDropdownBtn} flex justify-between items-center opacity-70 cursor-not-allowed`}
-                    disabled
-                  >Jobs
-                    <span className="text-xs font-medium bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100 px-2 py-0.5 rounded-full">
-                      Soon
-                    </span>
-                  </button>
+                 
 
                 </div>
               )}
