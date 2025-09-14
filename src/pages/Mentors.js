@@ -28,7 +28,7 @@ const Mentors = () => {
           institution: "IIT Patna",
           codeforcesRank: "TBD",
           achievements: [
-            "Building Peer Programmers",
+            "Mentor Peer Programmers",
             "Ex-SDE at Sopra Steria"
           ],
           profileLink: "#",
@@ -45,7 +45,7 @@ const Mentors = () => {
           institution: "IIT Patna",
           codeforcesRank: "TBD",
           achievements: [
-            "Co-Founder Peer Programmers",
+            "Mentor Peer Programmers",
             "Aspiring Software Engineer"
           ],
           profileLink: "#",

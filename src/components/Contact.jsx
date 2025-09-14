@@ -104,16 +104,16 @@ const Contact = () => {
       color: "green",
       action: "Schedule"
     },
-    {
-      icon: <MapPin className="w-6 h-6" />,
-      title: "Office Visit",
-      description: "Visit our headquarters in Noida",
-      contact: "Noida, India",
-      link: "https://maps.google.com/?q=Noida",
-      color: "blue",
-      action: "Get Directions",
-      isExternal: true
-    }
+    // {
+    //   icon: <MapPin className="w-6 h-6" />,
+    //   title: "Office Visit",
+    //   description: "Visit our headquarters in Noida",
+    //   contact: "Noida, India",
+    //   link: "https://maps.google.com/?q=Noida",
+    //   color: "blue",
+    //   action: "Get Directions",
+    //   isExternal: true
+    // }
   ];
 
   const getColorClasses = (color) => {
